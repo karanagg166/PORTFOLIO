@@ -4,8 +4,10 @@ import Particle from "../Particle";
 import Github from "./Github";
 import Techstack from "./Techstack";
 import Aboutcard from "./AboutCard";
-import laptopImg from "../../Assets/about.png";
+import karanImg from "../../Assets/karanportfolio.jpeg";
 import Toolstack from "./Toolstack";
+import CodeforcesHeatmap from "./Codeforces";
+import CodingHandles from "./CodingHandles";
 
 function About() {
   return (
@@ -31,7 +33,20 @@ function About() {
             style={{ paddingTop: "120px", paddingBottom: "50px" }}
             className="about-img"
           >
-            <img src={laptopImg} alt="about" className="img-fluid" />
+           <img
+  src={karanImg}
+  alt="about"
+  className="img-fluid"
+  style={{
+    width: "350px", // Adjust the size as needed
+    height: "390px",
+    borderRadius: "50%", // Makes the image round
+    objectFit: "cover", // Ensures the image covers the area without distortion
+    display: "block", // Ensures proper alignment
+    margin: "0 auto" // Centers the image horizontally
+  }}
+/>
+
           </Col>
         </Row>
         <h1 className="project-heading">
@@ -46,6 +61,8 @@ function About() {
         <Toolstack />
 
         <Github />
+        <CodeforcesHeatmap />
+        <CodingHandles />
       </Container>
     </Container>
   );
