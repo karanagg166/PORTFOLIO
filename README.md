@@ -75,9 +75,9 @@ Give a ⭐ if you like this website!
 
 <div align="center">
   <a href="https://www.instagram.com/karanagg_166/" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" height="40px" width="40px" style="margin-right: 10px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_icon.png" alt="Instagram" height="40px" width="40px" style="margin-right: 10px;">
   </a>
   <a href="https://www.linkedin.com/in/karan-aggarwal-a13427276/" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg" alt="LinkedIn" height="40px" width="40px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Linkedin_icon.svg" alt="LinkedIn" height="40px" width="40px">
   </a>
 </div>
