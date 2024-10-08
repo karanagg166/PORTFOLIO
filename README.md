@@ -3,7 +3,7 @@
   <a href="https://portfolio-kappa-bay-76.vercel.app/" target="_blank">Karan Aggarwal tech</a>
 </h2>
 <div align="center">
-  <img alt="Demo" src="./Images/readme-img1.png" />
+  <img alt="Demo" src="./Images/laptop.png" />
 </div>
 
 <br/>
