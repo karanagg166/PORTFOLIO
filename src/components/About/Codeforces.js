@@ -14,6 +14,8 @@ function CodeforcesHeatmap() {
           `https://codeforces.com/api/user.status?handle=KaranCipherKnight`
         );
         const submissions = response.data.result;
+        console.log(response.data.result);
+        console.log(response.data);
         
         // Process submissions to create heatmap data
         const data = submissions.map((submission) => {
