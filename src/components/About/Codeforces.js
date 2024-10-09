@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import Heatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import axios from "axios";
-import { Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import Particle from "../Particle";
 
 function CodeforcesHeatmap() {
   const [activityData, setActivityData] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,14 +16,21 @@ function CodeforcesHeatmap() {
           `https://codeforces.com/api/user.status?handle=KaranCipherKnight`
         );
         const submissions = response.data.result;
-        console.log(response.data.result);
-        console.log(response.data);
-        
+
+        // Check if the response has results
+        if (!submissions || submissions.length === 0) {
+          throw new Error("No submissions found");
+        }
+
         // Process submissions to create heatmap data
         const data = submissions.map((submission) => {
-          const date = new Date(submission.creationTimeSeconds * 1000).toISOString().split("T")[0];
-          return { date: date, count: 1 };
-        });
+          const date = new Date(submission.creationTimeSeconds * 1000);
+          // Check if date is valid
+          if (!isNaN(date)) {
+            return { date: date.toISOString().split("T")[0], count: 1 };
+          }
+          return null; // In case of an invalid date
+        }).filter(item => item); // Filter out any null values
 
         // Aggregate counts for the same date
         const aggregatedData = Object.values(
@@ -35,6 +44,7 @@ function CodeforcesHeatmap() {
         setActivityData(aggregatedData);
       } catch (error) {
         console.error("Error fetching Codeforces data:", error);
+        setError("Failed to fetch data. Please try again later.");
       }
     };
 
@@ -42,23 +52,34 @@ function CodeforcesHeatmap() {
   }, []);
 
   return (
-    <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
-      <h1 className="project-heading" style={{ paddingBottom: "20px" }}>
-        My Codeforces <strong className="purple">Activity</strong>
-      </h1>
-      <Heatmap
-        startDate={new Date('2023-01-01')}
-        endDate={new Date()}
-        values={activityData}
-        classForValue={(value) => {
-          if (!value) {
-            return "color-empty";
-          }
-          return `color-github-${Math.min(4, value.count)}`;
-        }}
-        gutterSize={4}
-      />
-    </Row>
+    <Container fluid className="codeforces-section">
+      <Particle />
+      <Container>
+        <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
+          <h1 className="project-heading" style={{ paddingBottom: "20px" }}>
+            My Codeforces <strong className="purple">Activity</strong>
+          </h1>
+          {error ? (
+            <div style={{ color: 'red' }}>{error}</div> // Display error message if fetch fails
+          ) : (
+            <Col md={12} style={{ paddingBottom: "50px" }}>
+              <Heatmap
+                startDate={new Date('2024-01-01')}
+                endDate={new Date()}
+                values={activityData}
+                classForValue={(value) => {
+                  if (!value) {
+                    return "color-empty";
+                  }
+                  return `color-github-${Math.min(4, value.count)}`;
+                }}
+                gutterSize={4}
+              />
+            </Col>
+          )}
+        </Row>
+      </Container>
+    </Container>
   );
 }
 

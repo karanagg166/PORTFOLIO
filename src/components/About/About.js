@@ -8,6 +8,7 @@ import karanImg from "../../Assets/karanportfolio.jpeg";
 import Toolstack from "./Toolstack";
 import CodeforcesHeatmap from "./Codeforces";
 import CodingHandles from "./CodingHandles";
+import LeetcodeHeatmap from "./leetcode";
 
 function About() {
   return (
@@ -62,6 +63,7 @@ function About() {
 
         <Github />
         <CodeforcesHeatmap />
+        <LeetcodeHeatmap/>
         <CodingHandles />
       </Container>
     </Container>
