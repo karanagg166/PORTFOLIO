@@ -27,7 +27,7 @@
 
 ## TL;DR
 
-You can fork this repo to modify and make changes of your own. Please give me proper credit by linking back to [Soumyajit4419](https://github.com/karanagg166/PORTFOLIO). Thanks!
+You can fork this repo to modify and make changes of your own. Please give me proper credit by linking back to [karanagg166](https://github.com/karanagg166/PORTFOLIO). Thanks!
 
 ## Built With
 
