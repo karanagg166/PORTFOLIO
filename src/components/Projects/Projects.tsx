@@ -9,7 +9,7 @@ import chatify from "../../Assets/Projects/chatify.png";
 
 import bitsOfCode from "../../Assets/Projects/blog.png";
 
-function Projects() {
+function Projects(): React.JSX.Element {
   return (
     <Container fluid className="project-section">
       <Particle />

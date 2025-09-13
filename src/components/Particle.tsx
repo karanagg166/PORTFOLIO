@@ -1,7 +1,7 @@
 import React from "react";
 import Particles from "react-tsparticles";
 
-function Particle() {
+function Particle(): React.JSX.Element {
   return (
     <Particles
       id="tsparticles"

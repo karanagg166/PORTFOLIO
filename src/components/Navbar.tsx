@@ -16,7 +16,7 @@ import {
 
 import { CgFileDocument } from "react-icons/cg";
 
-function NavBar() {
+function NavBar(): React.JSX.Element {
   const [expand, updateExpanded] = useState(false);
   const [navColour, updateNavbar] = useState(false);
 
@@ -49,7 +49,7 @@ function NavBar() {
         <Navbar.Toggle
           aria-controls="responsive-navbar-nav"
           onClick={() => {
-            updateExpanded(expand ? false : "expanded");
+            updateExpanded(expand ? false : true);
           }}
         >
           <span></span>

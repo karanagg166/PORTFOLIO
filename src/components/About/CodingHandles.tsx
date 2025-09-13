@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { SiLeetcode, SiCodechef, SiGeeksforgeeks, SiCodeforces } from "react-icons/si";
 
-function CodingHandles() {
+function CodingHandles(): React.JSX.Element {
   return (
     <Container fluid style={{ textAlign: "center", paddingBottom: "50px" }}>
       <Row>

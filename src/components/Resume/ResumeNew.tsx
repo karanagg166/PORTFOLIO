@@ -9,9 +9,9 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 // Set the worker source for pdfjs
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-function ResumeNew() {
-  const [width, setWidth] = useState(window.innerWidth);
-  const [error, setError] = useState(null);
+function ResumeNew(): React.JSX.Element {
+  const [width, setWidth] = useState<number>(window.innerWidth);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Update the width on window resize
@@ -22,7 +22,7 @@ function ResumeNew() {
   }, []);
 
   // Function to handle document load errors
-  const onLoadError = (error) => {
+  const onLoadError = (error: Error) => {
     console.error("Error loading PDF:", error);
     setError(error.message || "Failed to load PDF");
   };

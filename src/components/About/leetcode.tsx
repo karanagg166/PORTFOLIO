@@ -5,11 +5,27 @@ import axios from "axios";
 import { Row, Col } from "react-bootstrap";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+interface ActivityData {
+  date: string;
+  count: number;
+}
 
-function LeetcodeHeatmap() {
-  const [activityData, setActivityData] = useState([]);
-  const [error, setError] = useState(null);
-  const [questionStats, setQuestionStats] = useState({
+interface QuestionStats {
+  easySolved: number;
+  mediumSolved: number;
+  hardSolved: number;
+  totalSolved: number;
+}
+
+interface PieDataItem {
+  name: string;
+  value: number;
+}
+
+function LeetcodeHeatmap(): React.JSX.Element {
+  const [activityData, setActivityData] = useState<ActivityData[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [questionStats, setQuestionStats] = useState<QuestionStats>({
     easySolved: 0,
     mediumSolved: 0,
     hardSolved: 0,
@@ -17,7 +33,7 @@ function LeetcodeHeatmap() {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       try {
         const response = await axios.get(
           `https://leetcode-stats-api.herokuapp.com/aggarwalkaran241`
@@ -39,7 +55,7 @@ function LeetcodeHeatmap() {
 
         const data = Object.entries(submissionCalendar).map(([date, count]) => ({
           date: new Date(parseInt(date) * 1000).toISOString().split("T")[0],
-          count: parseInt(count),
+          count: parseInt(count as string),
         }));
 
         setActivityData(data);
@@ -52,7 +68,7 @@ function LeetcodeHeatmap() {
     fetchData();
   }, []);
 
-  const pieData = [
+  const pieData: PieDataItem[] = [
     { name: "Easy", value: questionStats.easySolved },
     { name: "Medium", value: questionStats.mediumSolved },
     { name: "Hard", value: questionStats.hardSolved },
@@ -80,7 +96,7 @@ function LeetcodeHeatmap() {
                 startDate={new Date("2024-02-01")}
                 endDate={new Date()}
                 values={activityData}
-                classForValue={(value) => {
+                classForValue={(value: ActivityData | null): string => {
                   if (!value) {
                     return "color-empty";
                   }

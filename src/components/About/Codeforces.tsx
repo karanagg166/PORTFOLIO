@@ -5,12 +5,17 @@ import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 import Particle from "../Particle";
 
-function CodeforcesHeatmap() {
-  const [activityData, setActivityData] = useState([]);
-  const [error, setError] = useState(null);
+interface ActivityData {
+  date: string;
+  count: number;
+}
+
+function CodeforcesHeatmap(): React.JSX.Element {
+  const [activityData, setActivityData] = useState<ActivityData[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       try {
         const response = await axios.get(
           `https://codeforces.com/api/user.status?handle=KaranCipherKnight`
@@ -23,18 +28,18 @@ function CodeforcesHeatmap() {
         }
 
         // Process submissions to create heatmap data
-        const data = submissions.map((submission) => {
+        const data = submissions.map((submission: any): ActivityData | null => {
           const date = new Date(submission.creationTimeSeconds * 1000);
           // Check if date is valid
-          if (!isNaN(date)) {
+          if (!isNaN(date.getTime())) {
             return { date: date.toISOString().split("T")[0], count: 1 };
           }
           return null; // In case of an invalid date
-        }).filter(item => item); // Filter out any null values
+        }).filter((item: ActivityData | null): item is ActivityData => item !== null); // Filter out any null values
 
         // Aggregate counts for the same date
-        const aggregatedData = Object.values(
-          data.reduce((acc, { date, count }) => {
+        const aggregatedData: ActivityData[] = Object.values(
+          data.reduce((acc: Record<string, ActivityData>, { date, count }: ActivityData) => {
             acc[date] = acc[date] || { date, count: 0 };
             acc[date].count += count;
             return acc;
@@ -67,7 +72,7 @@ function CodeforcesHeatmap() {
                 startDate={new Date('2024-01-01')}
                 endDate={new Date()}
                 values={activityData}
-                classForValue={(value) => {
+                classForValue={(value: ActivityData | null): string => {
                   if (!value) {
                     return "color-empty";
                   }

@@ -10,7 +10,7 @@ import CodeforcesHeatmap from "./Codeforces";
 import CodingHandles from "./CodingHandles";
 import LeetcodeHeatmap from "./leetcode";
 
-function About() {
+function About(): React.JSX.Element {
   return (
     <Container fluid className="about-section">
       <Particle />
