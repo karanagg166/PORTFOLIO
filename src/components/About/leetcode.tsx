@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Heatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
-import axios from "axios";
 import { Row, Col } from "react-bootstrap";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
@@ -35,30 +34,36 @@ function LeetcodeHeatmap(): React.JSX.Element {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response = await axios.get(
+        const response = await fetch(
           `https://leetcode-stats-api.herokuapp.com/aggarwalkaran241`
         );
-        console.log(response);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log(data);
 
-        const submissionCalendar = response.data.submissionCalendar;
+        const submissionCalendar = data.submissionCalendar;
 
         setQuestionStats({
-          easySolved: response.data.easySolved,
-          mediumSolved: response.data.mediumSolved,
-          hardSolved: response.data.hardSolved,
-          totalSolved: response.data.totalSolved,
+          easySolved: data.easySolved,
+          mediumSolved: data.mediumSolved,
+          hardSolved: data.hardSolved,
+          totalSolved: data.totalSolved,
         });
 
         if (!submissionCalendar || Object.keys(submissionCalendar).length === 0) {
           throw new Error("No submissions found");
         }
 
-        const data = Object.entries(submissionCalendar).map(([date, count]) => ({
+        const activityData = Object.entries(submissionCalendar).map(([date, count]) => ({
           date: new Date(parseInt(date) * 1000).toISOString().split("T")[0],
           count: parseInt(count as string),
         }));
 
-        setActivityData(data);
+        setActivityData(activityData);
       } catch (error) {
         console.error("Error fetching LeetCode data:", error);
         setError("Failed to fetch data. Please try again later.");

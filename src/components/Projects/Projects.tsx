@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
+import ProjectCard from "./ProjectCards";
 import leaf from "../../Assets/Projects/leaf.png";
-
+import emotion from "../../Assets/Projects/emotion.png";
 import editor from "../../Assets/Projects/codeEditor.png";
 import chatify from "../../Assets/Projects/chatify.png";
-
+import suicide from "../../Assets/Projects/suicide.png";
 import bitsOfCode from "../../Assets/Projects/blog.png";
 
 function Projects(): React.JSX.Element {
@@ -25,21 +25,21 @@ function Projects(): React.JSX.Element {
             <ProjectCard
               imgPath={chatify}
               isBlog={false}
-              title="Quick-Clinic"
-              description="A smart healthcare platform enabling real-time chat and video consultations between patients and doctors. Features include appointment booking, medical history tracking, doctor availability, and secure digital interactions."
-              ghLink="https://github.com/karanagg166/quickclinic"
-              demoLink="https://quickclinic-49jb4atli-karan-aggarwals-projects.vercel.app/"
+              title="Chatify"
+              description="Personal Chat Room or Workspace to share resources and hangout with friends build with react.js, Material-UI, and Firebase. Have features which allows user for realtime messaging, image sharing as well as supports reactions on messages."
+              ghLink="https://github.com/karanagg166/chatify"
+              demoLink="https://chatify-49.web.app/"
             />
           </Col>
 
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={bitsOfCode}
+              imgPath={leaf}
               isBlog={false}
-              title="Penny Saver"
-              description="A personal finance tracker with interactive date-based analytics. Users can log daily transactions, view financial trends through graphs, categorize expenses, and generate reports—making budgeting smarter and more efficient."
-              ghLink="https://github.com/karanagg166/PennySaver"
-              demoLink="https://penny-saver-r26w9jga7-karan-aggarwals-projects.vercel.app/"
+              title="Plant AI"
+              description="Used the plant disease dataset from Kaggle and trained a image classifer model using 'PyTorch' as framework. The model was successfully able to detect diseased and healthy leaves of 14 unique plants. I was able to achieve an accuracy of 98% by using Resnet34 pretrained model."
+              ghLink="https://github.com/karanagg166/Plant_AI"
+              demoLink="https://plant49-ai.herokuapp.com/"
             />
           </Col>
 
@@ -47,36 +47,46 @@ function Projects(): React.JSX.Element {
             <ProjectCard
               imgPath={editor}
               isBlog={false}
-              title="Task-Flow"
-              description="A smart task management app designed for productivity. Features include task creation, deadline tracking, status updates, and category filters — all within a clean, user-friendly interface to streamline daily workflows.
-    
-"
-              ghLink="https://github.com/karanagg166/TaskFlow"
-              demoLink="https://task-flow-qu2dg91bw-karan-aggarwals-projects.vercel.app/"              
+              title="Editor.io"
+              description="Online code editor built with react.js. Online Editor which supports html, css, and js code with instant view of website. Online markdown editor for building README files that supports GFM, Custom Html tags with toolbar and instant preview.Both the editor supports auto save of work using Local Storage"
+              ghLink="https://github.com/karanagg166/Editor.io"
+              demoLink="https://editor-io.herokuapp.com/"
             />
           </Col>
 
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={leaf}
+              imgPath={bitsOfCode}
               isBlog={false}
-              title="Shop Sizzle"
-              description="A scalable e-commerce platform built with TypeScript. Features include advanced product search and filters, secure checkout, real-time order tracking, and user account management — optimized for high-volume transactions and seamless shopping."
-              ghLink="https://github.com/karanagg166/ShopSizzle"
-              demoLink="https://github.com/karanagg166/ShopSizzle"
+              title="Bits-0f-C0de"
+              description="My personal blog page build with Next.js and Tailwind Css which takes the content from makdown files and renders it using Next.js. Supports dark mode and easy to write blogs using markdown."
+              ghLink="https://github.com/karanagg166/Bits-0f-C0de"
+              demoLink="https://blogs-karanagg166.vercel.app/"
             />
           </Col>
-           <Col md={4} className="project-card">
+
+          <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={leaf}
+              imgPath={suicide}
               isBlog={false}
-              title="Stock-Pilot"
-              description="A real-time stock tracking and portfolio management tool. Users can monitor live prices, analyze trends, and manage their investments efficiently — all through an intuitive dashboard designed for informed trading decisions."
-              ghLink="https://github.com/karanagg166/stockpilot"
-              demoLink="https://github.com/karanagg166/stockpilot"
+              title="Ai For Social Good"
+              description="Using 'Natural Launguage Processing' for the detection of suicide-related posts and user's suicide ideation in cyberspace  and thus helping in sucide prevention."
+              ghLink="https://github.com/karanagg166/AI_For_Social_Good"
+              demoLink="https://youtu.be/DQswNh_ej3k"
             />
           </Col>
-         
+
+          <Col md={4} className="project-card">
+            <ProjectCard
+              imgPath={emotion}
+              isBlog={false}
+              title="Face Recognition and Emotion Detection"
+              description="Trained a CNN classifier using 'FER-2013 dataset' with Keras and Tensorflow back end. The classifier sucessfully predicted the various types of emotions of human. And the highest accuracy obtained with the model was 60.1%.
+              Then used Open-CV to detect the face in an image and then pass the face to the trained model. It would predict the emotion of the person and draw bounding box around the face with the predicted emotion."
+              ghLink="https://github.com/karanagg166/Face_And_Emotion_Detection"
+              demoLink="https://youtu.be/37uEXtwij3I"
+            />
+          </Col>
         </Row>
       </Container>
     </Container>

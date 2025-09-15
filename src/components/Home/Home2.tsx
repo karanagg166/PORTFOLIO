@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import myImg from "../../Assets/avatar.jpeg";
 import Tilt from "react-parallax-tilt";
+import myImg from "../../Assets/avatar.jpeg";
 import {
   AiFillGithub,
   AiOutlineTwitter,
@@ -15,34 +15,30 @@ function Home2(): React.JSX.Element {
       <Container>
         <Row>
           <Col md={8} className="home-about-description">
-            <h1 style={{ fontSize: "2.6em" }}>
+            <h1 className="home-about-body">
               LET ME <span className="purple"> INTRODUCE </span> MYSELF
             </h1>
             <p className="home-about-body">
               I fell in love with programming and I have at least learnt
               something, I think… 🤷‍♂️
-              <br />
-              <br />I am fluent in classics like
+            </p>
+            <p className="home-about-body">
+              I am fluent in classics like
               <i>
-                <b className="purple"> C++, Javascript and React </b>
+                <b className="purple"> C++, Javascript and Go. </b>
               </i>
-              <br />
-              <br />
-              My field of Interest's are building new &nbsp;
+            </p>
+            <p className="home-about-body">
+              My field of Interest's are building new
               <i>
-                <b className="purple">Web Technologies and Products </b> and
-                also in areas related to{" "}
-                <b className="purple">
-                 Data Structures and Algorithms 
-                </b>
-                
-                <b className="purple">
-                , Competitive programming
-                </b>
-                
+                <b className="purple"> Web Technologies and Products </b>
               </i>
-              <br />
-              <br />
+              and also in areas related to
+              <i>
+                <b className="purple"> Deep Learning and Natural Launguage Processing.</b>
+              </i>
+            </p>
+            <p className="home-about-body">
               Whenever possible, I also apply my passion for developing products
               with <b className="purple">Node.js</b> and
               <i>
@@ -75,34 +71,34 @@ function Home2(): React.JSX.Element {
                   href="https://github.com/karanagg166"
                   target="_blank"
                   rel="noreferrer"
-                  className="icon-colour  home-social-icons"
+                  className="icon-colour home-social-icons"
                 >
                   <AiFillGithub />
                 </a>
               </li>
               <li className="social-icons">
                 <a
-                   href="https://x.com/Karanaggrawal1"
+                  href="https://twitter.com/karanagg166"
                   target="_blank"
                   rel="noreferrer"
-                  className="icon-colour  home-social-icons"
+                  className="icon-colour home-social-icons"
                 >
                   <AiOutlineTwitter />
                 </a>
               </li>
               <li className="social-icons">
                 <a
-                  href="https://www.linkedin.com/in/karan-aggarwal-a13427276/"
+                  href="https://www.linkedin.com/in/karan-aggarwal-166/"
                   target="_blank"
                   rel="noreferrer"
-                  className="icon-colour  home-social-icons"
+                  className="icon-colour home-social-icons"
                 >
                   <FaLinkedinIn />
                 </a>
               </li>
               <li className="social-icons">
                 <a
-                  href="https://www.instagram.com/karanagg_166/"
+                  href="https://www.instagram.com/karanagg166/"
                   target="_blank"
                   rel="noreferrer"
                   className="icon-colour home-social-icons"

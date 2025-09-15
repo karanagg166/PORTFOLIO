@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import Container from "react-bootstrap/Container";
+import React, { useState, useEffect } from "react";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import karanagg from "../Assets/karan.jpeg";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
@@ -17,10 +15,10 @@ import {
 import { CgFileDocument } from "react-icons/cg";
 
 function NavBar(): React.JSX.Element {
-  const [expand, updateExpanded] = useState(false);
-  const [navColour, updateNavbar] = useState(false);
+  const [expand, updateExpanded] = useState<boolean>(false);
+  const [navColour, updateNavbar] = useState<boolean>(false);
 
-  function scrollHandler() {
+  function scrollHandler(): void {
     if (window.scrollY >= 20) {
       updateNavbar(true);
     } else {
@@ -28,7 +26,10 @@ function NavBar(): React.JSX.Element {
     }
   }
 
-  window.addEventListener("scroll", scrollHandler);
+  useEffect(() => {
+    window.addEventListener("scroll", scrollHandler);
+    return () => window.removeEventListener("scroll", scrollHandler);
+  }, []);
 
   return (
     <Navbar
@@ -38,14 +39,9 @@ function NavBar(): React.JSX.Element {
       className={navColour ? "sticky" : "navbar"}
     >
       <Container>
-      <Navbar.Brand href="/" className="d-flex">
-  <img
-    src={karanagg}
-    alt="brand"
-    className="logo img-fluid"
-    style={{ width: "190px", height: "auto" }}
-  />
-</Navbar.Brand>
+        <Navbar.Brand href="/" className="d-flex">
+          <img src={karanagg} className="img-fluid logo" alt="brand" />
+        </Navbar.Brand>
         <Navbar.Toggle
           aria-controls="responsive-navbar-nav"
           onClick={() => {
@@ -96,8 +92,6 @@ function NavBar(): React.JSX.Element {
                 <CgFileDocument style={{ marginBottom: "2px" }} /> Resume
               </Nav.Link>
             </Nav.Item>
-
-           
 
             <Nav.Item className="fork-btn">
               <Button

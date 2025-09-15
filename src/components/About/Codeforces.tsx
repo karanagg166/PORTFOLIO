@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Heatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
-import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 import Particle from "../Particle";
 
@@ -17,10 +16,16 @@ function CodeforcesHeatmap(): React.JSX.Element {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response = await axios.get(
+        const response = await fetch(
           `https://codeforces.com/api/user.status?handle=KaranCipherKnight`
         );
-        const submissions = response.data.result;
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        const submissions = data.result;
 
         // Check if the response has results
         if (!submissions || submissions.length === 0) {
@@ -28,7 +33,7 @@ function CodeforcesHeatmap(): React.JSX.Element {
         }
 
         // Process submissions to create heatmap data
-        const data = submissions.map((submission: any): ActivityData | null => {
+        const processedData = submissions.map((submission: any): ActivityData | null => {
           const date = new Date(submission.creationTimeSeconds * 1000);
           // Check if date is valid
           if (!isNaN(date.getTime())) {
@@ -39,7 +44,7 @@ function CodeforcesHeatmap(): React.JSX.Element {
 
         // Aggregate counts for the same date
         const aggregatedData: ActivityData[] = Object.values(
-          data.reduce((acc: Record<string, ActivityData>, { date, count }: ActivityData) => {
+          processedData.reduce((acc: Record<string, ActivityData>, { date, count }: ActivityData) => {
             acc[date] = acc[date] || { date, count: 0 };
             acc[date].count += count;
             return acc;

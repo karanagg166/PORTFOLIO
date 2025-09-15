@@ -1,5 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import {
   AiFillGithub,
   AiOutlineTwitter,
@@ -10,54 +12,58 @@ import { FaLinkedinIn } from "react-icons/fa";
 function Footer(): React.JSX.Element {
   const date = new Date();
   const year = date.getFullYear();
-  
+
   return (
     <Container fluid className="footer">
       <Row>
-        <Col md="4" className="footer-copywright">
+        <Col md="3" className="footer-copywright">
           <h3>Designed and Developed by Karan Agg</h3>
         </Col>
-        <Col md="4" className="footer-copywright">
+        <Col md="3" className="footer-copywright">
           <h3>Copyright © {year} KA</h3>
         </Col>
-        <Col md="4" className="footer-body">
+        <Col md="3" className="footer-body">
           <ul className="footer-icons">
             <li className="social-icons">
               <a
                 href="https://github.com/karanagg166"
                 style={{ color: "white" }}
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GitHub"
               >
                 <AiFillGithub />
               </a>
             </li>
             <li className="social-icons">
               <a
-                href="https://x.com/Karanaggrawal1"
+                href="https://twitter.com/karanagg166"
                 style={{ color: "white" }}
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Twitter"
               >
                 <AiOutlineTwitter />
               </a>
             </li>
             <li className="social-icons">
               <a
-                href="https://www.linkedin.com/in/karan-aggarwal-a13427276/"
+                href="https://www.linkedin.com/in/karan-aggarwal-166/"
                 style={{ color: "white" }}
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
+                aria-label="LinkedIn"
               >
                 <FaLinkedinIn />
               </a>
             </li>
             <li className="social-icons">
               <a
-                href="https://www.instagram.com/karanagg_166/"
+                href="https://www.instagram.com/karanagg166/"
                 style={{ color: "white" }}
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Instagram"
               >
                 <AiFillInstagram />
               </a>

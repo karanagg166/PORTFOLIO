@@ -1,70 +1,57 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Particle from "../Particle";
-import Github from "./Github";
-import Techstack from "./Techstack";
 import Aboutcard from "./AboutCard";
-import karanImg from "../../Assets/karanportfolio.jpeg";
+import karanImg from "../../Assets/karan.jpeg";
+import Techstack from "./Techstack";
 import Toolstack from "./Toolstack";
-import CodeforcesHeatmap from "./Codeforces";
-import CodingHandles from "./CodingHandles";
-import LeetcodeHeatmap from "./leetcode";
+import Github from "./Github";
+import Leetcode from "./leetcode";
+import Codeforces from "./Codeforces";
 
 function About(): React.JSX.Element {
   return (
     <Container fluid className="about-section">
       <Particle />
       <Container>
-        <Row style={{ justifyContent: "center", padding: "10px" }}>
+        <Row className="justify-content-center">
           <Col
             md={7}
-            style={{
-              justifyContent: "center",
-              paddingTop: "30px",
-              paddingBottom: "50px",
-            }}
+            className="d-flex flex-column justify-content-center pt-8 pb-12"
           >
-            <h1 style={{ fontSize: "2.1em", paddingBottom: "20px" }}>
+            <h1 className="text-center md:text-left">
               Know Who <strong className="purple">I'M</strong>
             </h1>
             <Aboutcard />
           </Col>
           <Col
             md={5}
-            style={{ paddingTop: "120px", paddingBottom: "50px" }}
-            className="about-img"
+            className="pt-20 md:pt-32 pb-12 flex justify-center"
           >
-           <img
-  src={karanImg}
-  alt="about"
-  className="img-fluid"
-  style={{
-    width: "350px", // Adjust the size as needed
-    height: "390px",
-    borderRadius: "50%", // Makes the image round
-    objectFit: "cover", // Ensures the image covers the area without distortion
-    display: "block", // Ensures proper alignment
-    margin: "0 auto" // Centers the image horizontally
-  }}
-/>
-
+            <img
+              src={karanImg}
+              alt="about"
+              className="img-fluid"
+              style={{ maxHeight: "450px" }}
+            />
           </Col>
         </Row>
-        <h1 className="project-heading">
-          Professional <strong className="purple">Skillset </strong>
+        <h1 className="purple">
+          Professional <strong className="purple">Skillset</strong>
         </h1>
 
-        <Techstack />
-
-        <h1 className="project-heading">
+        <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
+          <Techstack />
+        </Row>
+        <h1 className="purple">
           <strong className="purple">Tools</strong> I use
         </h1>
-        <Toolstack />
-
+        <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
+          <Toolstack />
+        </Row>
         <Github />
-        <CodeforcesHeatmap />
-        <LeetcodeHeatmap/>
-        <CodingHandles />
+        <Codeforces />
+        <Leetcode />
       </Container>
     </Container>
   );
