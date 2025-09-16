@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import Tilt from "react-parallax-tilt";
 import Particle from "../Particle";
 import myImg from "../../Assets/avatar.jpeg";
 import {
@@ -56,9 +55,9 @@ function Home2(): React.JSX.Element {
             </p>
           </Col>
           <Col md={4} className="myAvtar">
-            <Tilt>
+            <div className="avatar-container">
               <img src={myImg} className="img-fluid" alt="avatar" />
-            </Tilt>
+            </div>
           </Col>
         </Row>
         <Row>
