@@ -11,6 +11,7 @@ interface ActivityData {
 
 function CodeforcesHeatmap(): React.JSX.Element {
   const [activityData, setActivityData] = useState<ActivityData[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

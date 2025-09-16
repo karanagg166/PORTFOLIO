@@ -21,8 +21,20 @@ interface PieDataItem {
   value: number;
 }
 
+interface ContestData {
+  contestAttend: number;
+  contestRating: number;
+  contestGlobalRanking: number;
+  totalParticipants: number;
+  contestTopPercentage: number;
+  contestBadges: {
+    name: string;
+  };
+}
+
 function LeetcodeHeatmap(): React.JSX.Element {
   const [activityData, setActivityData] = useState<ActivityData[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [questionStats, setQuestionStats] = useState<QuestionStats>({
@@ -31,6 +43,7 @@ function LeetcodeHeatmap(): React.JSX.Element {
     hardSolved: 0,
     totalSolved: 0,
   });
+  const [contestData, setContestData] = useState<ContestData | null>(null);
 
   const generateMockActivityData = (): ActivityData[] => {
     const data: ActivityData[] = [];
@@ -105,6 +118,7 @@ function LeetcodeHeatmap(): React.JSX.Element {
 
         let response: Response | null = null;
         let lastError: Error | null = null;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         let successfulApproach = '';
 
         // Try each approach until one works
@@ -136,6 +150,7 @@ function LeetcodeHeatmap(): React.JSX.Element {
             }
 
             if (response.ok) {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               successfulApproach = approach.name;
               // console.log(`✅ ${approach.name} succeeded!`);
               break; // Success, exit the loop
@@ -224,6 +239,7 @@ function LeetcodeHeatmap(): React.JSX.Element {
               if (contestResponse.ok) {
                 const contestData = await contestResponse.json();
                 console.log(`✅ LeetCode Contest data loaded via ${contestApproach.name}:`, contestData);
+                setContestData(contestData);
                 break; // Success, exit the loop
               } else {
                 console.warn(`❌ Contest ${contestApproach.name} failed with status: ${contestResponse.status}`);
@@ -347,6 +363,47 @@ function LeetcodeHeatmap(): React.JSX.Element {
               Easy: <strong>{questionStats.easySolved}</strong>, Medium: <strong>{questionStats.mediumSolved}</strong>, Hard: <strong>{questionStats.hardSolved}</strong>
             </p>
           </Col>
+
+          {/* Contest Data */}
+          {contestData && (
+            <Col md={12} className="contest-stats" style={{ marginTop: "30px" }}>
+              <h3 className="section-heading">Contest Performance</h3>
+              <div style={{ 
+                background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(10, 10, 20, 0.5))',
+                border: '1px solid rgba(0, 212, 255, 0.3)',
+                borderRadius: '10px',
+                padding: '20px',
+                color: '#ffffff'
+              }}>
+                <Row>
+                  <Col md={3} style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: '1.8em', color: '#00d4ff', fontWeight: 'bold' }}>
+                      {contestData.contestAttend}
+                    </div>
+                    <div style={{ color: '#8b5cf6', fontSize: '0.9em' }}>Contests Attended</div>
+                  </Col>
+                  <Col md={3} style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: '1.8em', color: '#00ff00', fontWeight: 'bold' }}>
+                      {Math.round(contestData.contestRating)}
+                    </div>
+                    <div style={{ color: '#8b5cf6', fontSize: '0.9em' }}>Current Rating</div>
+                  </Col>
+                  <Col md={3} style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: '1.8em', color: '#ffd700', fontWeight: 'bold' }}>
+                      #{contestData.contestGlobalRanking.toLocaleString()}
+                    </div>
+                    <div style={{ color: '#8b5cf6', fontSize: '0.9em' }}>Global Ranking</div>
+                  </Col>
+                  <Col md={3} style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: '1.8em', color: '#8b5cf6', fontWeight: 'bold' }}>
+                      {contestData.contestBadges.name}
+                    </div>
+                    <div style={{ color: '#8b5cf6', fontSize: '0.9em' }}>Badge</div>
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          )}
         </>
       )}
     </Row>
