@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Tilt from "react-parallax-tilt";
+import Particle from "../Particle";
 import myImg from "../../Assets/avatar.jpeg";
 import {
   AiFillGithub,
@@ -12,6 +13,7 @@ import { FaLinkedinIn } from "react-icons/fa";
 function Home2(): React.JSX.Element {
   return (
     <Container fluid className="home-about-section" id="about">
+      <Particle />
       <Container>
         <Row>
           <Col md={8} className="home-about-description">

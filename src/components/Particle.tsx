@@ -2,19 +2,9 @@ import React from "react";
 import Particles from "react-tsparticles";
 
 function Particle(): React.JSX.Element {
-  const particlesInit = async (engine: any) => {
-    console.log(engine);
-  };
-
-  const particlesLoaded = async (container: any) => {
-    console.log(container);
-  };
-
   return (
     <Particles
       id="tsparticles"
-      init={particlesInit}
-      loaded={particlesLoaded}
       options={{
         particles: {
           number: {
@@ -25,7 +15,7 @@ function Particle(): React.JSX.Element {
             },
           },
           color: {
-            value: ["#ffffff", "#c770f0", "#be50f4", "#a0a0a0", "#ffd700"],
+            value: ["#ffffff", "#00d4ff", "#8b5cf6", "#a0a0a0", "#fbbf24"],
           },
           shape: {
             type: "star",
