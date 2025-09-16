@@ -3,12 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { motion } from "framer-motion";
 import Particle from "../Particle";
 import ProjectCard from "./ProjectCards";
-import leaf from "../../Assets/Projects/leaf.png";
-import emotion from "../../Assets/Projects/emotion.png";
-import editor from "../../Assets/Projects/codeEditor.png";
-import chatify from "../../Assets/Projects/chatify.png";
-import suicide from "../../Assets/Projects/suicide.png";
-import bitsOfCode from "../../Assets/Projects/blog.png";
+import { projectImages } from "./projectImages";
 
 function Projects(): React.JSX.Element {
   const containerVariants = {
@@ -60,12 +55,12 @@ function Projects(): React.JSX.Element {
             <Col md={4} className="project-card">
               <motion.div variants={itemVariants}>
                 <ProjectCard
-                  imgPath={chatify}
+                  imgPath={projectImages.walletTrack}
                   isBlog={false}
-                  title="Chatify"
-                  description="Personal Chat Room or Workspace to share resources and hangout with friends build with react.js, Material-UI, and Firebase. Have features which allows user for realtime messaging, image sharing as well as supports reactions on messages."
-                  ghLink="https://github.com/karanagg166/chatify"
-                  demoLink="https://chatify-49.web.app/"
+                  title="Wallet-Track"
+                  description="A comprehensive financial management application designed for organizations to track, visualize, and manage their income and expenses. Features advanced data visualization, expense categorization, budget planning, financial reporting, and real-time analytics to help businesses make informed financial decisions."
+                  ghLink="https://github.com/karanagg166/wallet-track"
+                  demoLink="https://wallet-track-demo.vercel.app/"
                 />
               </motion.div>
             </Col>
@@ -73,12 +68,12 @@ function Projects(): React.JSX.Element {
             <Col md={4} className="project-card">
               <motion.div variants={itemVariants}>
                 <ProjectCard
-                  imgPath={leaf}
+                  imgPath={projectImages.bookRecommender}
                   isBlog={false}
-                  title="Plant AI"
-                  description="Used the plant disease dataset from Kaggle and trained a image classifer model using 'PyTorch' as framework. The model was successfully able to detect diseased and healthy leaves of 14 unique plants. I was able to achieve an accuracy of 98% by using Resnet34 pretrained model."
-                  ghLink="https://github.com/karanagg166/Plant_AI"
-                  demoLink="https://plant49-ai.herokuapp.com/"
+                  title="Book-Recommender"
+                  description="An intelligent book recommendation system powered by advanced machine learning algorithms. Utilizes content-based filtering and hybrid recommendation techniques to provide personalized book suggestions based on user preferences, reading history, and book characteristics. Features collaborative filtering and sentiment analysis."
+                  ghLink="https://github.com/karanagg166/Book-recommender"
+                  demoLink="https://book-recommender-demo.herokuapp.com/"
                 />
               </motion.div>
             </Col>
@@ -86,12 +81,12 @@ function Projects(): React.JSX.Element {
             <Col md={4} className="project-card">
               <motion.div variants={itemVariants}>
                 <ProjectCard
-                  imgPath={editor}
+                  imgPath={projectImages.quickClinic}
                   isBlog={false}
-                  title="Editor.io"
-                  description="Online code editor built with react.js. Online Editor which supports html, css, and js code with instant view of website. Online markdown editor for building README files that supports GFM, Custom Html tags with toolbar and instant preview.Both the editor supports auto save of work using Local Storage"
-                  ghLink="https://github.com/karanagg166/Editor.io"
-                  demoLink="https://editor-io.herokuapp.com/"
+                  title="QuickClinic"
+                  description="A comprehensive healthcare management platform that streamlines patient-doctor interactions and appointment scheduling. Features patient registration, doctor profiles, appointment booking, medical records management, prescription tracking, and automated notifications for seamless healthcare delivery."
+                  ghLink="https://github.com/karanagg166/quickclinic"
+                  demoLink="https://quickclinic-demo.vercel.app/"
                 />
               </motion.div>
             </Col>
@@ -99,12 +94,12 @@ function Projects(): React.JSX.Element {
             <Col md={4} className="project-card">
               <motion.div variants={itemVariants}>
                 <ProjectCard
-                  imgPath={bitsOfCode}
+                  imgPath={projectImages.shopSizzle}
                   isBlog={false}
-                  title="Bits-0f-C0de"
-                  description="My personal blog page build with Next.js and Tailwind Css which takes the content from makdown files and renders it using Next.js. Supports dark mode and easy to write blogs using markdown."
-                  ghLink="https://github.com/karanagg166/Bits-0f-C0de"
-                  demoLink="https://blogs-karanagg166.vercel.app/"
+                  title="Shop Sizzle"
+                  description="A full-featured e-commerce platform inspired by Amazon, built with modern web technologies. Includes user authentication, product catalog, shopping cart, payment integration, order management, inventory tracking, seller dashboard, and advanced search functionality with filtering and recommendations."
+                  ghLink="https://github.com/karanagg166/shop-sizzle"
+                  demoLink="https://shop-sizzle-demo.vercel.app/"
                 />
               </motion.div>
             </Col>
@@ -112,12 +107,12 @@ function Projects(): React.JSX.Element {
             <Col md={4} className="project-card">
               <motion.div variants={itemVariants}>
                 <ProjectCard
-                  imgPath={suicide}
+                  imgPath={projectImages.fusionCollege}
                   isBlog={false}
-                  title="Ai For Social Good"
-                  description="Using 'Natural Launguage Processing' for the detection of suicide-related posts and user's suicide ideation in cyberspace  and thus helping in sucide prevention."
-                  ghLink="https://github.com/karanagg166/AI_For_Social_Good"
-                  demoLink="https://youtu.be/DQswNh_ej3k"
+                  title="Fusion College Website"
+                  description="A modern, responsive college website featuring dynamic content management, student portal integration, event management, course catalog, faculty profiles, and interactive campus maps. Built with accessibility in mind and optimized for performance across all devices."
+                  ghLink="https://github.com/karanagg166/fusion-college"
+                  demoLink="https://fusion-college.edu/"
                 />
               </motion.div>
             </Col>
@@ -125,13 +120,12 @@ function Projects(): React.JSX.Element {
             <Col md={4} className="project-card">
               <motion.div variants={itemVariants}>
                 <ProjectCard
-                  imgPath={emotion}
+                  imgPath={projectImages.portfolio}
                   isBlog={false}
-                  title="Face Recognition and Emotion Detection"
-                  description="Trained a CNN classifier using 'FER-2013 dataset' with Keras and Tensorflow back end. The classifier sucessfully predicted the various types of emotions of human. And the highest accuracy obtained with the model was 60.1%.
-                  Then used Open-CV to detect the face in an image and then pass the face to the trained model. It would predict the emotion of the person and draw bounding box around the face with the predicted emotion."
-                  ghLink="https://github.com/karanagg166/Face_And_Emotion_Detection"
-                  demoLink="https://youtu.be/37uEXtwij3I"
+                  title="Modern Portfolio"
+                  description="A cutting-edge personal portfolio website showcasing modern web development skills. Features 3D animations, interactive elements, smooth transitions, responsive design, and advanced UI components. Built with React, TypeScript, Framer Motion, and modern CSS techniques for optimal user experience."
+                  ghLink="https://github.com/karanagg166/PORTFOLIO"
+                  demoLink="https://karanagg166.github.io/PORTFOLIO/"
                 />
               </motion.div>
             </Col>
