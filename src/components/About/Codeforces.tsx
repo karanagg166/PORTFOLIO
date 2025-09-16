@@ -185,17 +185,7 @@ function CodeforcesHeatmap(): React.JSX.Element {
           <h1 className="project-heading" style={{ paddingBottom: "20px" }}>
             My Codeforces <strong className="purple">Activity</strong>
           </h1>
-          {error && (
-            <div style={{ 
-              color: error.includes('✅') ? '#00d4ff' : '#ff6b6b', 
-              fontSize: '0.9em',
-              marginBottom: '20px',
-              textAlign: 'center',
-              fontWeight: '500'
-            }}>
-              {error}
-            </div>
-          )}
+         
           <Col md={12} style={{ paddingBottom: "50px" }}>
             <Heatmap
               startDate={new Date('2024-01-01')}

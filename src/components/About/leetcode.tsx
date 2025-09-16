@@ -112,12 +112,12 @@ function LeetcodeHeatmap(): React.JSX.Element {
           try {
             if (!isMounted) return;
             
-            console.log(`Trying ${approach.name}...`);
+            // console.log(`Trying ${approach.name}...`);
             
             // Add timeout to prevent hanging requests (increased to 15 seconds)
             const controller = new AbortController();
             const timeoutId = setTimeout(() => {
-              console.log(`⏰ ${approach.name} timed out after 15 seconds`);
+              // console.log(`⏰ ${approach.name} timed out after 15 seconds`);
               controller.abort();
             }, 15000); // 15 second timeout
             
@@ -137,7 +137,7 @@ function LeetcodeHeatmap(): React.JSX.Element {
 
             if (response.ok) {
               successfulApproach = approach.name;
-              console.log(`✅ ${approach.name} succeeded!`);
+              // console.log(`✅ ${approach.name} succeeded!`);
               break; // Success, exit the loop
             } else {
               console.warn(`❌ ${approach.name} failed with status: ${response.status}`);
@@ -154,7 +154,7 @@ function LeetcodeHeatmap(): React.JSX.Element {
         }
 
         const data = await response.json();
-        console.log(`✅ LeetCode API data loaded via ${successfulApproach}:`, data);
+        // console.log(`✅ LeetCode API data loaded via ${successfulApproach}:`, data);
 
         if (!isMounted) return;
 
@@ -174,11 +174,67 @@ function LeetcodeHeatmap(): React.JSX.Element {
             count: parseInt(count as string),
           }));
           setActivityData(activityData);
-          setError(`✅ Real data loaded via ${successfulApproach}`);
+         
         } else {
           // If no submission calendar, use mock data for heatmap
           setActivityData(generateMockActivityData());
-          setError(`✅ Real stats loaded via ${successfulApproach}, demo heatmap (no submission data)`);
+        //  setError(`✅ Real stats loaded via ${successfulApproach}, demo heatmap (no submission data)`);
+        }
+
+        // Fetch contest data from additional API
+        try {
+          const contestApproaches = [
+            {
+              name: 'Contest API Direct',
+              url: 'https://alfa-leetcode-api.onrender.com/aggarwalkaran241/contest',
+              headers: {
+                'Accept': 'application/json',
+              } as Record<string, string>
+            },
+            {
+              name: 'Contest API Proxy',
+              url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://alfa-leetcode-api.onrender.com/aggarwalkaran241/contest'),
+              headers: {
+                'Accept': 'application/json',
+              } as Record<string, string>
+            }
+          ];
+
+          for (const contestApproach of contestApproaches) {
+            try {
+              if (!isMounted) return;
+              
+              // console.log(`Trying LeetCode Contest ${contestApproach.name}...`);
+              
+              const contestController = new AbortController();
+              const contestTimeoutId = setTimeout(() => {
+                // console.log(`⏰ Contest ${contestApproach.name} timed out after 10 seconds`);
+                contestController.abort();
+              }, 10000);
+              
+              const contestResponse = await fetch(contestApproach.url, {
+                method: 'GET',
+                headers: contestApproach.headers,
+                mode: 'cors',
+                signal: contestController.signal,
+              });
+              
+              clearTimeout(contestTimeoutId);
+              
+              if (contestResponse.ok) {
+                const contestData = await contestResponse.json();
+                console.log(`✅ LeetCode Contest data loaded via ${contestApproach.name}:`, contestData);
+                break; // Success, exit the loop
+              } else {
+                console.warn(`❌ Contest ${contestApproach.name} failed with status: ${contestResponse.status}`);
+              }
+            } catch (contestError) {
+              console.warn(`❌ Contest ${contestApproach.name} failed:`, contestError);
+              continue; // Try next approach
+            }
+          }
+        } catch (contestError) {
+          console.warn("LeetCode Contest API failed:", contestError);
         }
         
       } catch (error) {
@@ -224,17 +280,8 @@ function LeetcodeHeatmap(): React.JSX.Element {
       <Col md={12}>
         <h1 className="project-heading" style={{ paddingBottom: "20px", textAlign: "center" }}>
           My LeetCode <strong className="purple">Activity</strong>
-          {error && (
-            <div style={{ 
-              fontSize: "0.6em", 
-              color: "#8b5cf6", 
-              fontWeight: "normal",
-              marginTop: "10px",
-              fontStyle: "italic"
-            }}>
-              {error}
-            </div>
-          )}
+         
+        
         </h1>
       </Col>
 
