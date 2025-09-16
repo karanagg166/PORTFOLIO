@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Container, Row } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
 import Particle from "../Particle";
 import pdf from "../../Assets/karan_resume.pdf";
 import { AiOutlineDownload } from "react-icons/ai";
@@ -23,15 +22,16 @@ function ResumeNew(): React.JSX.Element {
         <Particle />
         <Container>
           <Row style={{ justifyContent: "center", position: "relative" }}>
-            <Button
-              variant="primary"
+            <a
+              className="btn btn-primary"
               href={pdf}
               target="_blank"
-              style={{ maxWidth: "250px" }}
+              rel="noopener noreferrer"
+              style={{ maxWidth: "250px", textDecoration: 'none', color: 'white' }}
             >
               <AiOutlineDownload />
               &nbsp;Download CV
-            </Button>
+            </a>
           </Row>
 
           <Row className="resume">
@@ -45,18 +45,19 @@ function ResumeNew(): React.JSX.Element {
           </Row>
 
           <Row style={{ justifyContent: "center", position: "relative" }}>
-            <Button
-              variant="primary"
+            <button
+              className="btn btn-primary"
               onClick={() => {
                 setPageNumber(pageNumber - 1);
               }}
               disabled={pageNumber <= 1}
+              style={{ marginRight: "10px" }}
             >
               <AiOutlineDownload />
               &nbsp;Previous
-            </Button>
-            <Button
-              variant="primary"
+            </button>
+            <button
+              className="btn btn-primary"
               onClick={() => {
                 setPageNumber(pageNumber + 1);
               }}
@@ -64,7 +65,7 @@ function ResumeNew(): React.JSX.Element {
             >
               Next
               <AiOutlineDownload />
-            </Button>
+            </button>
           </Row>
         </Container>
       </Container>
