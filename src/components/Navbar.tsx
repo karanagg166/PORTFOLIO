@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import karanagg from "../Assets/karan.jpeg";
-import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import { CgGitFork } from "react-icons/cg";
 
@@ -94,14 +93,16 @@ function NavBar(): React.JSX.Element {
             </Nav.Item>
 
             <Nav.Item className="fork-btn">
-              <Button
+              <a
                 href="https://github.com/karanagg166/PORTFOLIO"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="fork-btn-inner"
+                style={{ textDecoration: 'none' }}
               >
                 <CgGitFork style={{ fontSize: "1.2em" }} />{" "}
                 <AiFillStar style={{ fontSize: "1.1em" }} />
-              </Button>
+              </a>
             </Nav.Item>
           </Nav>
         </Navbar.Collapse>
