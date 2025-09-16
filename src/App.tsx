@@ -31,6 +31,8 @@ function App(): React.JSX.Element {
     >
       <Preloader load={load} />
       <div className="App" id={load ? "no-scroll" : "scroll"}>
+        {/* Add nebula background overlay */}
+        <div className="particle-background"></div>
         <Navbar />
         <ScrollToTop />
         <Routes>
