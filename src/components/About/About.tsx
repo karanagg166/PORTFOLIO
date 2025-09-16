@@ -49,9 +49,10 @@ function About(): React.JSX.Element {
         <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
           <Toolstack />
         </Row>
-        <Github />
         <Codeforces />
         <Leetcode />
+        <Github />
+       
       </Container>
     </Container>
   );

@@ -922,6 +922,11 @@ button:focus {
 /* About */
 /* --------- */
 
+@media (max-width: 767px) {
+  .tech-icons {
+    margin: 10px !important;
+  }
+}
 
 .tech-icons {
   font-size: 4.5em !important;
@@ -935,33 +940,35 @@ button:focus {
   display: table !important;
   box-shadow: 0 0 20px rgba(0, 212, 255, 0.2) !important;
   overflow: hidden !important;
-  transition: all 0.4s ease 0s !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(10, 10, 20, 0.5)) !important;
-}
-
-@media (max-width: 767px) {
-  .tech-icons {
-    margin: 10px !important;
-  }
+  position: relative !important;
+  transform-origin: center !important;
+  cursor: pointer !important;
 }
 
 .tech-icons:hover {
   transform: scale(1.15) rotate(5deg) !important;
-  overflow: hidden !important;
   border: 2.2px solid rgba(0, 212, 255, 0.8) !important;
   box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(139, 92, 246, 0.3) !important;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-
-/* Enhanced motion effects for tech icons */
-.tech-icons {
-  position: relative !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-  transform-origin: center !important;
-}
-
-.tech-icons:hover {
   animation: iconBounce 0.6s ease-in-out !important;
+  opacity: 1 !important;
+}
+
+/* Force hover effects to work */
+.tech-icons:hover * {
+  transform: scale(1.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Additional specificity for hover effects */
+.col.tech-icons:hover,
+[class*="col"].tech-icons:hover {
+  transform: scale(1.15) rotate(5deg) !important;
+  border: 2.2px solid rgba(0, 212, 255, 0.8) !important;
+  box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(139, 92, 246, 0.3) !important;
+  animation: iconBounce 0.6s ease-in-out !important;
+  opacity: 1 !important;
 }
 
 @keyframes iconBounce {
