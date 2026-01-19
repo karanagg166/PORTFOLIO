@@ -1,114 +1,130 @@
-import React, { useState, useEffect } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
-import karanagg from "../Assets/karan.jpeg";
-import { Link } from "react-router-dom";
-import { CgGitFork } from "react-icons/cg";
+"use client";
 
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { CgGitFork, CgFileDocument } from "react-icons/cg";
 import {
-  AiFillStar,
-  AiOutlineHome,
-  AiOutlineFundProjectionScreen,
-  AiOutlineUser,
+    AiFillStar,
+    AiOutlineHome,
+    AiOutlineFundProjectionScreen,
+    AiOutlineUser,
 } from "react-icons/ai";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
-import { CgFileDocument } from "react-icons/cg";
+export default function Navbar() {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const pathname = usePathname();
 
-function NavBar(): React.JSX.Element {
-  const [expand, updateExpanded] = useState<boolean>(false);
-  const [navColour, updateNavbar] = useState<boolean>(false);
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY >= 20);
+        };
 
-  function scrollHandler(): void {
-    if (window.scrollY >= 20) {
-      updateNavbar(true);
-    } else {
-      updateNavbar(false);
-    }
-  }
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
-  useEffect(() => {
-    window.addEventListener("scroll", scrollHandler);
-    return () => window.removeEventListener("scroll", scrollHandler);
-  }, []);
+    const navLinks = [
+        { href: "/", label: "Home", icon: AiOutlineHome },
+        { href: "/about", label: "About", icon: AiOutlineUser },
+        { href: "/project", label: "Projects", icon: AiOutlineFundProjectionScreen },
+        { href: "/resume", label: "Resume", icon: CgFileDocument },
+    ];
 
-  return (
-    <Navbar
-      expanded={expand}
-      fixed="top"
-      expand="md"
-      className={navColour ? "sticky" : "navbar"}
-    >
-      <Container>
-        <Navbar.Brand href="/" className="d-flex">
-          <img src={karanagg} className="img-fluid logo" alt="brand" />
-        </Navbar.Brand>
-        <Navbar.Toggle
-          aria-controls="responsive-navbar-nav"
-          onClick={() => {
-            updateExpanded(expand ? false : true);
-          }}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </Navbar.Toggle>
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto" defaultActiveKey="#home">
-            <Nav.Item>
-              <Nav.Link as={Link} to="/" onClick={() => updateExpanded(false)}>
-                <AiOutlineHome style={{ marginBottom: "2px" }} /> Home
-              </Nav.Link>
-            </Nav.Item>
+    return (
+        <nav className={`navbar ${isScrolled ? "sticky" : ""}`}>
+            <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
+                {/* Logo */}
+                <Link href="/" className="flex items-center">
+                    <Image
+                        src="/images/karan.jpeg"
+                        alt="Karan Aggarwal"
+                        width={40}
+                        height={40}
+                        className="logo"
+                        priority
+                    />
+                </Link>
 
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/about"
-                onClick={() => updateExpanded(false)}
-              >
-                <AiOutlineUser style={{ marginBottom: "2px" }} /> About
-              </Nav.Link>
-            </Nav.Item>
+                {/* Mobile Menu Button */}
+                <button
+                    className="md:hidden flex flex-col gap-1.5 p-2"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    aria-label="Toggle menu"
+                >
+                    <span className={`w-6 h-0.5 bg-cyan-400 transition-all ${isMobileMenuOpen ? "rotate-45 translate-y-2" : ""}`}></span>
+                    <span className={`w-6 h-0.5 bg-cyan-400 transition-all ${isMobileMenuOpen ? "opacity-0" : ""}`}></span>
+                    <span className={`w-6 h-0.5 bg-cyan-400 transition-all ${isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}></span>
+                </button>
 
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/project"
-                onClick={() => updateExpanded(false)}
-              >
-                <AiOutlineFundProjectionScreen
-                  style={{ marginBottom: "2px" }}
-                />{" "}
-                Projects
-              </Nav.Link>
-            </Nav.Item>
+                {/* Desktop Navigation */}
+                <div className="hidden md:flex items-center gap-2">
+                    {navLinks.map((link) => {
+                        const Icon = link.icon;
+                        return (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`nav-link ${pathname === link.href ? "text-cyan-400" : ""}`}
+                            >
+                                <Icon className="text-lg" />
+                                {link.label}
+                            </Link>
+                        );
+                    })}
 
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/resume"
-                onClick={() => updateExpanded(false)}
-              >
-                <CgFileDocument style={{ marginBottom: "2px" }} /> Resume
-              </Nav.Link>
-            </Nav.Item>
+                    {/* Theme Toggle */}
+                    <ThemeToggle />
 
-            <Nav.Item className="fork-btn">
-              <a
-                href="https://github.com/karanagg166/PORTFOLIO"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fork-btn-inner"
-                style={{ textDecoration: 'none' }}
-              >
-                <CgGitFork style={{ fontSize: "1.2em" }} />{" "}
-                <AiFillStar style={{ fontSize: "1.1em" }} />
-              </a>
-            </Nav.Item>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
+                    {/* GitHub Fork Button */}
+                    <a
+                        href="https://github.com/karanagg166/PORTFOLIO"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="fork-btn"
+                    >
+                        <CgGitFork />
+                        <AiFillStar />
+                    </a>
+                </div>
+
+                {/* Mobile Navigation */}
+                {isMobileMenuOpen && (
+                    <div className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-lg md:hidden">
+                        <div className="flex flex-col p-4">
+                            {navLinks.map((link) => {
+                                const Icon = link.icon;
+                                return (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        className={`nav-link py-3 ${pathname === link.href ? "text-cyan-400" : ""}`}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        <Icon className="text-lg" />
+                                        {link.label}
+                                    </Link>
+                                );
+                            })}
+                            <div className="flex items-center gap-4 mt-4">
+                                <ThemeToggle />
+                                <a
+                                    href="https://github.com/karanagg166/PORTFOLIO"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="fork-btn justify-center flex-1"
+                                >
+                                    <CgGitFork />
+                                    <AiFillStar />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </nav>
+    );
 }
-
-export default NavBar;

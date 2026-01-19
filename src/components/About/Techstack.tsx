@@ -1,95 +1,108 @@
-import React from "react";
-import { Col, Row } from "react-bootstrap";
+"use client";
+
+import { motion } from "framer-motion";
 import { CgCPlusPlus } from "react-icons/cg";
 import {
-  DiJavascript1,
-  DiReact,
-  DiNodejs,
-  DiMongodb,
-  DiPython,
-  DiGit,
-  DiJava,
+    DiJavascript1,
+    DiReact,
+    DiNodejs,
+    DiMongodb,
+    DiPython,
+    DiGit,
+    DiJava,
 } from "react-icons/di";
 import {
-  SiRedis,
-  SiFirebase,
-  SiNextdotjs,
-  SiPostgresql,
-  SiTailwindcss,
-  SiTypescript,
-  SiExpress,
-  SiHtml5,
-  SiCss3,
-  SiBootstrap,
-  SiDjango,
-  SiFlask,
+    SiRedis,
+    SiFirebase,
+    SiNextdotjs,
+    SiPostgresql,
+    SiTailwindcss,
+    SiTypescript,
+    SiExpress,
+    SiHtml5,
+    SiCss3,
+    SiBootstrap,
+    SiDjango,
+    SiFlask,
 } from "react-icons/si";
 
-function Techstack(): React.JSX.Element {
-  return (
-    <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
-      <Col xs={4} md={2} className="tech-icons" title="C++">
-        <CgCPlusPlus />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="HTML5">
-        <SiHtml5 />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="CSS3">
-        <SiCss3 />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Tailwind CSS">
-        <SiTailwindcss />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Bootstrap">
-        <SiBootstrap />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="JavaScript">
-        <DiJavascript1 />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Node.js">
-        <DiNodejs />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="React">
-        <DiReact />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="MongoDB">
-        <DiMongodb />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Express.js">
-        <SiExpress />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Next.js">
-        <SiNextdotjs />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="TypeScript">
-        <SiTypescript />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Redis">
-        <SiRedis />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="PostgreSQL">
-        <SiPostgresql />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Python">
-        <DiPython />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Java">
-        <DiJava />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Git">
-        <DiGit />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Firebase">
-        <SiFirebase />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Django">
-        <SiDjango />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Flask">
-        <SiFlask />
-      </Col>
-    </Row>
-  );
-}
+const techStack = [
+    { icon: CgCPlusPlus, title: "C++" },
+    { icon: SiHtml5, title: "HTML5" },
+    { icon: SiCss3, title: "CSS3" },
+    { icon: SiTailwindcss, title: "Tailwind CSS" },
+    { icon: SiBootstrap, title: "Bootstrap" },
+    { icon: DiJavascript1, title: "JavaScript" },
+    { icon: DiNodejs, title: "Node.js" },
+    { icon: DiReact, title: "React" },
+    { icon: DiMongodb, title: "MongoDB" },
+    { icon: SiExpress, title: "Express.js" },
+    { icon: SiNextdotjs, title: "Next.js" },
+    { icon: SiTypescript, title: "TypeScript" },
+    { icon: SiRedis, title: "Redis" },
+    { icon: SiPostgresql, title: "PostgreSQL" },
+    { icon: DiPython, title: "Python" },
+    { icon: DiJava, title: "Java" },
+    { icon: DiGit, title: "Git" },
+    { icon: SiFirebase, title: "Firebase" },
+    { icon: SiDjango, title: "Django" },
+    { icon: SiFlask, title: "Flask" },
+];
 
-export default Techstack;
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.05,
+        },
+    },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, scale: 0.8, y: 20 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: {
+            duration: 0.4,
+            ease: "easeOut" as const,
+        },
+    },
+};
+export default function Techstack() {
+    return (
+        <motion.div
+            className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+        >
+            {techStack.map((tech, index) => {
+                const Icon = tech.icon;
+                return (
+                    <motion.div
+                        key={index}
+                        className="tech-icons group cursor-pointer"
+                        title={tech.title}
+                        variants={itemVariants}
+                        whileHover={{
+                            scale: 1.15,
+                            boxShadow: "0 0 30px rgba(0, 212, 255, 0.7)",
+                            transition: { duration: 0.2 },
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <Icon />
+                        {/* Tooltip */}
+                        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black/80 text-cyan-400 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                            {tech.title}
+                        </span>
+                    </motion.div>
+                );
+            })}
+        </motion.div>
+    );
+}

@@ -1,22 +1,21 @@
-import React from "react";
+"use client";
+
 import Typewriter from "typewriter-effect";
 
-function Type(): React.JSX.Element {
-  return (
-    <Typewriter
-      options={{
-        strings: [
-          "Software Developer",
-          "Freelancer",
-          "MERN Stack Developer",
-          "Open Source Contributor",
-        ],
-        autoStart: true,
-        loop: true,
-        deleteSpeed: 50,
-      }}
-    />
-  );
+export default function Type() {
+    return (
+        <Typewriter
+            options={{
+                strings: [
+                    "Software Developer",
+                    "Freelancer",
+                    "MERN Stack Developer",
+                    "Open Source Contributor",
+                ],
+                autoStart: true,
+                loop: true,
+                deleteSpeed: 50,
+            }}
+        />
+    );
 }
-
-export default Type;

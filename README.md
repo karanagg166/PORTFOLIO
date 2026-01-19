@@ -1,83 +1,154 @@
-<h2 align="center">
-  Portfolio Website - v2.0<br/>
-  <a href="https://portfolio-kappa-bay-76.vercel.app/" target="_blank">Karan Aggarwal tech</a>
-</h2>
-<div align="center">
-  <img alt="Demo" src="./Images/laptop.png" />
-</div>
+# Karan Aggarwal Portfolio
 
-<br/>
+A modern, responsive portfolio website built with **Next.js 16** and **Tailwind CSS 4**, featuring stunning space-themed animations and interactive elements.
 
-<center>
+![Portfolio Preview](/images/home-main.svg)
 
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com) &nbsp;
-[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com) &nbsp;
-[![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com) &nbsp;
-![GitHub Repo stars](https://img.shields.io/github/stars/soumyajit4419/Portfolio?color=red&logo=github&style=for-the-badge) &nbsp;
-![GitHub forks](https://img.shields.io/github/forks/soumyajit4419/Portfolio?color=red&logo=github&style=for-the-badge)
+## 🚀 Features
 
-</center>
+- **Space Theme**: Beautiful dark theme with particle animations and space-inspired design
+- **Interactive Particles**: Animated star field background using @tsparticles
+- **Smooth Animations**: Framer Motion powered transitions and effects
+- **Responsive Design**: Mobile-first approach with seamless experience across all devices
+- **Project Showcase**: Display your projects with cards featuring GitHub and demo links
+- **Tech Stack Display**: Showcase your skills with animated icons
+- **GitHub Calendar**: Integration to display your coding activity
+- **Resume Section**: Built-in PDF resume viewer
 
-<h3 align="center">
-    🔹
-    <a href="https://github.com/karanagg166/PORTFOLIO/issues">Report Bug</a> &nbsp; &nbsp;
-    🔹
-    <a href="https://github.com/karanagg166/PORTFOLIO/issues">Request Feature</a>
-</h3>
+## 🛠️ Tech Stack
 
-## TL;DR
+- **Framework**: Next.js 16 (App Router)
+- **Styling**: Tailwind CSS 4
+- **Animations**: Framer Motion, tsparticles
+- **Icons**: React Icons
+- **TypeScript**: Full type safety
+- **Docker**: Production-ready containerization
 
-You can fork this repo to modify and make changes of your own. Please give me proper credit by linking back to [karanagg166](https://github.com/karanagg166/PORTFOLIO). Thanks!
+## 📦 Getting Started
 
-## Built With
+### Prerequisites
 
-My personal portfolio <a href="https://portfolio-kappa-bay-76.vercel.app/" target="_blank">Karan Aggarwal tech</a> which features some of my github projects as well as my resume and technical skills.<br/>
+- Node.js 20+
+- npm or yarn
 
-This project was built using these technologies.
+### Installation
 
-- React.js
-- Node.js
-- Express.js
-- CSS3
-- VsCode
-- Vercel
+```bash
+# Clone the repository
+git clone https://github.com/karanagg166/PORTFOLIO.git
+cd portfolio
 
-## Features
+# Install dependencies
+npm install
 
-**📖 Multi-Page Layout**
+# Run development server
+npm run dev
+```
 
-**🎨 Styled with React-Bootstrap and Css with easy to customize colors**
+Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
 
-**📱 Fully Responsive**
+### Build for Production
 
-## Getting Started
+```bash
+npm run build
+npm start
+```
 
-Clone down this repository. You will need `node.js` and `git` installed globally on your machine.
+## 🐳 Docker Deployment
 
-## 🛠 Installation and Setup Instructions
+Build and run with Docker:
 
-1. Installation: `npm install`
+```bash
+# Build the image
+docker build -t portfolio .
 
-2. In the project directory, you can run: `npm start`
+# Run the container
+docker run -p 3000:3000 portfolio
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-The page will reload if you make edits.
+Or use Docker Compose:
 
-## Usage Instructions
+```bash
+docker-compose up -d
+```
 
-Open the project folder and Navigate to `/src/components/`. <br/>
-You will find all the components used and you can edit your information accordingly.
+## 📂 Project Structure
 
-### Show your support
+```
+portfolio/
+├── app/                    # Next.js App Router pages
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Home page
+│   ├── about/              # About page
+│   ├── project/            # Projects page
+│   └── resume/             # Resume page
+├── components/             # React components
+│   ├── Home/               # Home page components
+│   ├── About/              # About page components
+│   ├── Projects/           # Project cards and data
+│   └── Resume/             # Resume viewer
+├── public/                 # Static assets
+│   ├── images/             # Image files
+│   └── resume/             # PDF resume
+├── Dockerfile              # Docker configuration
+└── docker-compose.yml      # Docker Compose config
+```
 
-Give a ⭐ if you like this website!
+## 🎨 Customization
 
-<div align="center">
-  <a href="https://www.instagram.com/karanagg_166/" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/1409/1409946.png" alt="Instagram" height="40px" width="40px" style="margin-right: 10px;">
-  </a>
-  <a href="https://www.linkedin.com/in/karan-aggarwal-a13427276/" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" height="40px" width="40px">
-  </a>
-</div>
+### Update Personal Info
+
+1. Edit `components/Home/Home.tsx` for your name and greeting
+2. Edit `components/Home/Type.tsx` for your roles/titles
+3. Edit `components/About/AboutCard.tsx` for your bio
+4. Replace images in `public/images/`
+
+### Add Projects
+
+Edit `components/Projects/Projects.tsx` and add your projects to the array:
+
+```typescript
+{
+  imgPath: projectImages.yourProject,
+  title: "Your Project",
+  description: "Description...",
+  ghLink: "https://github.com/...",
+  demoLink: "https://..."
+}
+```
+
+### Update Social Links
+
+Edit social links in:
+- `components/Footer.tsx`
+- `components/Home/Home2.tsx`
+
+## 📸 Screenshots
+
+### Home Page
+Beautiful landing page with animated greeting and particle effects.
+
+### Projects Page
+Showcase of projects with GitHub and demo links.
+
+### About Page
+Personal info, tech stack, and GitHub activity calendar.
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to submit issues and pull requests.
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 👤 Author
+
+**Karan Aggarwal**
+- GitHub: [@karanagg166](https://github.com/karanagg166)
+- LinkedIn: [Karan Aggarwal](https://www.linkedin.com/in/karan-aggarwal-166/)
+- Twitter: [@karanagg166](https://twitter.com/karanagg166)
+
+---
+
+⭐ Star this repo if you find it useful!

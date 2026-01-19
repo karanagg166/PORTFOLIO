@@ -1,49 +1,40 @@
-import React from "react";
-import { Col, Row } from "react-bootstrap";
+"use client";
+
+import { DiCode } from "react-icons/di";
 import {
-  SiVisualstudiocode,
-  SiPostman,
-  SiVercel,
-  SiMacos,
-  SiDocker,
-  SiAmazonaws,
-  SiGooglecloud,
-  SiMicrosoftazure,
-  SiPrisma,
+    SiPostman,
+    SiVercel,
+    SiMacos,
+    SiDocker,
+    SiAmazon,
+    SiGooglecloud,
+    SiPrisma,
 } from "react-icons/si";
+import { VscCode, VscAzure } from "react-icons/vsc";
 
-function Toolstack(): React.JSX.Element {
-  return (
-    <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
-      <Col xs={4} md={2} className="tech-icons" title="macOS">
-        <SiMacos />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Visual Studio Code">
-        <SiVisualstudiocode />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Postman">
-        <SiPostman />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Vercel">
-        <SiVercel />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Docker">
-        <SiDocker />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Amazon AWS">
-        <SiAmazonaws />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Google Cloud">
-        <SiGooglecloud />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Microsoft Azure">
-        <SiMicrosoftazure />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons" title="Prisma">
-        <SiPrisma />
-      </Col>
-    </Row>
-  );
+const toolStack = [
+    { icon: SiMacos, title: "macOS" },
+    { icon: VscCode, title: "Visual Studio Code" },
+    { icon: SiPostman, title: "Postman" },
+    { icon: SiVercel, title: "Vercel" },
+    { icon: SiDocker, title: "Docker" },
+    { icon: SiAmazon, title: "Amazon AWS" },
+    { icon: SiGooglecloud, title: "Google Cloud" },
+    { icon: VscAzure, title: "Microsoft Azure" },
+    { icon: SiPrisma, title: "Prisma" },
+];
+
+export default function Toolstack() {
+    return (
+        <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4">
+            {toolStack.map((tool, index) => {
+                const Icon = tool.icon;
+                return (
+                    <div key={index} className="tech-icons" title={tool.title}>
+                        <Icon />
+                    </div>
+                );
+            })}
+        </div>
+    );
 }
-
-export default Toolstack;

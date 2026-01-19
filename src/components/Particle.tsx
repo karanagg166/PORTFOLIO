@@ -1,143 +1,215 @@
-import React from "react";
-import Particles from "react-tsparticles";
+"use client";
 
-function Particle(): React.JSX.Element {
-  return (
-    <Particles
-      id="tsparticles"
-      options={{
+import { useEffect, useState, useCallback, useMemo } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import type { ISourceOptions, Container } from "@tsparticles/engine";
+
+export default function Particle() {
+    const [init, setInit] = useState(false);
+
+    useEffect(() => {
+        initParticlesEngine(async (engine) => {
+            await loadSlim(engine);
+        }).then(() => {
+            setInit(true);
+        });
+    }, []);
+
+    const particlesLoaded = useCallback(async (container: Container | undefined) => {
+        console.log("Particles container loaded", container);
+    }, []);
+
+    // Space-themed particle configuration
+    const options: ISourceOptions = useMemo(() => ({
         background: {
-          color: {
-            value: "transparent",
-          },
+            color: {
+                value: "transparent",
+            },
         },
-        fpsLimit: 120,
+        fullScreen: {
+            enable: true,
+            zIndex: -1,
+        },
+        fpsLimit: 60,
         particles: {
-          number: {
-            value: 180,
-            density: {
-              enable: true,
-              area: 2000,
+            // Stars configuration
+            number: {
+                value: 250,
+                density: {
+                    enable: true,
+                    width: 1920,
+                    height: 1080,
+                },
             },
-          },
-          color: {
-            value: [
-              "#ffffff", // Bright white stars
-              "#00d4ff", // Blue stars
-              "#8b5cf6", // Purple stars
-              "#ff6b6b", // Red giants
-              "#ffd700", // Yellow stars
-              "#ff8c00", // Orange stars
-              "#a0a0a0", // Dim stars
-              "#4a90e2", // Blue-white stars
-              "#ff69b4", // Pink stars
-              "#32cd32", // Green stars (rare)
-              "#ff4757", // Mars-like planets
-              "#3742fa", // Neptune-like planets
-              "#2ed573", // Earth-like planets
-              "#ffa502", // Jupiter-like planets
-              "#5f27cd", // Purple planets
-            ],
-          },
-          shape: {
-            type: ["circle", "star", "triangle", "polygon"],
-            stroke: {
-              width: 0,
-              color: "#000000",
+            color: {
+                value: [
+                    "#ffffff",  // White stars
+                    "#e8e8ff",  // Blue-white stars
+                    "#fff8e7",  // Yellow-white stars
+                    "#00d4ff",  // Cyan accent (rare)
+                    "#b0c4de",  // Light steel blue
+                    "#add8e6",  // Light blue
+                    "#f0f8ff",  // Alice blue
+                ],
             },
-            polygon: {
-              nb_sides: 6,
+            shape: {
+                type: ["circle", "star"],
+                options: {
+                    star: {
+                        sides: 4,
+                    },
+                },
             },
-          },
-          opacity: {
-            value: { min: 0.1, max: 1 },
-            random: true,
-            anim: {
-              enable: true,
-              speed: 0.8,
-              opacity_min: 0.1,
-              sync: false,
+            opacity: {
+                value: { min: 0.1, max: 1 },
+                animation: {
+                    enable: true,
+                    speed: 0.5,
+                    sync: false,
+                    startValue: "random",
+                },
             },
-          },
-          size: {
-            value: { min: 0.5, max: 10 },
-            random: true,
-            anim: {
-              enable: true,
-              speed: 1.5,
-              size_min: 0.1,
-              sync: false,
+            size: {
+                value: { min: 0.5, max: 3 },
+                animation: {
+                    enable: true,
+                    speed: 1,
+                    sync: false,
+                    startValue: "random",
+                },
             },
-          },
-          line_linked: {
-            enable: true,
-            distance: 250,
-            color: "#00d4ff",
-            opacity: 0.15,
-            width: 0.8,
-          },
-          move: {
-            enable: true,
-            speed: { min: 0.1, max: 1.2 },
-            direction: "none",
-            random: true,
-            straight: false,
-            out_mode: "out",
-            bounce: false,
-            attract: {
-              enable: true,
-              rotateX: 600,
-              rotateY: 1200,
+            // Disable links for cleaner space look
+            links: {
+                enable: false,
             },
-          },
-          twinkle: {
-            particles: {
-              enable: true,
-              frequency: 0.08,
-              opacity: 1,
+            move: {
+                enable: true,
+                speed: { min: 0.05, max: 0.3 },
+                direction: "none",
+                random: true,
+                straight: false,
+                outModes: {
+                    default: "out",
+                },
+                attract: {
+                    enable: false,
+                },
             },
-          },
+            twinkle: {
+                particles: {
+                    enable: true,
+                    frequency: 0.05,
+                    opacity: 1,
+                    color: {
+                        value: "#00d4ff",
+                    },
+                },
+            },
+            // Shadow glow effect for stars
+            shadow: {
+                enable: true,
+                color: "#00d4ff",
+                blur: 5,
+                offset: {
+                    x: 0,
+                    y: 0,
+                },
+            },
         },
         interactivity: {
-          events: {
-            onhover: {
-              enable: true,
-              mode: ["bubble", "grab"],
+            events: {
+                onHover: {
+                    enable: true,
+                    mode: "grab",
+                },
+                onClick: {
+                    enable: true,
+                    mode: "push",
+                },
             },
-            onclick: {
-              enable: true,
-              mode: "push",
+            modes: {
+                grab: {
+                    distance: 150,
+                    links: {
+                        opacity: 0.3,
+                        color: "#00d4ff",
+                    },
+                },
+                push: {
+                    quantity: 5,
+                },
+                repulse: {
+                    distance: 100,
+                    duration: 0.4,
+                },
             },
-            resize: true,
-          },
-          modes: {
-            bubble: {
-              distance: 400,
-              size: 15,
-              duration: 2.5,
-              opacity: 0.8,
-            },
-            grab: {
-              distance: 300,
-              line_linked: {
-                opacity: 0.6,
-              },
-            },
-            push: {
-              particles_nb: 10,
-            },
-            repulse: {
-              distance: 200,
-              duration: 0.4,
-            },
-          },
         },
         detectRetina: true,
-        pauseOnBlur: true,
-        pauseOnOutsideViewport: true,
-      }}
-    />
-  );
-}
+        pauseOnBlur: false,
+        pauseOnOutsideViewport: false,
+        // Additional emitters for shooting stars
+        emitters: [
+            {
+                direction: "bottom-right",
+                rate: {
+                    quantity: 1,
+                    delay: 8,
+                },
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                size: {
+                    width: 100,
+                    height: 0,
+                },
+                particles: {
+                    shape: {
+                        type: "circle",
+                    },
+                    color: {
+                        value: "#ffffff",
+                    },
+                    size: {
+                        value: 2,
+                    },
+                    move: {
+                        enable: true,
+                        speed: 15,
+                        direction: "bottom-right",
+                        straight: true,
+                        outModes: "destroy",
+                    },
+                    opacity: {
+                        value: 1,
+                        animation: {
+                            enable: true,
+                            speed: 1,
+                            startValue: "max",
+                            destroy: "min",
+                        },
+                    },
+                    life: {
+                        duration: {
+                            value: 1.5,
+                        },
+                        count: 1,
+                    },
+                },
+            },
+        ],
+    }), []);
 
-export default Particle;
+    if (!init) {
+        return null;
+    }
+
+    return (
+        <Particles
+            id="tsparticles"
+            particlesLoaded={particlesLoaded}
+            options={options}
+        />
+    );
+}
