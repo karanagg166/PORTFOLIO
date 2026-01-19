@@ -7,7 +7,8 @@ import AboutCard from "./AboutCard";
 import Techstack from "./Techstack";
 import Toolstack from "./Toolstack";
 import Github from "./Github";
-import CodingProfiles from "./CodingProfiles";
+// TODO: Re-enable CodingProfiles later
+// import CodingProfiles from "./CodingProfiles";
 import { FadeInUp, FadeInLeft, FadeInRight, ScaleIn } from "@/components/ui/AnimatedSection";
 
 // Dynamic imports for heavy components
@@ -85,8 +86,8 @@ export default function About() {
                     <Toolstack />
                 </FadeInUp>
 
-                {/* Coding Profiles & Achievements */}
-                <CodingProfiles />
+                {/* TODO: Re-enable Coding Profiles & Achievements later */}
+                {/* <CodingProfiles /> */}
 
                 {/* GitHub Activity */}
                 <ScaleIn className="mt-16">
