@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import { ToastProvider } from "@/components/providers/ToastProvider";
 import BackgroundEffects from "@/components/effects/BackgroundEffects";
+import CursorProvider from "@/components/providers/CursorProvider";
 
 const raleway = Raleway({
     subsets: ["latin"],
@@ -48,6 +49,7 @@ export default function RootLayout({
                             <Footer />
                         </div>
                         <ToastProvider />
+                        <CursorProvider />
                     </SmoothScroll>
                 </ThemeProvider>
             </body>

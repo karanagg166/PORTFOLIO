@@ -1,101 +1,84 @@
 "use client";
 
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef, useMemo, useState } from "react";
 import { createNoise2D } from "simplex-noise";
 
 interface NoiseBackgroundProps {
     className?: string;
     opacity?: number;
-    speed?: number;
 }
 
 export default function NoiseBackground({
     className = "",
     opacity = 0.15,
-    speed = 0.0005
 }: NoiseBackgroundProps) {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [noiseDataUrl, setNoiseDataUrl] = useState<string>("");
     const noise2D = useMemo(() => createNoise2D(), []);
 
+    // Generate static noise texture once on mount
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
+        const width = 400;
+        const height = 400;
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
         const ctx = canvas.getContext("2d");
+
         if (!ctx) return;
 
-        let animationId: number;
-        let time = 0;
+        const imageData = ctx.createImageData(width, height);
+        const data = imageData.data;
 
-        const resize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
+        // Single pass noise generation - no animation loop needed
+        for (let y = 0; y < height; y += 2) {
+            for (let x = 0; x < width; x += 2) {
+                const nx = x / 100;
+                const ny = y / 100;
 
-        resize();
-        window.addEventListener("resize", resize);
+                const noise1 = noise2D(nx, ny);
+                const noise2 = noise2D(nx * 2, ny * 2) * 0.5;
+                const combinedNoise = (noise1 + noise2) / 1.5;
+                const value = (combinedNoise + 1) / 2;
 
-        const animate = () => {
-            time += speed;
+                // Cyan color for space theme
+                const r = Math.floor(value * 0);
+                const g = Math.floor(value * 150);
+                const b = Math.floor(value * 220);
+                const a = Math.floor(value * 50);
 
-            const imageData = ctx.createImageData(canvas.width, canvas.height);
-            const data = imageData.data;
-
-            // Create nebula-like noise pattern
-            for (let y = 0; y < canvas.height; y += 4) {
-                for (let x = 0; x < canvas.width; x += 4) {
-                    // Multiple octaves of noise for more interesting patterns
-                    const nx = x / 200;
-                    const ny = y / 200;
-
-                    const noise1 = noise2D(nx + time, ny + time);
-                    const noise2 = noise2D(nx * 2 + time * 0.5, ny * 2) * 0.5;
-                    const noise3 = noise2D(nx * 4, ny * 4 + time * 0.3) * 0.25;
-
-                    const combinedNoise = (noise1 + noise2 + noise3) / 1.75;
-                    const value = (combinedNoise + 1) / 2; // Normalize to 0-1
-
-                    // Cyan color for space theme
-                    const r = Math.floor(value * 0);
-                    const g = Math.floor(value * 180);
-                    const b = Math.floor(value * 255);
-                    const a = Math.floor(value * 60);
-
-                    // Fill 4x4 block for performance
-                    for (let dy = 0; dy < 4 && y + dy < canvas.height; dy++) {
-                        for (let dx = 0; dx < 4 && x + dx < canvas.width; dx++) {
-                            const index = ((y + dy) * canvas.width + (x + dx)) * 4;
-                            data[index] = r;
-                            data[index + 1] = g;
-                            data[index + 2] = b;
-                            data[index + 3] = a;
-                        }
+                // Fill 2x2 block for performance
+                for (let dy = 0; dy < 2 && y + dy < height; dy++) {
+                    for (let dx = 0; dx < 2 && x + dx < width; dx++) {
+                        const index = ((y + dy) * width + (x + dx)) * 4;
+                        data[index] = r;
+                        data[index + 1] = g;
+                        data[index + 2] = b;
+                        data[index + 3] = a;
                     }
                 }
             }
+        }
 
-            ctx.putImageData(imageData, 0, 0);
-            animationId = requestAnimationFrame(animate);
-        };
+        ctx.putImageData(imageData, 0, 0);
+        setNoiseDataUrl(canvas.toDataURL());
+    }, [noise2D]);
 
-        animate();
-
-        return () => {
-            cancelAnimationFrame(animationId);
-            window.removeEventListener("resize", resize);
-        };
-    }, [noise2D, speed]);
+    if (!noiseDataUrl) return null;
 
     return (
-        <canvas
-            ref={canvasRef}
+        <div
             className={`fixed inset-0 pointer-events-none z-0 ${className}`}
-            style={{ opacity }}
+            style={{
+                opacity,
+                backgroundImage: `url(${noiseDataUrl})`,
+                backgroundRepeat: "repeat",
+                backgroundSize: "400px 400px",
+            }}
         />
     );
 }
 
-// Static noise texture generator for backgrounds
+// Static noise texture generator for backgrounds (utility function)
 export function generateNoiseTexture(
     width: number = 200,
     height: number = 200,

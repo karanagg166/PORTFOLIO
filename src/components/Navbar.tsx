@@ -10,6 +10,7 @@ import {
     AiOutlineHome,
     AiOutlineFundProjectionScreen,
     AiOutlineUser,
+    AiOutlineMail,
 } from "react-icons/ai";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -32,6 +33,7 @@ export default function Navbar() {
         { href: "/about", label: "About", icon: AiOutlineUser },
         { href: "/project", label: "Projects", icon: AiOutlineFundProjectionScreen },
         { href: "/resume", label: "Resume", icon: CgFileDocument },
+        { href: "/contact", label: "Contact", icon: AiOutlineMail },
     ];
 
     return (

@@ -17,10 +17,10 @@ export default function Particle() {
     }, []);
 
     const particlesLoaded = useCallback(async (container: Container | undefined) => {
-        console.log("Particles container loaded", container);
+        // Particles loaded - no console log for production
     }, []);
 
-    // Space-themed particle configuration
+    // Optimized space-themed particle configuration
     const options: ISourceOptions = useMemo(() => ({
         background: {
             color: {
@@ -31,11 +31,12 @@ export default function Particle() {
             enable: true,
             zIndex: -1,
         },
-        fpsLimit: 60,
+        // Lower FPS for better performance
+        fpsLimit: 30,
         particles: {
-            // Stars configuration
+            // Reduced particle count for performance
             number: {
-                value: 250,
+                value: 80,
                 density: {
                     enable: true,
                     width: 1920,
@@ -48,35 +49,24 @@ export default function Particle() {
                     "#e8e8ff",  // Blue-white stars
                     "#fff8e7",  // Yellow-white stars
                     "#00d4ff",  // Cyan accent (rare)
-                    "#b0c4de",  // Light steel blue
-                    "#add8e6",  // Light blue
-                    "#f0f8ff",  // Alice blue
                 ],
             },
             shape: {
-                type: ["circle", "star"],
-                options: {
-                    star: {
-                        sides: 4,
-                    },
-                },
+                type: "circle",
             },
             opacity: {
-                value: { min: 0.1, max: 1 },
+                value: { min: 0.2, max: 1 },
                 animation: {
                     enable: true,
-                    speed: 0.5,
+                    speed: 0.3,
                     sync: false,
                     startValue: "random",
                 },
             },
             size: {
-                value: { min: 0.5, max: 3 },
+                value: { min: 0.5, max: 2.5 },
                 animation: {
-                    enable: true,
-                    speed: 1,
-                    sync: false,
-                    startValue: "random",
+                    enable: false, // Disabled for performance
                 },
             },
             // Disable links for cleaner space look
@@ -85,7 +75,7 @@ export default function Particle() {
             },
             move: {
                 enable: true,
-                speed: { min: 0.05, max: 0.3 },
+                speed: { min: 0.03, max: 0.15 },
                 direction: "none",
                 random: true,
                 straight: false,
@@ -96,25 +86,20 @@ export default function Particle() {
                     enable: false,
                 },
             },
+            // Reduced twinkle for performance
             twinkle: {
                 particles: {
                     enable: true,
-                    frequency: 0.05,
+                    frequency: 0.01, // Reduced from 0.05
                     opacity: 1,
                     color: {
                         value: "#00d4ff",
                     },
                 },
             },
-            // Shadow glow effect for stars
+            // DISABLED shadows for major performance improvement
             shadow: {
-                enable: true,
-                color: "#00d4ff",
-                blur: 5,
-                offset: {
-                    x: 0,
-                    y: 0,
-                },
+                enable: false,
             },
         },
         interactivity: {
@@ -130,75 +115,22 @@ export default function Particle() {
             },
             modes: {
                 grab: {
-                    distance: 150,
+                    distance: 120,
                     links: {
-                        opacity: 0.3,
+                        opacity: 0.2,
                         color: "#00d4ff",
                     },
                 },
                 push: {
-                    quantity: 5,
-                },
-                repulse: {
-                    distance: 100,
-                    duration: 0.4,
+                    quantity: 3,
                 },
             },
         },
         detectRetina: true,
-        pauseOnBlur: false,
-        pauseOnOutsideViewport: false,
-        // Additional emitters for shooting stars
-        emitters: [
-            {
-                direction: "bottom-right",
-                rate: {
-                    quantity: 1,
-                    delay: 8,
-                },
-                position: {
-                    x: 0,
-                    y: 0,
-                },
-                size: {
-                    width: 100,
-                    height: 0,
-                },
-                particles: {
-                    shape: {
-                        type: "circle",
-                    },
-                    color: {
-                        value: "#ffffff",
-                    },
-                    size: {
-                        value: 2,
-                    },
-                    move: {
-                        enable: true,
-                        speed: 15,
-                        direction: "bottom-right",
-                        straight: true,
-                        outModes: "destroy",
-                    },
-                    opacity: {
-                        value: 1,
-                        animation: {
-                            enable: true,
-                            speed: 1,
-                            startValue: "max",
-                            destroy: "min",
-                        },
-                    },
-                    life: {
-                        duration: {
-                            value: 1.5,
-                        },
-                        count: 1,
-                    },
-                },
-            },
-        ],
+        // Performance optimizations - pause when not visible
+        pauseOnBlur: true,
+        pauseOnOutsideViewport: true,
+        // REMOVED emitters for performance - shooting stars are expensive
     }), []);
 
     if (!init) {

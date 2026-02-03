@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* CSS Variables - Pure Dark Space Theme */
+/* CSS Variables - Dark Space Theme (default) */
 :root {
   --cyan: #00d4ff;
   --accent: #0a1628;
@@ -13,31 +13,69 @@
   --glow-cyan: rgba(0, 212, 255, 0.5);
   --glass: rgba(255, 255, 255, 0.02);
   --glass-border: rgba(255, 255, 255, 0.05);
+  --card-bg: rgba(5, 10, 20, 0.6);
+  --text-secondary: rgba(255, 255, 255, 0.7);
 }
 
-/* Base body styles - Pure black space background */
+/* Light Theme Variables */
+.light {
+  --cyan: #0891b2;
+  --accent: #e0f2fe;
+  --accent-light: #f0f9ff;
+  --deep-space: #f8fafc;
+  --space-dark: #f1f5f9;
+  --space-mid: #e2e8f0;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --glow-cyan: rgba(8, 145, 178, 0.3);
+  --glass: rgba(0, 0, 0, 0.02);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --text-secondary: rgba(15, 23, 42, 0.7);
+}
+
+/* Base body styles - Use CSS variables for theme support */
 body {
   font-family: 'Raleway', sans-serif;
-  background: #000000 !important;
-  color: #ffffff !important;
+  background: var(--background);
+  color: var(--foreground);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 html {
-  background: #000000 !important;
+  background: var(--background);
+  transition: background 0.3s ease;
 }
 
-/* Space background with subtle nebula effect */
+/* Dark theme explicit overrides */
+.dark body,
+html.dark {
+  background: #000000;
+  color: #ffffff;
+}
+
+/* Space background with subtle nebula effect - Theme aware */
 .App {
   background: 
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--glow-cyan) 0%, transparent 50%),
     radial-gradient(ellipse 60% 40% at 100% 100%, rgba(10, 22, 40, 0.15) 0%, transparent 50%),
     radial-gradient(ellipse 50% 30% at 0% 80%, rgba(0, 100, 150, 0.05) 0%, transparent 50%),
-    #000000;
+    var(--background);
   min-height: 100vh;
+  transition: background 0.3s ease;
+}
+
+/* Light theme App background */
+.light .App {
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(8, 145, 178, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(224, 242, 254, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 0% 80%, rgba(186, 230, 253, 0.3) 0%, transparent 50%),
+    var(--background);
 }
 
 /* Scrollbar - Minimal dark theme */
@@ -801,4 +839,242 @@ html {
   .section-header h1 {
     font-size: 1.8rem;
   }
+}
+
+/* ========================================
+   LIGHT THEME COMPONENT OVERRIDES
+   ======================================== */
+
+/* Light theme scrollbar */
+.light ::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--cyan), #94a3b8);
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--cyan), #64748b);
+}
+
+/* Light theme glass cards */
+.light .glass-card {
+  background: var(--card-bg);
+  border-color: rgba(8, 145, 178, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.light .glass-card:hover {
+  border-color: rgba(8, 145, 178, 0.3);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 0 30px rgba(8, 145, 178, 0.1);
+}
+
+/* Light theme gradient text */
+.light .gradient-text {
+  background: linear-gradient(135deg, var(--cyan) 0%, #0f172a 50%, var(--cyan) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light theme accent text */
+.light .purple {
+  color: var(--cyan);
+  text-shadow: none;
+}
+
+/* Light theme glow button */
+.light .glow-btn {
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.15), rgba(224, 242, 254, 0.9));
+  color: var(--cyan);
+  border-color: rgba(8, 145, 178, 0.3);
+}
+
+.light .glow-btn:hover {
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.25), rgba(224, 242, 254, 1));
+  box-shadow: 0 10px 40px rgba(8, 145, 178, 0.2);
+  border-color: var(--cyan);
+}
+
+/* Light theme navbar */
+.light .navbar.sticky {
+  background: rgba(248, 250, 252, 0.85);
+  border-bottom-color: rgba(8, 145, 178, 0.15);
+}
+
+.light .nav-link {
+  color: var(--foreground);
+}
+
+.light .nav-link:hover {
+  color: var(--cyan);
+  background: rgba(8, 145, 178, 0.08);
+  text-shadow: none;
+}
+
+/* Light theme project cards */
+.light .project-card-view {
+  background: var(--card-bg);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.light .project-card-view:hover {
+  border-color: rgba(8, 145, 178, 0.3);
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.1),
+    0 0 40px rgba(8, 145, 178, 0.08);
+}
+
+.light .card-title {
+  color: var(--cyan);
+}
+
+.light .card-text {
+  color: var(--text-secondary);
+}
+
+/* Light theme quote card */
+.light .quote-card-view {
+  background: var(--card-bg);
+  border-color: rgba(8, 145, 178, 0.15);
+}
+
+.light .blockquote {
+  color: var(--foreground);
+}
+
+/* Light theme tech icons */
+.light .tech-icons {
+  background: rgba(248, 250, 252, 0.9);
+  border-color: rgba(8, 145, 178, 0.15);
+  color: var(--cyan);
+}
+
+.light .tech-icons:hover {
+  background: rgba(224, 242, 254, 0.9);
+  border-color: rgba(8, 145, 178, 0.4);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    0 0 30px rgba(8, 145, 178, 0.15);
+}
+
+/* Light theme social icons */
+.light .home-social-icons {
+  background: rgba(8, 145, 178, 0.08);
+  border-color: rgba(8, 145, 178, 0.25);
+  color: var(--cyan);
+}
+
+.light .home-social-icons:hover {
+  background: rgba(8, 145, 178, 0.15);
+  box-shadow: 0 0 25px rgba(8, 145, 178, 0.3);
+}
+
+/* Light theme fork button */
+.light .fork-btn {
+  color: var(--cyan);
+  border-color: rgba(8, 145, 178, 0.3);
+}
+
+.light .fork-btn:hover {
+  background: rgba(8, 145, 178, 0.1);
+  border-color: var(--cyan);
+}
+
+/* Light theme footer */
+.light .footer {
+  border-top-color: rgba(8, 145, 178, 0.15);
+}
+
+.light .footer-icons a {
+  color: var(--text-secondary);
+}
+
+.light .footer-icons a:hover {
+  color: var(--cyan);
+  background: rgba(8, 145, 178, 0.1);
+}
+
+/* Light theme headings */
+.light .heading,
+.light .heading-name {
+  color: var(--foreground);
+}
+
+.light .main-name {
+  background: linear-gradient(135deg, var(--cyan) 0%, #0f172a 50%, var(--cyan) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light theme typewriter */
+.light .Typewriter__wrapper {
+  color: var(--cyan) !important;
+  text-shadow: none;
+}
+
+.light .Typewriter__cursor {
+  color: var(--cyan) !important;
+  text-shadow: none;
+}
+
+/* Light theme home about */
+.light .home-about-body {
+  color: var(--text-secondary);
+}
+
+.light .home-about-social h1 {
+  color: var(--foreground);
+  text-shadow: none;
+}
+
+/* Light theme grid background */
+.light .grid-bg {
+  background-image: 
+    linear-gradient(rgba(8, 145, 178, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 145, 178, 0.04) 1px, transparent 1px);
+}
+
+/* Light theme btn-primary */
+.light .btn-primary {
+  color: var(--cyan);
+  border-color: rgba(8, 145, 178, 0.4);
+}
+
+.light .btn-primary:hover {
+  background: rgba(8, 145, 178, 0.1);
+  border-color: var(--cyan);
+}
+
+/* Light theme loading text */
+.light .loading-text-content {
+  color: var(--cyan);
+  text-shadow: none;
+}
+
+/* Light theme preloader */
+.light #preloader {
+  background: var(--background);
+}
+
+.light .planet-orbit {
+  border-color: rgba(8, 145, 178, 0.3);
+}
+
+.light .planet {
+  background: radial-gradient(circle at 30% 30%, var(--cyan), #0f172a);
+  box-shadow: 0 0 30px rgba(8, 145, 178, 0.6);
+}
+
+/* Hide particles in light mode for cleaner look */
+.light #tsparticles {
+  opacity: 0.3;
 }

@@ -13,7 +13,7 @@ export default function BackgroundEffects() {
     return (
         <>
             {/* Simplex Noise animated nebula background */}
-            <NoiseBackground opacity={0.1} speed={0.0003} />
+            <NoiseBackground opacity={0.1} />
 
             {/* SVG constellation pattern overlay */}
             <SVGBackground pattern="constellation" opacity={0.3} />

@@ -8,6 +8,7 @@ import { Button, Badge, Card, CardContent } from "@/components/ui/shadcn";
 import { SpringCard } from "@/components/animations/SpringAnimations";
 import { Github, ExternalLink, Star, GitFork } from "lucide-react";
 import { projectImages } from "./projectImages";
+import TiltCard from "@/components/ui/TiltCard";
 
 // Detailed project data with rich descriptions
 const projectsData = [
@@ -192,57 +193,59 @@ export default function Projects() {
                 <AutoAnimateList className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredProjects.map((project) => (
                         <ScrollReveal key={project.title} threshold={0.1}>
-                            <Card variant="glow" className="h-full overflow-hidden group">
-                                <div className="relative overflow-hidden">
-                                    <img
-                                        src={project.imgPath}
-                                        alt={project.title}
-                                        className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4 gap-3">
-                                        <a
-                                            href={project.ghLink}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="p-2 bg-black/50 rounded-full hover:bg-cyan-500/50 transition-colors"
-                                        >
-                                            <Github size={20} />
-                                        </a>
-                                        {project.demoLink && project.demoLink !== "#" && (
+                            <TiltCard tiltAmount={10} glareOpacity={0.2} scale={1.03}>
+                                <Card variant="glow" className="h-full overflow-hidden group">
+                                    <div className="relative overflow-hidden">
+                                        <img
+                                            src={project.imgPath}
+                                            alt={project.title}
+                                            className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4 gap-3">
                                             <a
-                                                href={project.demoLink}
+                                                href={project.ghLink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="p-2 bg-black/50 rounded-full hover:bg-cyan-500/50 transition-colors"
                                             >
-                                                <ExternalLink size={20} />
+                                                <Github size={20} />
                                             </a>
-                                        )}
+                                            {project.demoLink && project.demoLink !== "#" && (
+                                                <a
+                                                    href={project.demoLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="p-2 bg-black/50 rounded-full hover:bg-cyan-500/50 transition-colors"
+                                                >
+                                                    <ExternalLink size={20} />
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                                <CardContent className="p-6">
-                                    <h3 className="text-xl font-bold text-cyan-400 mb-2">{project.title}</h3>
-                                    {/* Expandable description - short by default, full on hover */}
-                                    <div className="relative min-h-[80px]">
-                                        <p className="text-gray-400 text-sm mb-4 line-clamp-2 group-hover:hidden transition-all duration-300">
-                                            {project.shortDescription}
-                                        </p>
-                                        <p className="text-gray-400 text-sm mb-4 hidden group-hover:block transition-all duration-300 max-h-[200px] overflow-y-auto">
-                                            {project.fullDescription}
-                                        </p>
-                                        <span className="text-cyan-500 text-xs opacity-60 group-hover:hidden transition-opacity">
-                                            Hover to read more...
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 mt-2">
-                                        {project.tech.map((t) => (
-                                            <Badge key={t} variant="outline" className="text-xs">
-                                                {t}
-                                            </Badge>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
+                                    <CardContent className="p-6">
+                                        <h3 className="text-xl font-bold text-cyan-400 mb-2">{project.title}</h3>
+                                        {/* Expandable description - short by default, full on hover */}
+                                        <div className="relative min-h-[80px]">
+                                            <p className="text-gray-400 text-sm mb-4 line-clamp-2 group-hover:hidden transition-all duration-300">
+                                                {project.shortDescription}
+                                            </p>
+                                            <p className="text-gray-400 text-sm mb-4 hidden group-hover:block transition-all duration-300 max-h-[200px] overflow-y-auto">
+                                                {project.fullDescription}
+                                            </p>
+                                            <span className="text-cyan-500 text-xs opacity-60 group-hover:hidden transition-opacity">
+                                                Hover to read more...
+                                            </span>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            {project.tech.map((t) => (
+                                                <Badge key={t} variant="outline" className="text-xs">
+                                                    {t}
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </TiltCard>
                         </ScrollReveal>
                     ))}
                 </AutoAnimateList>
