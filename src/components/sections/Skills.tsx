@@ -1,23 +1,174 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { SKILLS } from '@/lib/constants';
-import { useInViewGSAP } from '@/hooks/useInViewGSAP';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import dynamic from 'next/dynamic';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const ConstellationMap = dynamic(() => import('@/components/three/ConstellationMap'), { ssr: false });
-const ThreeGuard = dynamic(() => import('@/components/three/ThreeGuard'), { ssr: false });
-const ThreeErrorBoundary = dynamic(() => import('@/components/three/ThreeErrorBoundary'), { ssr: false });
+/**
+ * SVGConstellation — Lightweight 2D constellation replacing the second Canvas context.
+ * Renders skill nodes and connection lines as SVG, animated with CSS.
+ * Zero WebGL overhead. Supports hover interactions.
+ */
+function SVGConstellation({ skills }: { skills: typeof SKILLS }) {
+  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
 
-// Import Canvas from R3F
-const R3FCanvas = dynamic(
-  () => import('@react-three/fiber').then((mod) => mod.Canvas),
-  { ssr: false }
-);
+  const categoryColors: Record<string, string> = {
+    frontend: '#06b6d4',
+    backend: '#7c3aed',
+    devops: '#f59e0b',
+    languages: '#10b981',
+  };
+
+  // Generate deterministic positions using golden ratio spiral
+  const { nodes, connections } = useMemo(() => {
+    const w = 600;
+    const h = 500;
+    const cx = w / 2;
+    const cy = h / 2;
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+
+    const points = skills.map((skill, i) => {
+      const r = 60 + Math.sqrt(i / skills.length) * 160;
+      const angle = i * goldenAngle;
+      return {
+        x: cx + r * Math.cos(angle),
+        y: cy + r * Math.sin(angle),
+        skill,
+        color: categoryColors[skill.category] || '#06b6d4',
+        radius: 4 + (skill.proficiency / 100) * 8,
+      };
+    });
+
+    // Connect nearby nodes (distance < 180)
+    const conns: { from: number; to: number; opacity: number }[] = [];
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        const dx = points[i].x - points[j].x;
+        const dy = points[i].y - points[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 180) {
+          conns.push({ from: i, to: j, opacity: 1 - dist / 180 });
+        }
+      }
+    }
+
+    return { nodes: points, connections: conns };
+  }, [skills]);
+
+  return (
+    <svg
+      ref={svgRef}
+      viewBox="0 0 600 500"
+      className="w-full h-full"
+      style={{ filter: 'drop-shadow(0 0 20px rgba(124, 58, 237, 0.1))' }}
+    >
+      {/* Connection lines */}
+      {connections.map((conn, i) => {
+        const from = nodes[conn.from];
+        const to = nodes[conn.to];
+        const isHighlighted =
+          hoveredSkill === from.skill.name || hoveredSkill === to.skill.name;
+        return (
+          <line
+            key={`conn-${i}`}
+            x1={from.x}
+            y1={from.y}
+            x2={to.x}
+            y2={to.y}
+            stroke={isHighlighted ? '#7c3aed' : '#7c3aed'}
+            strokeOpacity={isHighlighted ? 0.5 : conn.opacity * 0.12}
+            strokeWidth={isHighlighted ? 1.5 : 0.8}
+            className="transition-all duration-500"
+          />
+        );
+      })}
+
+      {/* Skill nodes */}
+      {nodes.map((node, i) => {
+        const isHovered = hoveredSkill === node.skill.name;
+        return (
+          <g
+            key={node.skill.name}
+            onMouseEnter={() => setHoveredSkill(node.skill.name)}
+            onMouseLeave={() => setHoveredSkill(null)}
+            className="cursor-pointer"
+            style={{
+              animation: `constellation-float ${3 + (i % 3)}s ease-in-out infinite`,
+              animationDelay: `${i * 0.15}s`,
+            }}
+          >
+            {/* Glow ring */}
+            {isHovered && (
+              <circle
+                cx={node.x}
+                cy={node.y}
+                r={node.radius + 8}
+                fill="none"
+                stroke={node.color}
+                strokeOpacity={0.3}
+                strokeWidth={1}
+                className="animate-ping"
+              />
+            )}
+
+            {/* Main dot */}
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r={isHovered ? node.radius + 3 : node.radius}
+              fill={node.color}
+              fillOpacity={isHovered ? 0.9 : 0.5}
+              className="transition-all duration-300"
+            />
+
+            {/* Inner glow */}
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r={node.radius * 0.4}
+              fill="white"
+              fillOpacity={isHovered ? 0.8 : 0.3}
+              className="transition-all duration-300"
+            />
+
+            {/* Label */}
+            <text
+              x={node.x}
+              y={node.y - node.radius - 8}
+              textAnchor="middle"
+              fill="white"
+              fillOpacity={isHovered ? 0.9 : 0}
+              fontSize={11}
+              fontFamily="monospace"
+              className="transition-all duration-300 pointer-events-none select-none"
+            >
+              {node.skill.name}
+            </text>
+            {isHovered && (
+              <text
+                x={node.x}
+                y={node.y + node.radius + 16}
+                textAnchor="middle"
+                fill={node.color}
+                fontSize={10}
+                fontFamily="monospace"
+                className="pointer-events-none select-none"
+              >
+                {node.skill.proficiency}%
+              </text>
+            )}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
 
 export default function Skills() {
-  const containerRef = useInViewGSAP<HTMLDivElement>();
+  const containerRef = useScrollReveal<HTMLDivElement>();
   const [inView, setInView] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const [view, setView] = useState<'htop' | 'constellation'>('htop');
@@ -36,9 +187,6 @@ export default function Skills() {
   }, []);
 
   // Group skills by category
-  const frontendSkills = SKILLS.filter((s) => s.category === 'frontend');
-  const backendSkills = SKILLS.filter((s) => s.category === 'backend');
-  const otherSkills = SKILLS.filter((s) => s.category !== 'frontend' && s.category !== 'backend');
   const topSkills = [...SKILLS].sort((a, b) => b.proficiency - a.proficiency).slice(0, 10);
 
   return (
@@ -157,18 +305,26 @@ export default function Skills() {
           </div>
         )}
 
-        {/* Constellation View (desktop) */}
+        {/* Constellation View (desktop) — SVG-based, no Canvas/WebGL */}
         {isDesktop && view === 'constellation' && (
-          <div className="flex-1 glass border border-white/10 overflow-hidden" style={{ borderRadius: '12px', height: '600px' }}>
-            <ThreeGuard>
-              <ThreeErrorBoundary>
-                <R3FCanvas camera={{ position: [0, 0, 8], fov: 50 }}>
-                  <ambientLight intensity={0.3} />
-                  <ConstellationMap />
-                </R3FCanvas>
-              </ThreeErrorBoundary>
-            </ThreeGuard>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="flex-1 glass border border-white/10 overflow-hidden relative"
+            style={{ borderRadius: '12px', height: '600px' }}
+          >
+            {/* Category legend */}
+            <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-3">
+              {Object.entries({ frontend: '#06b6d4', backend: '#7c3aed', devops: '#f59e0b', languages: '#10b981' }).map(([cat, color]) => (
+                <div key={cat} className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+                  <span className="text-white/40 font-mono text-[10px] uppercase">{cat}</span>
+                </div>
+              ))}
+            </div>
+            <SVGConstellation skills={SKILLS} />
+          </motion.div>
         )}
       </div>
     </section>

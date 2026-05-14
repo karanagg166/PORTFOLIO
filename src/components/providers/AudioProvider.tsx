@@ -23,7 +23,7 @@ export default function AudioProvider() {
       ref={audioRef}
       src="/ambient-space.mp3" 
       loop 
-      preload="auto"
+      preload="none"
     />
   );
 }

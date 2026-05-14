@@ -60,13 +60,19 @@ export default React.memo(function ConstellationMap() {
     return { skillPoints: points, connections: conns };
   }, []);
 
-  // Create line geometries for connections
-  const lineGeometries = useMemo(() => {
-    return connections.map(([a, b]) => {
-      const geo = new THREE.BufferGeometry().setFromPoints([a, b]);
-      return geo;
+  // Create a single shared material (allocated once)
+  const lineMaterial = useMemo(() => {
+    return new THREE.LineBasicMaterial({ color: '#7c3aed', transparent: true, opacity: 0.15 });
+  }, []);
+
+  // Create line geometries and objects for connections
+  const { lineGeometries, lineObjects } = useMemo(() => {
+    const geos = connections.map(([a, b]) => {
+      return new THREE.BufferGeometry().setFromPoints([a, b]);
     });
-  }, [connections]);
+    const objs = geos.map((geo) => new THREE.Line(geo, lineMaterial));
+    return { lineGeometries: geos, lineObjects: objs };
+  }, [connections, lineMaterial]);
 
   useFrame((state) => {
     if (groupRef.current) {
@@ -74,12 +80,13 @@ export default React.memo(function ConstellationMap() {
     }
   });
 
-  // Cleanup
+  // Cleanup all GPU resources
   useEffect(() => {
     return () => {
       lineGeometries.forEach((g) => g.dispose());
+      lineMaterial.dispose();
     };
-  }, [lineGeometries]);
+  }, [lineGeometries, lineMaterial]);
 
   const categoryColors: Record<string, string> = {
     frontend: '#06b6d4',
@@ -92,11 +99,9 @@ export default React.memo(function ConstellationMap() {
   return (
     <group ref={groupRef} position={[0, 0, -5]}>
       {/* Constellation lines */}
-      {lineGeometries.map((geo, i) => {
-        const lineMat = new THREE.LineBasicMaterial({ color: '#7c3aed', transparent: true, opacity: 0.15 });
-        const lineObj = new THREE.Line(geo, lineMat);
-        return <primitive key={`line-${i}`} object={lineObj} />;
-      })}
+      {lineObjects.map((lineObj, i) => (
+        <primitive key={`line-${i}`} object={lineObj} />
+      ))}
 
       {/* Star points */}
       {skillPoints.map(({ skill, position }) => {

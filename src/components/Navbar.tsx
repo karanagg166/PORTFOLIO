@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SOCIAL_LINKS } from '@/lib/constants';
+import Link from 'next/link';
 
 const navLinks = [
   { href: '#hero', label: 'Terminal' },
@@ -23,7 +23,7 @@ export default function Navbar() {
 
   // Scroll detection
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -61,10 +61,74 @@ export default function Navbar() {
 
   return (
     <>
+      {/* ── Floating Pill Navbar (appears after scroll) ── */}
+      <AnimatePresence>
+        {scrolled && (
+          <motion.nav
+            initial={{ y: -80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -80, opacity: 0 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden lg:flex items-center gap-1 px-2 py-1.5 rounded-full border border-white/10 shadow-2xl"
+            style={{
+              background: 'rgba(3, 7, 18, 0.7)',
+              backdropFilter: 'blur(20px) saturate(180%)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(124,58,237,0.05), inset 0 1px 0 rgba(255,255,255,0.06)',
+            }}
+          >
+            {/* Logo */}
+            <button
+              onClick={() => handleNavClick('#hero')}
+              className="px-3 py-1.5 text-white font-bold tracking-wider text-xs hover:text-cyan-400 transition-colors font-mono"
+            >
+              K<span className="text-cyan-500">_</span>D
+            </button>
+
+            <div className="w-px h-4 bg-white/10" />
+
+            {/* Nav links */}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.replace('#', '');
+              return (
+                <button
+                  key={link.href}
+                  onClick={() => handleNavClick(link.href)}
+                  className={`relative px-3 py-1.5 rounded-full text-[11px] font-mono transition-all duration-200 ${
+                    isActive
+                      ? 'text-cyan-300'
+                      : 'text-white/45 hover:text-white/75'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="pill-indicator"
+                      className="absolute inset-0 rounded-full bg-cyan-500/10 border border-cyan-500/20"
+                      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.label}</span>
+                </button>
+              );
+            })}
+
+            <div className="w-px h-4 bg-white/10" />
+
+            {/* CTA */}
+            <button
+              onClick={() => handleNavClick('#contact')}
+              className="px-3 py-1.5 bg-cyan-500/15 border border-cyan-500/20 rounded-full text-cyan-400 text-[11px] font-mono hover:bg-cyan-500/25 transition-all shadow-[0_0_10px_rgba(6,182,212,0.08)]"
+            >
+              Connect()
+            </button>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+
+      {/* ── Static top bar (visible before scroll + mobile) ── */}
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
           scrolled
-            ? 'glass-nav py-2.5 shadow-xl'
+            ? 'lg:opacity-0 lg:pointer-events-none glass-nav py-2.5 shadow-xl'
             : 'bg-transparent py-4'
         }`}
       >
@@ -77,7 +141,7 @@ export default function Navbar() {
             KARAN<span className="text-cyan-500">_</span>DEV
           </button>
 
-          {/* Desktop Nav */}
+          {/* Desktop Nav (hidden when pill is showing) */}
           <div className="hidden lg:flex flex-wrap gap-1">
             {navLinks.map((link) => (
               <button
@@ -96,6 +160,12 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
+            <Link
+              href="/uses"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs text-cyan-400/70 hover:text-cyan-300 border border-cyan-500/10 hover:border-cyan-500/30 rounded-sm transition-all"
+            >
+              /uses
+            </Link>
             <a
               href={SOCIAL_LINKS.github}
               target="_blank"
@@ -176,6 +246,12 @@ export default function Navbar() {
               </div>
 
               <div className="mt-auto pb-8 space-y-3">
+                <Link
+                  href="/uses"
+                  className="block text-center py-2.5 text-xs text-cyan-400/70 border border-cyan-500/10 rounded-md hover:text-cyan-300 hover:border-cyan-500/30 transition-all"
+                >
+                  /uses
+                </Link>
                 <a
                   href={SOCIAL_LINKS.github}
                   target="_blank"

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { COMMANDS } from '@/lib/constants';
-import { useInViewGSAP } from '@/hooks/useInViewGSAP';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useEasterEggStore } from '@/store/useEasterEggStore';
 
 interface HistoryEntry {
@@ -12,7 +12,7 @@ interface HistoryEntry {
 }
 
 export default function Terminal() {
-  const containerRef = useInViewGSAP<HTMLDivElement>();
+  const containerRef = useScrollReveal<HTMLDivElement>();
   const inputRef = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const [hasAutoTyped, setHasAutoTyped] = useState(false);

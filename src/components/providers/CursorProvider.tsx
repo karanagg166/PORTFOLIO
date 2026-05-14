@@ -1,52 +1,40 @@
 'use client';
 
 import React, { useEffect, useRef, useCallback } from 'react';
-import { useMouse } from '@/hooks/useMouse';
 import { useUIStore } from '@/store/useUIStore';
-import gsap from 'gsap';
 
+/**
+ * CursorProvider — Custom cursor with CSS-driven smooth following
+ * Uses native CSS transitions + will-change for GPU compositing.
+ * No GSAP, no requestAnimationFrame loop.
+ */
 export default function CursorProvider() {
-  const mouseRef = useMouse();
   const cursorRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number>(0);
   const cursorVariant = useUIStore((s) => s.cursorVariant);
 
   useEffect(() => {
-    // Hide default cursor on desktop
-    if (window.matchMedia('(pointer: fine)').matches) {
-      document.body.style.cursor = 'none';
-    }
+    // Only on devices with a fine pointer (mouse/trackpad)
+    if (!window.matchMedia('(pointer: fine)').matches) return;
 
-    const animate = () => {
-      const { x, y } = mouseRef.current;
+    document.body.style.cursor = 'none';
+
+    const handleMouseMove = (e: MouseEvent) => {
       if (cursorRef.current) {
-        gsap.to(cursorRef.current, {
-          x: x - 16,
-          y: y - 16,
-          duration: 0.5,
-          ease: 'power3.out',
-          overwrite: 'auto',
-        });
+        cursorRef.current.style.transform = `translate3d(${e.clientX - 16}px, ${e.clientY - 16}px, 0)`;
       }
       if (dotRef.current) {
-        gsap.to(dotRef.current, {
-          x: x - 3,
-          y: y - 3,
-          duration: 0.08,
-          ease: 'power3.out',
-          overwrite: 'auto',
-        });
+        dotRef.current.style.transform = `translate3d(${e.clientX - 3}px, ${e.clientY - 3}px, 0)`;
       }
-      rafRef.current = requestAnimationFrame(animate);
     };
 
-    rafRef.current = requestAnimationFrame(animate);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('mousemove', handleMouseMove);
       document.body.style.cursor = '';
     };
-  }, [mouseRef]);
+  }, []);
 
   // Cursor morph classes based on variant
   const outerClass = cursorVariant === 'hover'
@@ -60,10 +48,12 @@ export default function CursorProvider() {
       <div
         ref={cursorRef}
         className={`fixed top-0 left-0 rounded-full border pointer-events-none z-[100] mix-blend-screen hidden md:block transition-[width,height,border-color,background-color,border-radius] duration-300 ${outerClass}`}
+        style={{ willChange: 'transform', transition: 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s, height 0.3s, border-color 0.3s, background-color 0.3s, border-radius 0.3s' }}
       />
       <div
         ref={dotRef}
         className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-cyan-400 pointer-events-none z-[100] mix-blend-screen hidden md:block shadow-[0_0_10px_#06b6d4]"
+        style={{ willChange: 'transform', transition: 'transform 0.08s cubic-bezier(0.16, 1, 0.3, 1)' }}
       />
     </>
   );

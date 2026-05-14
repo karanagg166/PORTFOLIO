@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import { VSCODE_FILES } from '@/lib/constants';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { useInViewGSAP } from '@/hooks/useInViewGSAP';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function About() {
   const [activeFileIndex, setActiveFileIndex] = useState(0);
   const [terminalInput, setTerminalInput] = useState('');
   const [terminalOutput, setTerminalOutput] = useState<string[]>(['$ whoami', 'karan-aggarwal']);
-  const containerRef = useInViewGSAP<HTMLDivElement>();
+  const containerRef = useScrollReveal<HTMLDivElement>();
 
   const activeFile = VSCODE_FILES[activeFileIndex];
 

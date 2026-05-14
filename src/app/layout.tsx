@@ -12,6 +12,7 @@ import EasterEggHunt from '@/components/ui/EasterEggHunt';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Preloader from '@/components/Pre';
+import CommandPalette from '@/components/CommandPalette';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const raleway = Raleway({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-raleway' });
@@ -43,6 +44,7 @@ export default function RootLayout({
           <ScrollProgress />
           <AudioToggle />
           <EasterEggHunt />
+          <CommandPalette />
           
           <Navbar />
           

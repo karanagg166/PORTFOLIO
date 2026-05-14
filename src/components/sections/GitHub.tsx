@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { GITHUB_WRAPPED, PERSONAL_INFO } from '@/lib/constants';
-import { useInViewGSAP } from '@/hooks/useInViewGSAP';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { motion } from 'framer-motion';
 import { GitHubCalendar } from 'react-github-calendar';
 
@@ -58,7 +58,7 @@ const statCards = [
 ];
 
 export default function GitHubWrapped() {
-  const containerRef = useInViewGSAP<HTMLDivElement>();
+  const containerRef = useScrollReveal<HTMLDivElement>();
 
   return (
     <section className="relative py-20 px-4 min-h-screen flex items-center justify-center" id="github">

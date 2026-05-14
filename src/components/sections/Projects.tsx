@@ -1,13 +1,39 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
+import Image from 'next/image';
 import { PROJECTS } from '@/lib/constants';
-import { useInViewGSAP } from '@/hooks/useInViewGSAP';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useTypewriter } from '@/hooks/useTypewriter';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Project } from '@/types';
+
+function PingStatus({ url }: { url?: string }) {
+  const [status, setStatus] = useState<'pinging' | 'online' | 'offline'>('pinging');
+  const [latency, setLatency] = useState<number>(0);
+
+  React.useEffect(() => {
+    if (!url) {
+      setStatus('offline');
+      return;
+    }
+    const start = Date.now();
+    fetch(url, { mode: 'no-cors', cache: 'no-cache' })
+      .then(() => {
+        setLatency(Date.now() - start);
+        setStatus('online');
+      })
+      .catch(() => {
+        setStatus('offline');
+      });
+  }, [url]);
+
+  if (status === 'pinging') return <span className="text-yellow-400">Pinging...</span>;
+  if (status === 'offline') return <span className="text-red-400">Offline</span>;
+  return <span className="text-green-400">Online ({latency}ms)</span>;
+}
 
 function CodeDrawer({ code, onClose }: { code: string; onClose: () => void }) {
   const { displayedText, isTyping } = useTypewriter(code, 12);
@@ -46,7 +72,7 @@ function CodeDrawer({ code, onClose }: { code: string; onClose: () => void }) {
 type Filter = 'all' | 'frontend' | 'backend' | 'fullstack';
 
 export default function Projects() {
-  const containerRef = useInViewGSAP<HTMLDivElement>();
+  const containerRef = useScrollReveal<HTMLDivElement>();
   const [activeCode, setActiveCode] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>('all');
 
@@ -114,9 +140,12 @@ export default function Projects() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className="glass-holo p-5 flex flex-col font-mono text-sm relative group border border-white/5 hover:border-cyan-500/30 transition-all duration-300 hover:shadow-[0_0_40px_rgba(6,182,212,0.1)]"
+                className="glass-holo p-5 flex flex-col font-mono text-sm relative group border border-white/5 hover:border-cyan-500/30 transition-all duration-300 hover:shadow-[0_0_40px_rgba(6,182,212,0.1)] overflow-hidden"
                 style={{ borderRadius: '12px' }}
               >
+                {/* Transaction Ripple Effect */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.15)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-150 transition-all duration-700 pointer-events-none" />
+                
                 {/* Block header */}
                 <div className="flex justify-between items-start mb-4 border-b border-white/10 pb-3">
                   <div className="text-cyan-400 font-bold text-base">Block #{proj.blockNumber}</div>
@@ -126,10 +155,13 @@ export default function Projects() {
                 {/* Project Image */}
                 {proj.image && (
                   <div className="relative w-full aspect-video mb-4 rounded-md overflow-hidden border border-white/10 group-hover:border-cyan-500/30 transition-colors">
-                    <img 
+                    <Image 
                       src={proj.image} 
-                      alt={proj.name} 
-                      className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700 ease-out" 
+                      alt={proj.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      quality={75}
+                      className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" 
                     />
                   </div>
                 )}
@@ -152,30 +184,42 @@ export default function Projects() {
                 </div>
 
                 {/* Status */}
-                <div className="bg-green-500/10 text-green-400 text-xs py-2 px-3 rounded-sm flex items-center justify-between mb-4 border border-green-500/20">
+                <div className="bg-green-500/10 text-green-400 text-xs py-2 px-3 rounded-sm flex items-center justify-between mb-4 border border-green-500/20 relative z-10">
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                    {proj.status}
+                    <PingStatus url={proj.live} />
                   </span>
                   <span className="text-green-400/60">({proj.confirmations})</span>
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-2">
+                <div className="flex gap-2 mt-auto relative z-10">
                   <button
                     onClick={() => setActiveCode(proj.codeSnippet)}
                     className="flex-1 py-2 text-center border border-white/15 rounded-sm hover:bg-white/10 transition-all text-white/70 hover:text-cyan-300 text-xs hover:border-cyan-500/30"
                   >
-                    {'{ }'} View Code
+                    {'{ }'} Code
                   </button>
+                  {proj.live && (
+                    <a
+                      href={proj.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 py-2 text-center border border-white/15 rounded-sm hover:bg-white/10 transition-all text-white/70 hover:text-green-400 text-xs hover:border-green-500/30"
+                    >
+                      ↗ Live
+                    </a>
+                  )}
                   {proj.github && (
                     <a
                       href={proj.github}
                       target="_blank"
                       rel="noreferrer"
-                      className="py-2 px-3 border border-white/15 rounded-sm hover:bg-white/10 transition-all text-white/70 hover:text-white text-xs"
+                      className="py-2 px-3 border border-white/15 rounded-sm hover:bg-white/10 transition-all text-white/70 hover:text-white text-xs flex items-center justify-center"
                     >
-                      ↗
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                      </svg>
                     </a>
                   )}
                 </div>

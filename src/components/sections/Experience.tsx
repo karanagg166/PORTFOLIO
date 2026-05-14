@@ -2,11 +2,11 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { EXPERIENCE } from '@/lib/constants';
-import { useInViewGSAP } from '@/hooks/useInViewGSAP';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Experience() {
-  const containerRef = useInViewGSAP<HTMLDivElement>();
+  const containerRef = useScrollReveal<HTMLDivElement>();
   const [expandedCommit, setExpandedCommit] = useState<string | null>(null);
   const [visibleCommits, setVisibleCommits] = useState<Set<string>>(new Set());
 
