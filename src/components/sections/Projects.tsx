@@ -123,6 +123,17 @@ export default function Projects() {
                   <div className="text-white/20 text-[10px] truncate max-w-[100px] font-mono">{proj.hash}</div>
                 </div>
 
+                {/* Project Image */}
+                {proj.image && (
+                  <div className="relative w-full aspect-video mb-4 rounded-md overflow-hidden border border-white/10 group-hover:border-cyan-500/30 transition-colors">
+                    <img 
+                      src={proj.image} 
+                      alt={proj.name} 
+                      className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700 ease-out" 
+                    />
+                  </div>
+                )}
+
                 {/* Transaction details */}
                 <div className="space-y-1.5 mb-4 flex-1 text-white/70 text-xs">
                   <div className="flex justify-between"><span className="text-white/30">From:</span> <span>{proj.from}</span></div>

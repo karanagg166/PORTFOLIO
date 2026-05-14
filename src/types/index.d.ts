@@ -11,6 +11,7 @@ export interface Project {
   description?: string;
   github?: string;
   live?: string;
+  image?: string;
   category: 'frontend' | 'backend' | 'fullstack';
 }
 
