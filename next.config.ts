@@ -1,19 +1,13 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
+import withBundleAnalyzer from '@next/bundle-analyzer';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'github.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
-      },
-    ],
-  },
+  transpilePackages: ['three'],
 };
 
-export default nextConfig;
+export default process.env.ANALYZE === 'true'
+  ? withBundleAnalyzer({
+      enabled: true,
+    })(nextConfig)
+  : nextConfig;
