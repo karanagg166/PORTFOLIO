@@ -6,13 +6,13 @@ import { SOCIAL_LINKS } from '@/lib/constants';
 import Link from 'next/link';
 
 const navLinks = [
-  { href: '#hero', label: 'Orbit' },
-  { href: '#about', label: 'Dossier' },
-  { href: '#skills', label: 'Systems' },
-  { href: '#experience', label: 'Trajectory' },
-  { href: '#projects', label: 'Missions' },
-  { href: '#github', label: 'Activity' },
-  { href: '#contact', label: 'Signal' },
+  { href: '#hero', label: 'Home' },
+  { href: '#about', label: 'About' },
+  { href: '#skills', label: 'Skills' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#github', label: 'GitHub' },
+  { href: '#contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
