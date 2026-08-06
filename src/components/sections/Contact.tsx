@@ -13,7 +13,7 @@ export default function Contact() {
   const fireConfetti = useCallback(async () => {
     try {
       const confetti = (await import('canvas-confetti')).default;
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#06b6d4', '#7c3aed', '#22d3ee'] });
+      confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 }, colors: ['#d4a852', '#38bdf8', '#34d399'] });
     } catch {}
   }, []);
 
@@ -29,157 +29,121 @@ export default function Contact() {
       const data = await res.json();
       if (res.ok) {
         setStatus('success');
-        setResponseMsg(data.message || "I'll get back within 24h! 🚀");
+        setResponseMsg(data.message || "Transmission received! I will respond within 24 hours.");
         setFormData({ name: '', email: '', message: '', urgency: 'normal' });
         fireConfetti();
       } else {
         setStatus('error');
-        setResponseMsg(data.message || 'Something went wrong');
+        setResponseMsg(data.message || 'Signal interference — please try again.');
       }
     } catch {
       setStatus('error');
-      setResponseMsg('Network error — please try again.');
+      setResponseMsg('Transmission error — please verify network connection.');
     }
   };
 
-  const endpoints = [
-    { method: 'POST', path: '/api/v1/karan/hire', active: true, scrollTo: undefined },
-    { method: 'GET', path: '/api/v1/karan/skills', active: false, scrollTo: '#skills' },
-    { method: 'GET', path: '/api/v1/karan/projects', active: false, scrollTo: '#projects' },
-    { method: 'GET', path: '/api/v1/karan/experience', active: false, scrollTo: '#experience' },
-  ];
-
   return (
-    <section className="relative py-20 px-4 min-h-screen flex flex-col items-center justify-center font-mono" id="contact">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold font-raleway text-white mb-2">API Reference</h2>
-        <p className="text-white/40 font-mono text-sm">REST API documentation for contacting Karan</p>
-      </div>
+    <section className="relative py-24 px-4 min-h-screen flex items-center justify-center font-mono" id="contact">
+      <div ref={containerRef} className="w-full max-w-3xl">
+        <div className="rounded-xl border border-white/10 bg-[#05080f]/85 backdrop-blur-md overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+          {/* Panel Header */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="text-xs font-mono tracking-[0.2em] text-amber-400 uppercase">
+                TRANSMISSION CONSOLE // RADIO SIGNAL
+              </span>
+            </div>
+            <div className="text-[11px] font-mono text-white/40 hidden sm:block">
+              SIGNAL: ENCRYPTED
+            </div>
+          </div>
 
-      <div
-        ref={containerRef}
-        className="w-full max-w-4xl glass border-white/10 overflow-hidden shadow-[0_0_60px_rgba(6,182,212,0.08)] flex flex-col md:flex-row"
-        style={{ borderRadius: '12px', background: 'rgba(3,7,18,0.85)' }}
-      >
-        {/* Sidebar — Endpoints */}
-        <div className="w-full md:w-64 p-5 border-b md:border-b-0 md:border-r border-white/5 bg-white/[0.02] flex-shrink-0">
-          <div className="text-white/40 text-[10px] mb-3 uppercase tracking-widest">Endpoints</div>
-          <div className="flex flex-col gap-2">
-            {endpoints.map((ep) => (
-              <div
-                key={ep.path}
-                onClick={ep.scrollTo ? () => document.querySelector(ep.scrollTo!)?.scrollIntoView({ behavior: 'smooth' }) : undefined}
-                className={`p-2.5 rounded-md text-xs flex items-center gap-2 transition-all duration-200 ${
-                  ep.active
-                    ? 'bg-green-500/10 border border-green-500/20'
-                    : 'bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] cursor-pointer'
-                }`}
-              >
-                <span className={`font-bold text-[10px] px-1.5 py-0.5 rounded ${
-                  ep.method === 'POST' ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'
-                }`}>
-                  {ep.method}
-                </span>
-                <span className={ep.active ? 'text-green-300' : 'text-white/50'}>{ep.path}</span>
+          {/* Form Content */}
+          <div className="p-6 sm:p-10 space-y-6">
+            <p className="text-xs text-white/60 font-sans">
+              Send a direct signal to Karan Aggarwal. All messages are transmitted securely.
+            </p>
+
+            <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+              <div className="space-y-1">
+                <label className="text-amber-400/80 uppercase">OPERATOR NAME *</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full bg-white/[0.02] border border-white/10 rounded p-3 text-white outline-none focus:border-amber-400 focus:shadow-[0_0_15px_rgba(212,168,82,0.2)] transition-all font-mono text-xs"
+                  placeholder="Your Name / Organization"
+                />
               </div>
-            ))}
-          </div>
 
-          <div className="mt-6 text-white/40 text-[10px] uppercase tracking-widest mb-2">Status</div>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-green-400">Available for hire</span>
-          </div>
+              <div className="space-y-1">
+                <label className="text-amber-400/80 uppercase">RETURN SIGNAL ADDRESS (EMAIL) *</label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full bg-white/[0.02] border border-white/10 rounded p-3 text-white outline-none focus:border-amber-400 focus:shadow-[0_0_15px_rgba(212,168,82,0.2)] transition-all font-mono text-xs"
+                  placeholder="name@company.com"
+                />
+              </div>
 
-          <div className="mt-6 text-white/40 text-[10px] uppercase tracking-widest mb-2">Base URL</div>
-          <div className="text-cyan-400/70 text-xs break-all">karanaggarwal.dev</div>
-        </div>
+              <div className="space-y-1">
+                <label className="text-amber-400/80 uppercase">TRANSMISSION PAYLOAD (MESSAGE) *</label>
+                <textarea
+                  required
+                  rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full bg-white/[0.02] border border-white/10 rounded p-3 text-white outline-none focus:border-amber-400 focus:shadow-[0_0_15px_rgba(212,168,82,0.2)] transition-all font-mono text-xs resize-y"
+                  placeholder="Detail your engineering request or proposal..."
+                />
+              </div>
 
-        {/* Main — Form */}
-        <div className="flex-1 p-5 md:p-7">
-          <h3 className="text-lg text-white font-bold mb-1 flex items-center gap-2">
-            <span className="text-green-400 text-sm px-1.5 py-0.5 bg-green-500/10 rounded">POST</span>
-            Send Message
-          </h3>
-          <p className="text-white/30 text-xs mb-5">Request body (application/json)</p>
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-sm">
-            <div className="flex flex-col gap-1">
-              <label className="text-white/40 text-xs">&quot;name&quot;: string <span className="text-red-400">*required</span></label>
-              <input
-                type="text"
-                required
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-white/[0.03] border border-white/10 rounded-md p-2.5 text-white outline-none focus:border-cyan-500/50 transition-colors text-sm"
-                placeholder="John Doe"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label className="text-white/40 text-xs">&quot;email&quot;: string <span className="text-red-400">*required</span></label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="bg-white/[0.03] border border-white/10 rounded-md p-2.5 text-white outline-none focus:border-cyan-500/50 transition-colors text-sm"
-                placeholder="john@example.com"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label className="text-white/40 text-xs">&quot;message&quot;: string <span className="text-red-400">*required</span></label>
-              <textarea
-                required
-                rows={3}
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="bg-white/[0.03] border border-white/10 rounded-md p-2.5 text-white outline-none focus:border-cyan-500/50 transition-colors resize-y text-sm"
-                placeholder="Let's build something..."
-              />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label className="text-white/40 text-xs">&quot;urgency&quot;: enum</label>
-              <select
-                value={formData.urgency}
-                onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
-                className="bg-white/[0.03] border border-white/10 rounded-md p-2.5 text-white outline-none focus:border-cyan-500/50 transition-colors text-sm appearance-none cursor-pointer"
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="w-full py-3.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 transition-all font-mono text-xs tracking-wider uppercase font-semibold disabled:opacity-50 shadow-[0_0_20px_rgba(212,168,82,0.15)] flex items-center justify-center gap-2"
               >
-                <option value="low" className="bg-[#0d1117]">low</option>
-                <option value="normal" className="bg-[#0d1117]">normal</option>
-                <option value="high" className="bg-[#0d1117]">high</option>
-                <option value="critical" className="bg-[#0d1117]">critical 🔥</option>
-              </select>
+                {status === 'loading' ? (
+                  <span>TRANSMITTING SIGNAL...</span>
+                ) : (
+                  <>
+                    <span>TRANSMIT SIGNAL</span>
+                    <span>📡</span>
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Accessibility announcement */}
+            <div aria-live="polite" className="sr-only">
+              {status === 'success' && responseMsg}
             </div>
 
-            <button
-              type="submit"
-              disabled={status === 'loading'}
-              className="mt-2 bg-gradient-to-r from-cyan-600 to-cyan-500 hover:from-cyan-500 hover:to-cyan-400 text-white font-bold py-2.5 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.3)]"
-            >
-              {status === 'loading' ? '⏳ Sending Request...' : '▶ Execute Request'}
-            </button>
-
-            {/* Response */}
+            {/* Radio Transmission Result Status */}
             <AnimatePresence>
               {status !== 'idle' && status !== 'loading' && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className={`p-4 rounded-md text-xs whitespace-pre-wrap font-mono ${
+                  className={`p-4 rounded border text-xs font-mono ${
                     status === 'success'
-                      ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                      : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                      : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
                   }`}
                 >
-                  {`HTTP/1.1 ${status === 'success' ? '200 OK' : '500 Internal Server Error'}\nContent-Type: application/json\n\n{\n  "status": "${status}",\n  "message": "${responseMsg}"\n}`}
+                  <div className="font-bold mb-1">
+                    {status === 'success' ? '✔ TRANSMISSION RECEIVED' : '✖ SIGNAL FAILURE'}
+                  </div>
+                  <div>{responseMsg}</div>
                 </motion.div>
               )}
             </AnimatePresence>
-          </form>
+          </div>
         </div>
       </div>
     </section>

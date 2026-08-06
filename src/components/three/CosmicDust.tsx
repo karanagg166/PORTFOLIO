@@ -5,31 +5,25 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 /**
- * CosmicDust — Foreground floating dust particles for parallax depth
+ * CosmicDust — Subtle floating dust particles (150 particles, cold white #c0c8d8, opacity 0.15)
  */
 export default React.memo(function CosmicDust() {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 300;
+  const count = 150;
 
-  const [positions, scales] = useMemo(() => {
+  const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
-    const sc = new Float32Array(count);
-
     for (let i = 0; i < count; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 30;
       pos[i * 3 + 1] = (Math.random() - 0.5) * 30;
       pos[i * 3 + 2] = (Math.random() - 0.5) * 20;
-
-      sc[i] = Math.random() * 0.03 + 0.01;
     }
-
-    return [pos, sc];
+    return pos;
   }, [count]);
 
   useFrame((state, delta) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y += delta * 0.005;
-      pointsRef.current.rotation.x += delta * 0.003;
+      pointsRef.current.rotation.y += delta * 0.003;
     }
   });
 
@@ -43,13 +37,12 @@ export default React.memo(function CosmicDust() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.04}
-        color="#a5b4fc"
+        size={0.03}
+        color="#c0c8d8"
         transparent
-        opacity={0.35}
+        opacity={0.15}
         sizeAttenuation
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
       />
     </points>
   );

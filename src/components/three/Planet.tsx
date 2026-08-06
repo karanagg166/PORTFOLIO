@@ -3,76 +3,120 @@
 import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { generateEarthTextures } from './earthTextures';
 
-/**
- * Planet — Sphere with atmosphere glow effect using layered meshes
- */
-export default React.memo(function Planet() {
-  const groupRef = useRef<THREE.Group>(null);
+interface PlanetProps {
+  tier?: 'high' | 'medium' | 'low';
+}
 
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.08;
-      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1 + 1;
+// Atmosphere Shader
+const AtmosphereShader = {
+  uniforms: {
+    uSunDirection: { value: new THREE.Vector3(5, 3, 4).normalize() },
+    uAtmosphereColor: { value: new THREE.Color('#4a8ab5') },
+  },
+  vertexShader: /* glsl */ `
+    varying vec3 vNormal;
+    varying vec3 vWorldPosition;
+
+    void main() {
+      vNormal = normalize(normalMatrix * normal);
+      vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+      vWorldPosition = worldPosition.xyz;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: /* glsl */ `
+    uniform vec3 uSunDirection;
+    uniform vec3 uAtmosphereColor;
+    varying vec3 vNormal;
+    varying vec3 vWorldPosition;
+
+    void main() {
+      vec3 viewDirection = normalize(cameraPosition - vWorldPosition);
+      
+      // Fresnel rim falloff
+      float fresnel = pow(1.0 - max(0.0, dot(viewDirection, vNormal)), 3.0);
+      
+      // Sun awareness — brighter on sun-facing side
+      float sunDot = max(0.0, dot(vNormal, uSunDirection));
+      float intensity = fresnel * (0.3 + 0.7 * sunDot);
+
+      gl_FragColor = vec4(uAtmosphereColor, intensity * 0.45);
+    }
+  `,
+};
+
+export default React.memo(function Planet({ tier = 'medium' }: PlanetProps) {
+  const planetGroupRef = useRef<THREE.Group>(null);
+  const surfaceRef = useRef<THREE.Mesh>(null);
+  const cloudRef = useRef<THREE.Mesh>(null);
+
+  // Generate textures on mount
+  const textures = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    return generateEarthTextures();
+  }, []);
+
+  useFrame((state, delta) => {
+    // Slow orbital rotation (~0.5 deg per sec)
+    if (surfaceRef.current) {
+      surfaceRef.current.rotation.y += delta * 0.02;
+    }
+
+    // Cloud layer rotates faster
+    if (cloudRef.current) {
+      cloudRef.current.rotation.y += delta * 0.026;
     }
   });
 
   return (
-    <group ref={groupRef} position={[-3, 1, -10]}>
-      {/* Planet core */}
-      <mesh>
-        <sphereGeometry args={[1.5, 64, 64]} />
-        <meshStandardMaterial
-          color="#0a1628"
-          emissive="#06b6d4"
-          emissiveIntensity={0.15}
-          roughness={0.8}
-          metalness={0.2}
-        />
+    <group ref={planetGroupRef} position={[2.8, -0.8, -2.5]} rotation={[0.4, 0, 0.1]}>
+      {/* 1. Earth Surface */}
+      <mesh ref={surfaceRef}>
+        <sphereGeometry args={[2.5, 64, 64]} />
+        {textures ? (
+          <meshStandardMaterial
+            map={textures.dayTexture}
+            roughnessMap={textures.specularTexture}
+            roughness={0.65}
+            metalness={0.0}
+            emissiveMap={textures.nightTexture}
+            emissive="#ffd080"
+            emissiveIntensity={1.2}
+          />
+        ) : (
+          <meshStandardMaterial color="#0a1e3f" roughness={0.7} />
+        )}
       </mesh>
 
-      {/* Surface detail — wireframe overlay */}
+      {/* 2. Atmosphere Shell (Thin Fresnel rim, NormalBlending) */}
       <mesh>
-        <sphereGeometry args={[1.52, 32, 32]} />
-        <meshBasicMaterial
-          color="#06b6d4"
-          wireframe
+        <sphereGeometry args={[2.62, 64, 64]} />
+        <shaderMaterial
           transparent
-          opacity={0.08}
-        />
-      </mesh>
-
-      {/* Inner atmosphere glow */}
-      <mesh>
-        <sphereGeometry args={[1.6, 32, 32]} />
-        <meshBasicMaterial
-          color="#06b6d4"
-          transparent
-          opacity={0.12}
+          depthWrite={false}
           side={THREE.BackSide}
+          blending={THREE.NormalBlending}
+          uniforms={AtmosphereShader.uniforms}
+          vertexShader={AtmosphereShader.vertexShader}
+          fragmentShader={AtmosphereShader.fragmentShader}
         />
       </mesh>
 
-      {/* Outer atmosphere glow */}
-      <mesh>
-        <sphereGeometry args={[1.9, 32, 32]} />
-        <meshBasicMaterial
-          color="#7c3aed"
-          transparent
-          opacity={0.05}
-          side={THREE.BackSide}
-        />
-      </mesh>
-
-      {/* Ring / orbit line */}
-      <mesh rotation={[Math.PI * 0.55, 0.3, 0]}>
-        <torusGeometry args={[2.5, 0.02, 16, 100]} />
-        <meshBasicMaterial
-          color="#06b6d4"
-          transparent
-          opacity={0.15}
-        />
-      </mesh>
+      {/* 3. Cloud Layer (High tier only) */}
+      {tier === 'high' && textures && (
+        <mesh ref={cloudRef}>
+          <sphereGeometry args={[2.53, 48, 48]} />
+          <meshStandardMaterial
+            alphaMap={textures.cloudTexture}
+            transparent
+            opacity={0.35}
+            color="#ffffff"
+            depthWrite={false}
+          />
+        </mesh>
+      )}
     </group>
   );
 });

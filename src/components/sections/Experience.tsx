@@ -1,124 +1,87 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { EXPERIENCE } from '@/lib/constants';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Experience() {
   const containerRef = useScrollReveal<HTMLDivElement>();
-  const [expandedCommit, setExpandedCommit] = useState<string | null>(null);
-  const [visibleCommits, setVisibleCommits] = useState<Set<string>>(new Set());
-
-  // Stagger reveal commits on scroll
-  const sectionRef = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          EXPERIENCE.forEach((exp, i) => {
-            setTimeout(() => {
-              setVisibleCommits((prev) => new Set([...prev, exp.hash]));
-            }, i * 300);
-          });
-        }
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
   return (
-    <section ref={sectionRef} className="relative py-20 px-4 min-h-screen flex flex-col items-center justify-center font-mono" id="experience">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold font-raleway text-white mb-2">Career Timeline</h2>
-        <p className="text-white/40 font-mono text-sm">$ git log --oneline --graph</p>
-      </div>
+    <section className="relative py-24 px-4 min-h-screen flex items-center justify-center font-mono" id="experience">
+      <div ref={containerRef} className="w-full max-w-4xl">
+        <div className="rounded-xl border border-white/10 bg-[#05080f]/85 backdrop-blur-md overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+          {/* Panel Header */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="text-xs font-mono tracking-[0.2em] text-amber-400 uppercase">
+                FLIGHT TRAJECTORY // CAREER TIMELINE
+              </span>
+            </div>
+            <div className="text-[11px] font-mono text-white/40 hidden sm:block">
+              VECTOR: EXPANDING
+            </div>
+          </div>
 
-      <div
-        ref={containerRef}
-        className="w-full max-w-3xl glass bg-black/40 border-white/10 p-6 md:p-8 shadow-[0_0_60px_rgba(124,58,237,0.08)] relative"
-        style={{ borderRadius: '12px' }}
-      >
-        {/* Git graph line */}
-        <div className="absolute left-10 md:left-14 top-16 bottom-8 w-px bg-gradient-to-b from-cyan-500/40 via-purple-500/30 to-transparent" />
+          {/* Timeline Body */}
+          <div className="p-6 sm:p-10 relative">
+            {/* Trajectory Vertical Line */}
+            <div className="absolute left-10 sm:left-14 top-12 bottom-12 w-px bg-gradient-to-b from-amber-400/60 via-cyan-500/30 to-transparent" />
 
-        <div className="space-y-8">
-          {EXPERIENCE.map((exp, i) => (
-            <motion.div
-              key={exp.hash}
-              initial={{ opacity: 0, x: -30 }}
-              animate={visibleCommits.has(exp.hash) ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="relative z-10 pl-10 md:pl-14"
-            >
-              {/* Graph node */}
-              <div className={`absolute left-[34px] md:left-[50px] top-2 w-3 h-3 rounded-full transition-all duration-500 ${
-                i === 0
-                  ? 'bg-cyan-400 shadow-[0_0_12px_#06b6d4]'
-                  : 'bg-purple-500 shadow-[0_0_8px_#7c3aed]'
-              }`} />
+            <div className="space-y-8">
+              {EXPERIENCE.map((exp, i) => {
+                const isExpanded = expandedIndex === i;
+                return (
+                  <div key={i} className="relative pl-12 sm:pl-16">
+                    {/* Node Dot */}
+                    <div
+                      className={`absolute left-[33px] sm:left-[49px] top-1.5 w-3.5 h-3.5 rounded-full transition-all duration-300 border ${
+                        i === 0
+                          ? 'bg-amber-400 border-amber-300 shadow-[0_0_12px_rgba(212,168,82,0.8)]'
+                          : 'bg-cyan-500 border-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.5)]'
+                      }`}
+                    />
 
-              {/* Branch decorator for HEAD */}
-              {i === 0 && (
-                <div className="absolute left-[52px] md:left-[68px] top-0.5 text-[9px] text-yellow-400 hidden md:block">
-                  ← HEAD
-                </div>
-              )}
-
-              <div
-                className="cursor-pointer hover:bg-white/[0.03] p-3 -ml-3 rounded-lg transition-colors group"
-                onClick={() => setExpandedCommit(expandedCommit === exp.hash ? null : exp.hash)}
-              >
-                {/* Commit header */}
-                <div className="text-xs mb-1.5 flex flex-wrap items-center gap-1">
-                  <span className="text-yellow-500/80">commit</span>
-                  <span className="text-cyan-300">{exp.hash}</span>
-                  {exp.branch && <span className="text-yellow-400/50 text-[10px]">{exp.branch}</span>}
-                </div>
-
-                {/* Date */}
-                <div className="text-white/30 text-xs mb-2">Date: {exp.date}</div>
-
-                {/* Commit message */}
-                <div className="text-white font-bold text-sm md:text-base flex items-center gap-2">
-                  <span className="text-white/20">│</span>
-                  {exp.message}
-                  <span className="text-white/20 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                    {expandedCommit === exp.hash ? '▼' : '▶'}
-                  </span>
-                </div>
-
-                {/* Expanded details */}
-                <AnimatePresence>
-                  {expandedCommit === exp.hash && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
+                    {/* Timeline Content Card */}
+                    <div
+                      onClick={() => setExpandedIndex(isExpanded ? null : i)}
+                      className="p-5 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all cursor-pointer space-y-3"
                     >
-                      <div className="ml-5 mt-4 border-l-2 border-white/10 pl-4">
-                        <div className="text-white/30 text-xs mb-1">Author: {exp.author}</div>
-                        <div className="text-white/70 whitespace-pre-wrap text-sm mb-4 leading-relaxed mt-3">
-                          {exp.body}
-                        </div>
-                        <div className="text-xs flex gap-4 pt-2 border-t border-white/10">
-                          <span className="text-white/40">{exp.filesChanged} files changed</span>
-                          <span className="text-green-400">+{exp.insertions}</span>
-                          <span className="text-red-400">-{exp.deletions}</span>
-                        </div>
+                      {/* Date & Orbit Stage */}
+                      <div className="flex flex-wrap items-center justify-between text-xs text-amber-400/80 gap-2">
+                        <span className="font-semibold uppercase tracking-wider">// STAGE {EXPERIENCE.length - i}</span>
+                        <span className="text-white/50">{exp.date}</span>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          ))}
+
+                      {/* Role Message */}
+                      <div className="text-sm sm:text-base font-bold text-white flex items-center justify-between">
+                        <span>{exp.message}</span>
+                        <span className="text-white/30 text-xs">{isExpanded ? '▲' : '▼'}</span>
+                      </div>
+
+                      {/* Expanded Details */}
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="overflow-hidden pt-3 border-t border-white/10 text-xs sm:text-sm text-white/70 font-sans leading-relaxed space-y-2"
+                          >
+                            <p className="whitespace-pre-wrap font-sans">{exp.body}</p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -1,182 +1,117 @@
 'use client';
 
-import React, { useState } from 'react';
-import dynamic from 'next/dynamic';
-import { VSCODE_FILES } from '@/lib/constants';
-
-const SyntaxHighlighter = dynamic(
-  () => import('react-syntax-highlighter').then((mod) => mod.Prism),
-  { ssr: false }
-);
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import React from 'react';
+import Image from 'next/image';
+import { PERSONAL_INFO } from '@/lib/constants';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export default function About() {
-  const [activeFileIndex, setActiveFileIndex] = useState(0);
-  const [terminalInput, setTerminalInput] = useState('');
-  const [terminalOutput, setTerminalOutput] = useState<string[]>(['$ whoami', 'karan-aggarwal']);
   const containerRef = useScrollReveal<HTMLDivElement>();
 
-  const activeFile = VSCODE_FILES[activeFileIndex];
-
-  const getLanguage = (filename: string) => {
-    if (filename.endsWith('.md')) return 'markdown';
-    if (filename.endsWith('.json')) return 'json';
-    if (filename.endsWith('.ts') || filename.endsWith('.tsx')) return 'typescript';
-    if (filename.endsWith('.env')) return 'bash';
-    return 'text';
-  };
-
-  const handleTerminalSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const cmd = terminalInput.trim().toLowerCase();
-    setTerminalInput('');
-    if (!cmd) return;
-
-    let output = `bash: command not found: ${cmd}`;
-    if (cmd === 'whoami') output = 'karan-aggarwal';
-    else if (cmd === 'pwd') output = '/home/karan/portfolio';
-    else if (cmd === 'ls') output = 'bio.md  skills.json  experience.ts  contact.env';
-    else if (cmd === 'clear') { setTerminalOutput([]); return; }
-    else if (cmd === 'date') output = new Date().toLocaleString();
-
-    setTerminalOutput((prev) => [...prev, `$ ${cmd}`, output]);
-  };
-
   return (
-    <section className="relative py-20 px-4 min-h-screen flex items-center justify-center font-mono" id="about">
-      <div className="text-center mb-0 absolute top-20 left-0 right-0">
-        <h2 className="text-3xl md:text-4xl font-bold font-raleway text-white mb-2">About Me</h2>
-        <p className="text-white/40 font-mono text-sm">Open in VSCode — click files to explore</p>
-      </div>
-
-      <div
-        ref={containerRef}
-        className="w-full max-w-5xl h-[550px] md:h-[600px] flex overflow-hidden shadow-[0_0_60px_rgba(124,58,237,0.1)] border border-white/10"
-        style={{ background: '#1e1e2e', borderRadius: '12px' }}
-      >
-        {/* Activity Bar */}
-        <div className="w-12 bg-[#181825] border-r border-white/5 flex flex-col items-center py-4 gap-4 flex-shrink-0 hidden sm:flex">
-          <div className="w-8 h-8 rounded text-white/60 hover:text-white flex items-center justify-center cursor-pointer hover:bg-white/5 transition-colors text-lg">📁</div>
-          <div className="w-8 h-8 rounded text-white/40 hover:text-white flex items-center justify-center cursor-pointer hover:bg-white/5 transition-colors text-lg">🔍</div>
-          <div className="w-8 h-8 rounded text-white/40 hover:text-white flex items-center justify-center cursor-pointer hover:bg-white/5 transition-colors text-lg">🔀</div>
-          <div className="mt-auto w-8 h-8 rounded text-white/40 hover:text-white flex items-center justify-center cursor-pointer hover:bg-white/5 transition-colors text-lg">⚙️</div>
-        </div>
-
-        {/* Sidebar / Explorer */}
-        <div className="w-48 bg-[#1e1e2e] border-r border-white/5 flex flex-col hidden md:flex flex-shrink-0">
-          <div className="px-4 py-2.5 text-[10px] font-semibold text-white/50 uppercase tracking-widest border-b border-white/5">
-            Explorer
-          </div>
-          <div className="p-2 flex-1">
-            <div className="flex items-center gap-1 text-sm text-white/80 font-semibold mb-2 cursor-pointer hover:text-white transition-colors">
-              <span className="text-[10px] text-white/40">▼</span>
-              <span className="text-cyan-400/80">📁</span> karan-aggarwal
+    <section className="relative py-24 px-4 min-h-screen flex items-center justify-center font-mono" id="about">
+      <div ref={containerRef} className="w-full max-w-4xl">
+        {/* Mission Dossier Header Panel */}
+        <div className="rounded-xl border border-white/10 bg-[#05080f]/85 backdrop-blur-md overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+          {/* Top Panel Bar */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="text-xs font-mono tracking-[0.2em] text-amber-400 uppercase">
+                MISSION DOSSIER // PERSONNEL RECORD
+              </span>
             </div>
-            {VSCODE_FILES.map((f, i) => (
-              <div
-                key={f.name}
-                onClick={() => setActiveFileIndex(i)}
-                className={`pl-6 py-1.5 flex items-center gap-2 text-sm cursor-pointer transition-all duration-150 rounded-sm ${
-                  i === activeFileIndex
-                    ? 'bg-cyan-500/10 text-cyan-400 border-l-2 border-l-cyan-500'
-                    : 'text-white/60 hover:bg-white/5 hover:text-white/80 border-l-2 border-l-transparent'
-                }`}
-              >
-                <span className="text-xs">{f.icon}</span>
-                <span className="truncate">{f.name}</span>
+            <div className="text-[11px] font-mono text-white/40 hidden sm:block">
+              ID: KA-8849-ORD
+            </div>
+          </div>
+
+          {/* Dossier Body Content */}
+          <div className="p-6 sm:p-10 space-y-8">
+            {/* Identity Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+              {/* Photo Frame */}
+              <div className="flex flex-col items-center sm:items-start gap-3">
+                <div className="relative w-36 h-36 rounded-lg overflow-hidden border border-amber-400/30 p-1 bg-white/5 shadow-[0_0_20px_rgba(212,168,82,0.1)]">
+                  <div className="relative w-full h-full rounded bg-slate-900 overflow-hidden flex items-center justify-center">
+                    <Image
+                      src="/images/karan.jpeg"
+                      alt={PERSONAL_INFO.name}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                </div>
+                <div className="text-[10px] text-white/40 tracking-wider uppercase font-mono">
+                  BIOMETRIC CONFIRMED
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Main Editor Panel */}
-        <div className="flex-1 flex flex-col min-w-0 bg-[#1e1e2e]">
-          {/* Tab Bar */}
-          <div className="flex bg-[#181825] border-b border-white/5 overflow-x-auto flex-shrink-0">
-            {VSCODE_FILES.map((f, i) => (
-              <div
-                key={f.name}
-                onClick={() => setActiveFileIndex(i)}
-                className={`px-4 py-2 flex items-center gap-2 text-xs cursor-pointer border-r border-white/5 min-w-[100px] flex-shrink-0 transition-all duration-150 ${
-                  i === activeFileIndex
-                    ? 'bg-[#1e1e2e] text-cyan-400 border-t-2 border-t-cyan-500'
-                    : 'text-white/40 bg-[#181825] hover:bg-[#1e1e2e]/50 border-t-2 border-t-transparent'
-                }`}
-              >
-                <span className="text-[10px]">{f.icon}</span>
-                <span className="truncate">{f.name}</span>
-                {i === activeFileIndex && <span className="ml-auto opacity-40 text-xs hover:opacity-100">×</span>}
+              {/* Core Attributes Table */}
+              <div className="md:col-span-2 space-y-3 font-mono text-xs sm:text-sm">
+                <div className="grid grid-cols-3 border-b border-white/5 pb-2">
+                  <span className="text-amber-400/70 uppercase">NAME</span>
+                  <span className="col-span-2 text-white font-medium">{PERSONAL_INFO.name}</span>
+                </div>
+                <div className="grid grid-cols-3 border-b border-white/5 pb-2">
+                  <span className="text-amber-400/70 uppercase">ROLE</span>
+                  <span className="col-span-2 text-cyan-300 font-medium">{PERSONAL_INFO.role}</span>
+                </div>
+                <div className="grid grid-cols-3 border-b border-white/5 pb-2">
+                  <span className="text-amber-400/70 uppercase">BASE</span>
+                  <span className="col-span-2 text-white/90">India</span>
+                </div>
+                <div className="grid grid-cols-3 border-b border-white/5 pb-2">
+                  <span className="text-amber-400/70 uppercase">EDUCATION</span>
+                  <span className="col-span-2 text-white/90">B.Tech Computer Science</span>
+                </div>
+                <div className="grid grid-cols-3 pb-2">
+                  <span className="text-amber-400/70 uppercase">STATUS</span>
+                  <span className="col-span-2 text-emerald-400 font-semibold">Available for Engineering Roles</span>
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Code Editor */}
-          <div className="flex-1 overflow-auto">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeFile.name}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
+            {/* Biography */}
+            <div className="space-y-2 border-t border-white/10 pt-6">
+              <div className="text-xs uppercase tracking-widest text-amber-400/80">
+                // BIOGRAPHY
+              </div>
+              <p className="text-sm font-sans text-white/70 leading-relaxed">
+                {PERSONAL_INFO.bio}
+              </p>
+            </div>
+
+            {/* Current Focus */}
+            <div className="space-y-2 border-t border-white/10 pt-6">
+              <div className="text-xs uppercase tracking-widest text-amber-400/80">
+                // CURRENT FOCUS
+              </div>
+              <div className="flex flex-wrap gap-3 font-mono text-xs text-cyan-300/90">
+                <span className="px-3 py-1 rounded bg-cyan-500/10 border border-cyan-500/20">
+                  Healthcare AI Pipelines
+                </span>
+                <span className="px-3 py-1 rounded bg-cyan-500/10 border border-cyan-500/20">
+                  Exam & Education Systems
+                </span>
+                <span className="px-3 py-1 rounded bg-cyan-500/10 border border-cyan-500/20">
+                  Scalable Next.js & FastAPI Architecture
+                </span>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="pt-4 flex justify-start">
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 transition-all text-xs tracking-wider flex items-center gap-2"
               >
-                <SyntaxHighlighter
-                  language={activeFile.language || getLanguage(activeFile.name)}
-                  style={vscDarkPlus}
-                  customStyle={{
-                    background: 'transparent',
-                    margin: 0,
-                    padding: '1rem',
-                    fontSize: '13px',
-                    lineHeight: '1.6',
-                    minHeight: '100%',
-                  }}
-                  showLineNumbers
-                  wrapLines
-                  lineNumberStyle={{ color: 'rgba(255,255,255,0.15)', minWidth: '2.5em', paddingRight: '1em' }}
-                >
-                  {activeFile.content}
-                </SyntaxHighlighter>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Mini Terminal */}
-          <div className="h-28 border-t border-white/10 bg-[#181825] flex flex-col flex-shrink-0">
-            <div className="px-3 py-1 text-[10px] text-white/40 uppercase tracking-widest border-b border-white/5 flex items-center gap-2">
-              <span className="text-cyan-500/60">⬤</span> Terminal
-            </div>
-            <div className="flex-1 overflow-y-auto px-3 py-1 text-xs text-white/60 font-mono space-y-0.5">
-              {terminalOutput.map((line, i) => (
-                <div key={i} className={line.startsWith('$') ? 'text-green-400/80' : 'text-white/50'}>{line}</div>
-              ))}
-            </div>
-            <form onSubmit={handleTerminalSubmit} className="px-3 py-1 flex items-center gap-1 border-t border-white/5">
-              <span className="text-green-400/60 text-xs">$</span>
-              <input
-                type="text"
-                value={terminalInput}
-                onChange={(e) => setTerminalInput(e.target.value)}
-                className="flex-1 bg-transparent text-xs text-white/80 outline-none caret-cyan-400"
-                placeholder="type a command..."
-                spellCheck={false}
-              />
-            </form>
-          </div>
-
-          {/* Status Bar */}
-          <div className="h-6 bg-[#007acc]/30 border-t border-white/5 flex justify-between items-center px-4 text-[10px] text-white/70 flex-shrink-0">
-            <div className="flex gap-4">
-              <span className="flex items-center gap-1"><span className="text-cyan-400">⎇</span> main*</span>
-              <span className="hidden sm:inline">karan-aggarwal</span>
-              <span>⛔ 0 ⚠️ 0</span>
-            </div>
-            <div className="flex gap-4">
-              <span>UTF-8</span>
-              <span>TypeScript React</span>
-              <span className="hidden sm:inline">Ln 1, Col 1</span>
+                <span>DOWNLOAD DOSSIER (RESUME)</span>
+                <span>↓</span>
+              </a>
             </div>
           </div>
         </div>

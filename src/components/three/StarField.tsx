@@ -1,172 +1,115 @@
 'use client';
 
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useDevicePerformance } from '@/hooks/useDevicePerformance';
 
 /**
- * StarField — Adaptive star count, colored stars, shooting stars
+ * StarField — Fixed realistic star positions from orbital perspective (no twinkling, no shooting stars)
+ * Features rare satellite glint on medium/high tier
  */
 export default React.memo(function StarField() {
-  const perf = useDevicePerformance();
-  const count = perf === 'high' ? 2000 : perf === 'medium' ? 1000 : 500;
-  const shootingStarCount = perf === 'low' ? 0 : 3;
+  const { tier } = useDevicePerformance();
+  const count = tier === 'high' ? 1200 : tier === 'medium' ? 600 : 300;
 
   const pointsRef = useRef<THREE.Points>(null);
-  const shootingRef = useRef<THREE.Points>(null);
-  const geometryRef = useRef<THREE.BufferGeometry>(null);
-  const shootingGeoRef = useRef<THREE.BufferGeometry>(null);
+  const glintRef = useRef<THREE.Points>(null);
 
-  const [positions, colors] = useMemo(() => {
+  // Fixed star positions and realistic color distribution
+  const [positions, colors, sizes] = useMemo(() => {
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
+    const sz = new Float32Array(count);
 
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 60;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 60;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 60;
+      // Depth spread (-50 to -5)
+      pos[i * 3] = (Math.random() - 0.5) * 70;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 50;
+      pos[i * 3 + 2] = -Math.random() * 45 - 5;
 
       const mix = Math.random();
-      if (mix < 0.3) {
-        col[i * 3] = 0.02; col[i * 3 + 1] = 0.71; col[i * 3 + 2] = 0.83; // cyan
-      } else if (mix < 0.55) {
-        col[i * 3] = 0.49; col[i * 3 + 1] = 0.23; col[i * 3 + 2] = 0.93; // purple
-      } else if (mix < 0.7) {
-        col[i * 3] = 1; col[i * 3 + 1] = 0.85; col[i * 3 + 2] = 0.4; // warm
+      if (mix < 0.70) {
+        // 70% Cold white
+        col[i * 3] = 0.91; col[i * 3 + 1] = 0.92; col[i * 3 + 2] = 0.94;
+      } else if (mix < 0.85) {
+        // 15% Warm white
+        col[i * 3] = 1.0; col[i * 3 + 1] = 0.97; col[i * 3 + 2] = 0.90;
+      } else if (mix < 0.95) {
+        // 10% Faint blue
+        col[i * 3] = 0.72; col[i * 3 + 1] = 0.78; col[i * 3 + 2] = 0.91;
       } else {
-        col[i * 3] = 1; col[i * 3 + 1] = 1; col[i * 3 + 2] = 1; // white
+        // 5% Subtle orange
+        col[i * 3] = 1.0; col[i * 3 + 1] = 0.88; col[i * 3 + 2] = 0.69;
       }
+
+      // Variable star size
+      sz[i] = Math.random() * 0.08 + 0.03;
     }
 
-    return [pos, col];
+    return [pos, col, sz];
   }, [count]);
 
-  // Shooting star positions
-  const shootingPositions = useMemo(() => {
-    const pos = new Float32Array(shootingStarCount * 3);
-    for (let i = 0; i < shootingStarCount; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 40;
-      pos[i * 3 + 1] = Math.random() * 20 + 10;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 40;
-    }
-    return pos;
-  }, [shootingStarCount]);
+  // Satellite glint position
+  const glintPos = useMemo(() => new Float32Array([12, 8, -15]), []);
 
-  const targetVelocity = useRef(1);
-  const currentVelocity = useRef(1);
-  const lastScrollY = useRef(0);
-
-  useEffect(() => {
-    let lastTime = performance.now();
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const currentTime = performance.now();
-      const dt = currentTime - lastTime;
-
-      if (dt > 0) {
-        const deltaY = Math.abs(currentScrollY - lastScrollY.current);
-        const velocity = deltaY / dt;
-
-        // Map scroll velocity to a speed multiplier (1 to 5)
-        targetVelocity.current = Math.min(5, 1 + velocity * 2);
+  useFrame((state) => {
+    // Satellite glint animation: brightens briefly every ~30s
+    if (glintRef.current) {
+      const t = state.clock.getElapsedTime();
+      const cycle = t % 30;
+      let opacity = 0;
+      if (cycle > 14 && cycle < 16) {
+        // 2-second flash pulse
+        opacity = Math.sin((cycle - 14) * Math.PI / 2) * 0.9;
       }
-
-      lastScrollY.current = currentScrollY;
-      lastTime = currentTime;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  useFrame((state, delta) => {
-    // Smoothly decay target velocity towards 1 using delta
-    targetVelocity.current = Math.max(1, targetVelocity.current - delta * 2);
-
-    // Smoothly interpolate current velocity towards target velocity
-    currentVelocity.current += (targetVelocity.current - currentVelocity.current) * 0.1;
-    const speedMult = currentVelocity.current;
-
-    if (pointsRef.current) {
-      pointsRef.current.rotation.y += delta * 0.015 * speedMult;
-      pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.01) * 0.02;
-    }
-
-    // Animate shooting stars
-    if (shootingRef.current && shootingGeoRef.current && shootingStarCount > 0) {
-      const pos = shootingGeoRef.current.attributes.position;
-      const arr = pos.array as Float32Array;
-      for (let i = 0; i < shootingStarCount; i++) {
-        arr[i * 3] -= 0.15 * speedMult; // move left
-        arr[i * 3 + 1] -= 0.08 * speedMult; // move down
-
-        // Reset when off-screen
-        if (arr[i * 3] < -30 || arr[i * 3 + 1] < -20) {
-          arr[i * 3] = (Math.random() - 0.3) * 40 + 15;
-          arr[i * 3 + 1] = Math.random() * 15 + 10;
-          arr[i * 3 + 2] = (Math.random() - 0.5) * 30;
-        }
-      }
-      pos.needsUpdate = true;
+      (glintRef.current.material as THREE.PointsMaterial).opacity = opacity;
     }
   });
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      geometryRef.current?.dispose();
-      shootingGeoRef.current?.dispose();
-    };
-  }, []);
-
   return (
     <>
+      {/* Fixed Stars */}
       <points ref={pointsRef}>
-        <bufferGeometry ref={geometryRef}>
+        <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
             args={[positions, 3]}
-            count={positions.length / 3}
+            count={count}
           />
           <bufferAttribute
             attach="attributes-color"
             args={[colors, 3]}
-            count={colors.length / 3}
+            count={count}
           />
         </bufferGeometry>
         <pointsMaterial
           size={0.06}
           vertexColors
           transparent
-          opacity={0.85}
+          opacity={0.7}
           sizeAttenuation
           depthWrite={false}
         />
       </points>
 
-      {/* Shooting stars */}
-      {shootingStarCount > 0 && (
-        <points ref={shootingRef}>
-          <bufferGeometry ref={shootingGeoRef}>
+      {/* Rare Satellite Glint */}
+      {tier !== 'low' && (
+        <points ref={glintRef}>
+          <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
-              args={[shootingPositions, 3]}
-              count={shootingStarCount}
+              args={[glintPos, 3]}
+              count={1}
             />
           </bufferGeometry>
           <pointsMaterial
-            size={0.15}
+            size={0.12}
             color="#ffffff"
             transparent
-            opacity={0.9}
+            opacity={0}
             sizeAttenuation
             depthWrite={false}
-            toneMapped={false}
           />
         </points>
       )}
