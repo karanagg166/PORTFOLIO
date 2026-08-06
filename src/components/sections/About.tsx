@@ -1,8 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { VSCODE_FILES } from '@/lib/constants';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+
+const SyntaxHighlighter = dynamic(
+  () => import('react-syntax-highlighter').then((mod) => mod.Prism),
+  { ssr: false }
+);
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';

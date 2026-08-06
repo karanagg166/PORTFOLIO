@@ -4,20 +4,30 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Preloader() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && sessionStorage.getItem('portfolio_visited')) {
+      setIsLoading(false);
+      return;
+    }
+
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          setTimeout(() => setIsLoading(false), 500);
+          setTimeout(() => {
+            setIsLoading(false);
+            if (typeof window !== 'undefined') {
+              sessionStorage.setItem('portfolio_visited', 'true');
+            }
+          }, 150);
           return 100;
         }
-        return prev + Math.random() * 15;
+        return prev + 35;
       });
-    }, 100);
+    }, 80);
 
     return () => clearInterval(interval);
   }, []);

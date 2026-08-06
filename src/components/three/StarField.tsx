@@ -59,38 +59,35 @@ export default React.memo(function StarField() {
 
   useEffect(() => {
     let lastTime = performance.now();
-    
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const currentTime = performance.now();
       const dt = currentTime - lastTime;
-      
+
       if (dt > 0) {
         const deltaY = Math.abs(currentScrollY - lastScrollY.current);
         const velocity = deltaY / dt;
-        
+
         // Map scroll velocity to a speed multiplier (1 to 5)
         targetVelocity.current = Math.min(5, 1 + velocity * 2);
       }
-      
+
       lastScrollY.current = currentScrollY;
       lastTime = currentTime;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    // Decay velocity back to 1 over time
-    const decayInterval = setInterval(() => {
-      targetVelocity.current = Math.max(1, targetVelocity.current * 0.9);
-    }, 100);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      clearInterval(decayInterval);
     };
   }, []);
 
   useFrame((state, delta) => {
+    // Smoothly decay target velocity towards 1 using delta
+    targetVelocity.current = Math.max(1, targetVelocity.current - delta * 2);
+
     // Smoothly interpolate current velocity towards target velocity
     currentVelocity.current += (targetVelocity.current - currentVelocity.current) * 0.1;
     const speedMult = currentVelocity.current;

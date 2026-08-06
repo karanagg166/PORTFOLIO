@@ -5,34 +5,19 @@ import Image from 'next/image';
 import { PROJECTS } from '@/lib/constants';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useTypewriter } from '@/hooks/useTypewriter';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import dynamic from 'next/dynamic';
+
+const SyntaxHighlighter = dynamic(
+  () => import('react-syntax-highlighter').then((mod) => mod.Prism),
+  { ssr: false }
+);
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Project } from '@/types';
 
 function PingStatus({ url }: { url?: string }) {
-  const [status, setStatus] = useState<'pinging' | 'online' | 'offline'>('pinging');
-  const [latency, setLatency] = useState<number>(0);
-
-  React.useEffect(() => {
-    if (!url) {
-      setStatus('offline');
-      return;
-    }
-    const start = Date.now();
-    fetch(url, { mode: 'no-cors', cache: 'no-cache' })
-      .then(() => {
-        setLatency(Date.now() - start);
-        setStatus('online');
-      })
-      .catch(() => {
-        setStatus('offline');
-      });
-  }, [url]);
-
-  if (status === 'pinging') return <span className="text-yellow-400">Pinging...</span>;
-  if (status === 'offline') return <span className="text-red-400">Offline</span>;
-  return <span className="text-green-400">Online ({latency}ms)</span>;
+  if (!url) return <span className="text-red-400">Offline</span>;
+  return <span className="text-green-400">Online (Deployed)</span>;
 }
 
 function CodeDrawer({ code, onClose }: { code: string; onClose: () => void }) {
@@ -44,7 +29,7 @@ function CodeDrawer({ code, onClose }: { code: string; onClose: () => void }) {
       animate={{ x: 0 }}
       exit={{ x: '100%' }}
       transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-      className="fixed inset-y-0 right-0 w-full md:w-[550px] z-50 shadow-[−20px_0_60px_rgba(0,0,0,0.5)] border-l border-white/10 flex flex-col"
+      className="fixed inset-y-0 right-0 w-full md:w-[550px] z-50 shadow-[-20px_0_60px_rgba(0,0,0,0.5)] border-l border-white/10 flex flex-col"
       style={{ background: '#0d1117' }}
     >
       <div className="flex justify-between items-center px-5 py-3 border-b border-white/10 bg-white/5">

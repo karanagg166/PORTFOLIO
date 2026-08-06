@@ -156,50 +156,42 @@ export default function Hero() {
         </AnimatePresence>
 
         {/* CTA Buttons */}
-        <AnimatePresence>
-          {phase === 'done' && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center"
-            >
-              <a
-                href="#about"
-                className="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 text-cyan-300 hover:from-cyan-500/30 hover:to-purple-500/30 transition-all duration-300 font-mono text-sm shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_30px_rgba(6,182,212,0.25)]"
-              >
-                Explore Portfolio →
-              </a>
-              <a
-                href="#contact"
-                className="px-8 py-3 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 transition-all duration-300 font-mono text-sm"
-              >
-                Hire Me 🚀
-              </a>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center"
+        >
+          <a
+            href="#about"
+            className="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 text-cyan-300 hover:from-cyan-500/30 hover:to-purple-500/30 transition-all duration-300 font-mono text-sm shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_30px_rgba(6,182,212,0.25)]"
+          >
+            Explore Portfolio →
+          </a>
+          <a
+            href="#contact"
+            className="px-8 py-3 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 transition-all duration-300 font-mono text-sm"
+          >
+            Hire Me 🚀
+          </a>
+        </motion.div>
 
         {/* Scroll indicator */}
-        <AnimatePresence>
-          {phase === 'done' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5 }}
-              className="mt-16 flex flex-col items-center gap-2"
-            >
-              <span className="text-white/30 text-xs font-mono">scroll to explore</span>
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1"
-              >
-                <div className="w-1 h-2 rounded-full bg-cyan-400/60" />
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-16 flex flex-col items-center gap-2"
+        >
+          <span className="text-white/30 text-xs font-mono">scroll to explore</span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1"
+          >
+            <div className="w-1 h-2 rounded-full bg-cyan-400/60" />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
