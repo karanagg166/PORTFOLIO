@@ -11,6 +11,8 @@ import BlackHole from './BlackHole';
 import Planet from './Planet';
 import NoiseWaves from './NoiseWaves';
 import Astronaut from './Astronaut';
+import Nebula from './Nebula';
+import CosmicDust from './CosmicDust';
 import { useDevicePerformance } from '@/hooks/useDevicePerformance';
 
 function CameraController() {
@@ -59,11 +61,13 @@ export default function SpaceScene() {
           gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
           dpr={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 1.5) : 1}
         >
-          <color attach="background" args={['#030712']} />
-          <ambientLight intensity={0.2} />
+          <color attach="background" args={['#020408']} />
+          <ambientLight intensity={0.15} />
 
           <CameraController />
+          <Nebula />
           <StarField />
+          <CosmicDust />
           <BlackHole />
           <Planet />
           <NoiseWaves />
