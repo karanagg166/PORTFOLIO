@@ -10,10 +10,10 @@ export default function Projects() {
   const containerRef = useScrollReveal<HTMLDivElement>();
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'flagship' | 'archive'>('all');
 
-  // Flagships (Top 3)
-  const flagshipProjects = PROJECTS.slice(0, 3);
-  // Archive (Remaining)
-  const archiveProjects = PROJECTS.slice(3);
+  // Flagship projects with screenshots (Docstribe AI / TenkiSense, Quick Clinic, ExamArena, ShopSizzle)
+  const flagshipProjects = PROJECTS.filter((p) => p.image);
+  // Archive projects without screenshots
+  const archiveProjects = PROJECTS.filter((p) => !p.image);
 
   return (
     <section className="relative py-24 px-4 min-h-screen font-mono" id="projects">
@@ -41,7 +41,7 @@ export default function Projects() {
                 // FLAGSHIP MISSIONS
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {flagshipProjects.map((proj) => (
                   <div
                     key={proj.name}

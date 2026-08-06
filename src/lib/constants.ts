@@ -7,7 +7,7 @@ export const PERSONAL_INFO = {
   role: "Software Engineer",
   github: "karanagg166",
   email: "karanagg166@gmail.com",
-  linkedin: "karanagg166",
+  linkedin: "karan-aggarwal-a13427276",
   bio: "I'm a Software Engineer who fell in love with building things. From crafting pixel-perfect UIs to architecting scalable backends, I live for the thrill of turning complex problems into elegant solutions.",
   npmPackages: [
     { name: "problem-solving", version: "∞" },
@@ -49,86 +49,30 @@ async def analyze_patient(patient: PatientData):
     image: "/images/projects/docstribe-ai.png"
   },
   {
-    name: "Wishify",
-    hash: "0x4d5e...6f7g",
-    blockNumber: 1338,
-    from: "Creative Vision",
-    to: "Social Media",
-    stack: ["Next.js", "Prisma", "Neon", "Fabric.js", "Cloudinary"],
+    name: "Quick Clinic",
+    hash: "0x0t1u...2v3w",
+    blockNumber: 1342,
+    from: "Healthcare Tech",
+    to: "Patients",
+    stack: ["Next.js", "Prisma", "PostgreSQL", "Socket.IO", "Redis"],
     status: "DEPLOYED",
-    confirmations: "500+",
-    description: "Modern greeting card creation platform with real-time canvas editing via Fabric.js. Features Google OAuth, live previews, and one-click social sharing.",
+    confirmations: "300+",
+    description: "Full-stack healthcare management system with role-based portals for patients, doctors, and admins. Features real-time chat via Socket.IO.",
     category: "fullstack",
-    codeSnippet: `// Wishify — Canvas Editing
-const addTextOverlay = (canvas, text) => {
-  const textObj = new fabric.IText(text, {
-    fontFamily: 'Inter',
-    fontSize: 48,
-    fill: '#FFFFFF',
-    shadow: new fabric.Shadow({
-      color: 'rgba(0,0,0,0.5)',
-      blur: 10
-    })
+    codeSnippet: `// Quick Clinic — Real-time Consultation
+io.on("connection", (socket) => {
+  socket.on("join_consultation", (roomId) => {
+    socket.join(roomId);
   });
-  canvas.add(textObj);
-  canvas.centerObject(textObj);
-};`,
-    github: "https://github.com/karanagg166/wishify",
-    live: "https://wishify.vercel.app",
-    image: "/images/projects/wishify.png"
-  },
-  {
-    name: "Book Recommender",
-    hash: "0x8h9i...0j1k",
-    blockNumber: 1339,
-    from: "Machine Learning",
-    to: "Readers",
-    stack: ["FastAPI", "Pandas", "Scikit-Learn", "Seaborn", "NLTK"],
-    status: "DEPLOYED",
-    confirmations: "200+",
-    description: "ML-powered book recommendation system using TF-IDF vectorization and cosine similarity. Instantly recommends books based on user-input genres.",
-    category: "fullstack",
-    codeSnippet: `# Book Recommender — ML Engine
-def get_recommendations(title: str, cosine_sim=cosine_sim):
-    idx = indices[title]
-    sim_scores = list(enumerate(cosine_sim[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:11]
-    book_indices = [i[0] for i in sim_scores]
-    return books['title'].iloc[book_indices]`,
-    github: "https://github.com/karanagg166/Book-Recommender",
-    live: "https://book-recommender.vercel.app",
-    image: "/images/projects/book-recommender.png"
-  },
-  {
-    name: "PennySaver",
-    hash: "0x2l3m...4n5o",
-    blockNumber: 1340,
-    from: "Personal Finance",
-    to: "Savings",
-    stack: ["React", "Node.js", "Express", "MongoDB"],
-    status: "DEPLOYED",
-    confirmations: "150+",
-    description: "Personal expense management system with income/expense tracking, category-based analytics, and budget visualization.",
-    category: "fullstack",
-    codeSnippet: `// PennySaver — Expense Analytics
-const getMonthlyStats = async (userId) => {
-  return await Transaction.aggregate([
-    { $match: { user: userId } },
-    { $group: {
-        _id: { $month: "$date" },
-        totalExpenses: { 
-          $sum: { $cond: [{ $eq: ["$type", "expense"] }, "$amount", 0] } 
-        },
-        totalIncome: { 
-          $sum: { $cond: [{ $eq: ["$type", "income"] }, "$amount", 0] } 
-        }
-    }}
-  ]);
-};`,
-    github: "https://github.com/karanagg166/PennySaver",
-    live: "https://pennysaver-rho.vercel.app",
-    image: "/images/projects/pennysaver.png"
+  
+  socket.on("send_message", async (data) => {
+    const msg = await db.message.create({ data });
+    io.to(data.roomId).emit("receive_message", msg);
+  });
+});`,
+    github: "https://github.com/karanagg166/Quick-Clinic",
+    live: "https://quick-clinic.vercel.app",
+    image: "/images/projects/quick-clinic.png"
   },
   {
     name: "ExamArena",
@@ -164,30 +108,109 @@ export async function gradeSubmission(submissionId: string) {
     image: "/images/projects/examarena.png"
   },
   {
-    name: "Quick Clinic",
-    hash: "0x0t1u...2v3w",
-    blockNumber: 1342,
-    from: "Healthcare Tech",
-    to: "Patients",
-    stack: ["Next.js", "Prisma", "PostgreSQL", "Socket.IO", "Redis"],
+    name: "ShopSizzle",
+    hash: "0x8b9c...0d1e",
+    blockNumber: 1344,
+    from: "E-Commerce",
+    to: "Shoppers",
+    stack: ["Next.js", "Prisma", "Tailwind CSS"],
     status: "DEPLOYED",
-    confirmations: "300+",
-    description: "Full-stack healthcare management system with role-based portals for patients, doctors, and admins. Features real-time chat via Socket.IO.",
+    confirmations: "400+",
+    description: "Modern e-commerce platform with product listings, cart management, and checkout flow. Built with Next.js App Router and Prisma ORM.",
     category: "fullstack",
-    codeSnippet: `// Quick Clinic — Real-time Consultation
-io.on("connection", (socket) => {
-  socket.on("join_consultation", (roomId) => {
-    socket.join(roomId);
-  });
+    codeSnippet: `// ShopSizzle — Cart Management
+export const addToCart = async (productId: string, quantity: number) => {
+  const session = await getSession();
+  if (!session) throw new Error("Unauthorized");
   
-  socket.on("send_message", async (data) => {
-    const msg = await db.message.create({ data });
-    io.to(data.roomId).emit("receive_message", msg);
+  return await db.cartItem.upsert({
+    where: { userId_productId: { userId: session.user.id, productId } },
+    update: { quantity: { increment: quantity } },
+    create: { userId: session.user.id, productId, quantity }
   });
-});`,
-    github: "https://github.com/karanagg166/Quick-Clinic",
-    live: "https://quick-clinic.vercel.app",
-    image: "/images/projects/quick-clinic.png"
+};`,
+    github: "https://github.com/karanagg166/ShopSizzle",
+    live: "https://shopsizzle.vercel.app",
+    image: "/images/projects/shopsizzle.png"
+  },
+  {
+    name: "Wishify",
+    hash: "0x4d5e...6f7g",
+    blockNumber: 1338,
+    from: "Creative Vision",
+    to: "Social Media",
+    stack: ["Next.js", "Prisma", "Neon", "Fabric.js", "Cloudinary"],
+    status: "DEPLOYED",
+    confirmations: "500+",
+    description: "Modern greeting card creation platform with real-time canvas editing via Fabric.js. Features Google OAuth, live previews, and one-click social sharing.",
+    category: "fullstack",
+    codeSnippet: `// Wishify — Canvas Editing
+const addTextOverlay = (canvas, text) => {
+  const textObj = new fabric.IText(text, {
+    fontFamily: 'Inter',
+    fontSize: 48,
+    fill: '#FFFFFF',
+    shadow: new fabric.Shadow({
+      color: 'rgba(0,0,0,0.5)',
+      blur: 10
+    })
+  });
+  canvas.add(textObj);
+  canvas.centerObject(textObj);
+};`,
+    github: "https://github.com/karanagg166/wishify",
+    live: "https://wishify.vercel.app"
+  },
+  {
+    name: "Book Recommender",
+    hash: "0x8h9i...0j1k",
+    blockNumber: 1339,
+    from: "Machine Learning",
+    to: "Readers",
+    stack: ["FastAPI", "Pandas", "Scikit-Learn", "Seaborn", "NLTK"],
+    status: "DEPLOYED",
+    confirmations: "200+",
+    description: "ML-powered book recommendation system using TF-IDF vectorization and cosine similarity. Instantly recommends books based on user-input genres.",
+    category: "fullstack",
+    codeSnippet: `# Book Recommender — ML Engine
+def get_recommendations(title: str, cosine_sim=cosine_sim):
+    idx = indices[title]
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1:11]
+    book_indices = [i[0] for i in sim_scores]
+    return books['title'].iloc[book_indices]`,
+    github: "https://github.com/karanagg166/Book-Recommender",
+    live: "https://book-recommender.vercel.app"
+  },
+  {
+    name: "PennySaver",
+    hash: "0x2l3m...4n5o",
+    blockNumber: 1340,
+    from: "Personal Finance",
+    to: "Savings",
+    stack: ["React", "Node.js", "Express", "MongoDB"],
+    status: "DEPLOYED",
+    confirmations: "150+",
+    description: "Personal expense management system with income/expense tracking, category-based analytics, and budget visualization.",
+    category: "fullstack",
+    codeSnippet: `// PennySaver — Expense Analytics
+const getMonthlyStats = async (userId) => {
+  return await Transaction.aggregate([
+    { $match: { user: userId } },
+    { $group: {
+        _id: { $month: "$date" },
+        totalExpenses: { 
+          $sum: { $cond: [{ $eq: ["$type", "expense"] }, "$amount", 0] } 
+        },
+        totalIncome: { 
+          $sum: { $cond: [{ $eq: ["$type", "income"] }, "$amount", 0] } 
+        }
+    }}
+  ]);
+};`,
+    github: "https://github.com/karanagg166/PennySaver",
+    live: "https://pennysaver-rho.vercel.app"
   },
   {
     name: "Leetcode Bot",
@@ -218,34 +241,7 @@ export async function updateProgress(userId: string, problemId: string) {
   return solved;
 }`,
     github: "https://github.com/karanagg166/leetcode-bot",
-    live: "https://leetcode-bot.vercel.app",
-    image: "/images/projects/leetcode-bot.png"
-  },
-  {
-    name: "ShopSizzle",
-    hash: "0x8b9c...0d1e",
-    blockNumber: 1344,
-    from: "E-Commerce",
-    to: "Shoppers",
-    stack: ["Next.js", "Prisma", "Tailwind CSS"],
-    status: "DEPLOYED",
-    confirmations: "400+",
-    description: "Modern e-commerce platform with product listings, cart management, and checkout flow. Built with Next.js App Router and Prisma ORM.",
-    category: "fullstack",
-    codeSnippet: `// ShopSizzle — Cart Management
-export const addToCart = async (productId: string, quantity: number) => {
-  const session = await getSession();
-  if (!session) throw new Error("Unauthorized");
-  
-  return await db.cartItem.upsert({
-    where: { userId_productId: { userId: session.user.id, productId } },
-    update: { quantity: { increment: quantity } },
-    create: { userId: session.user.id, productId, quantity }
-  });
-};`,
-    github: "https://github.com/karanagg166/ShopSizzle",
-    live: "https://shopsizzle.vercel.app",
-    image: "/images/projects/shopsizzle.png"
+    live: "https://leetcode-bot.vercel.app"
   },
   {
     name: "Portfolio",
@@ -253,10 +249,10 @@ export const addToCart = async (productId: string, quantity: number) => {
     blockNumber: 1345,
     from: "Creative Vision",
     to: "The Internet",
-    stack: ["Next.js", "Three.js", "GSAP", "React Spring"],
+    stack: ["Next.js", "Three.js", "Framer Motion", "Tailwind CSS"],
     status: "DEPLOYED",
     confirmations: "∞",
-    description: "This cinematic space-themed portfolio with interactive 3D backgrounds, terminal emulator, and developer-centric UI metaphors.",
+    description: "This cinematic space-themed portfolio with interactive 3D backgrounds, orbital station UI, and developer-centric engineering evidence.",
     category: "frontend",
     codeSnippet: `// DevPortfolio — 3D Rendering
 export function StarField() {
@@ -277,8 +273,7 @@ export function StarField() {
   );
 }`,
     github: "https://github.com/karanagg166/PORTFOLIO",
-    live: "https://portfolio-kappa-bay-76.vercel.app",
-    image: "/images/projects/portfolio.png"
+    live: "https://portfolio-kappa-bay-76.vercel.app"
   },
   {
     name: "Stellar Stocks",
@@ -305,8 +300,7 @@ async def get_metrics(ticker: str):
     
     return {"ticker": ticker, "metrics": df.tail(1).to_dict('records')[0]}`,
     github: "https://github.com/karanagg166/stellar-stocks",
-    live: "https://stellar-stocks.vercel.app",
-    image: "/images/projects/stellar-stocks.png"
+    live: "https://stellar-stocks.vercel.app"
   }
 ];
 
