@@ -208,7 +208,7 @@ const GitHubPRs = () => {
         </motion.div>
 
         {/* Dynamic Content */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="sync">
           {/* Competitive Programming Grid — Spacious 3-column layout */}
           {(activeTab === 'all' || activeTab === 'cp') && (
             <motion.div

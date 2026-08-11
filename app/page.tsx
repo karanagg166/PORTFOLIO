@@ -20,10 +20,6 @@ const TechStack = dynamic(() => import('@/components/TechStack').then(mod => mod
   loading: () => <div className="h-screen" />,
   ssr: true
 });
-const PhotoWall = dynamic(() => import('@/components/PhotoWall'), {
-  loading: () => <div className="h-screen" />,
-  ssr: true
-});
 const GitHubPRs = dynamic(() => import('@/components/GitHubPRs'), {
   loading: () => <div className="h-screen" />,
   ssr: true
@@ -47,7 +43,6 @@ export default function Home() {
        <RecentProject/>
        <TechStack/>
        <GitHubPRs/>
-       <PhotoWall/>
        <Footer/>
       </div>
     </main>

@@ -3,7 +3,6 @@ export const navItems = [
   { name: "Projects", link: "#projects" },
   { name: "TechStack", link: "#tech" },
   { name: "Experience", link: "#experience" },
-  { name: "PhotoWall", link: "#photowall" },
   { name: "Coding Stats", link: "#coding-stats" },
   { name: "Contact", link: "#contact" },
 ];
@@ -86,11 +85,7 @@ export const projects = [
     id: 1,
     title: "Exam-Arena — Proctored Online Examination System",
     des: "Proctored exam flow auto-flagging 100% of fullscreen-exit and tab-switch violations with auto-submit. Automated CI/CD GitHub Actions workflow for Docker images, teacher dashboard, and RBAC.",
-    images: [
-      "/images/projects/examarena/1.png",
-      "/images/projects/examarena/2.png",
-      "/images/projects/examarena/3.png",
-    ],
+    images: [],
     iconLists: ["/nextjs.svg", "/re.svg", "/flask.svg", "/docker.png", "/github.png"],
     link: "https://github.com/karanagg166/Exam-Arena",
     color: "text-blue-200"
@@ -99,11 +94,7 @@ export const projects = [
     id: 2,
     title: "Quick Clinic — Real-Time Healthcare & Consultation Portal",
     des: "Patient module supporting doctor search by specialization/availability. Doctor dashboard for schedules. Real-time chat via Socket.io (<2s response time) and analytics dashboard.",
-    images: [
-      "/images/projects/quick-clinic/1.png",
-      "/images/projects/quick-clinic/2.png",
-      "/images/projects/quick-clinic/3.png",
-    ],
+    images: [],
     iconLists: ["/nextjs.svg", "/re.svg", "/Typescript.png", "/socketio.png", "/docker.png"],
     link: "https://github.com/karanagg166/Quick-Clinic",
     color: "text-green-200"
@@ -112,11 +103,7 @@ export const projects = [
     id: 3,
     title: "LogiSync — Full-Stack Inventory & Logistics Platform",
     des: "Full-stack inventory and logistics platform using React, Next.js, and FastAPI powering 5+ real-time analytics dashboards. Socket.IO live sync, Razorpay payments, and Google Maps API fee calculation.",
-    images: [
-      "/images/projects/logisync/1.png",
-      "/images/projects/logisync/2.png",
-      "/images/projects/logisync/3.png",
-    ],
+    images: [],
     iconLists: ["/re.svg", "/nextjs.svg", "/flask.svg", "/socketio.png", "/docker.png"],
     link: "https://github.com/karanagg166/LogiSync",
     color: "text-red-200"
@@ -125,11 +112,7 @@ export const projects = [
     id: 4,
     title: "Shop Sizzle — E-Commerce Browsing & Order Tracking System",
     des: "Product browsing and filtering system with category-based search. Secured 100% user sessions with JWT authentication and bcrypt hashing, featuring real-time order tracking.",
-    images: [
-      "/images/projects/shopsizzle/1.png",
-      "/images/projects/shopsizzle/2.png",
-      "/images/projects/shopsizzle/3.png",
-    ],
+    images: [],
     iconLists: ["/re.svg", "/nojde.png", "/Express1.png", "/Mongod.png", "/Tailwindcs.png"],
     link: "https://github.com/karanagg166/Shop-Sizzle",
     color: "text-purple-200"

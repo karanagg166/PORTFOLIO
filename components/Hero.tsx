@@ -16,7 +16,6 @@ const Spotlight = dynamic(() => import('./ui/Spotlight').then(mod => ({ default:
 
 const images = [
   '/images/karan-photo.jpeg',
-  '/images/karan.jpeg',
 ]
 
 const Hero = () => {

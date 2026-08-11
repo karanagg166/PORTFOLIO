@@ -51,8 +51,16 @@ const ProjectCarousel = ({ images, title }: CarouselProps) => {
 
   if (!images || images.length === 0) {
     return (
-      <div className="relative w-full h-full overflow-hidden lg:rounded-3xl bg-[#13162d] flex items-center justify-center">
-        <p className="text-slate-500 text-sm">No images yet</p>
+      <div className="relative w-full h-full overflow-hidden lg:rounded-3xl bg-[#13162d] flex flex-col items-center justify-center border border-white/[0.08] p-6 group">
+        <Image fill src="/bg.png" alt="Background" className="object-cover opacity-30 pointer-events-none" />
+        <div className="relative z-10 flex flex-col items-center gap-3">
+          <div className="w-12 h-12 rounded-2xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center shadow-inner">
+            <span className="text-xl">🚀</span>
+          </div>
+          <span className="text-xs font-mono uppercase tracking-widest text-slate-400">
+            {title.split('—')[0].trim()}
+          </span>
+        </div>
       </div>
     )
   }
