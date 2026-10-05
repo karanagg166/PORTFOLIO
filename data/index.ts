@@ -85,7 +85,11 @@ export const projects = [
     id: 1,
     title: "Exam-Arena — Proctored Online Examination System",
     des: "Proctored exam flow auto-flagging 100% of fullscreen-exit and tab-switch violations with auto-submit. Automated CI/CD GitHub Actions workflow for Docker images, teacher dashboard, and RBAC.",
-    images: [],
+    images: [
+      "/images/projects/examarena/01-overview.png",
+      "/images/projects/examarena/02-main-feature.png",
+      "/images/projects/examarena/03-secondary-feature.png",
+    ],
     iconLists: ["/nextjs.svg", "/re.svg", "/flask.svg", "/docker.png", "/github.png"],
     link: "https://github.com/karanagg166/Exam-Arena",
     color: "text-blue-200"
@@ -94,28 +98,114 @@ export const projects = [
     id: 2,
     title: "Quick Clinic — Real-Time Healthcare & Consultation Portal",
     des: "Patient module supporting doctor search by specialization/availability. Doctor dashboard for schedules. Real-time chat via Socket.io (<2s response time) and analytics dashboard.",
-    images: [],
+    images: [
+      "/images/projects/quick-clinic/01-overview.png",
+      "/images/projects/quick-clinic/02-main-feature.png",
+      "/images/projects/quick-clinic/03-secondary-feature.png",
+    ],
     iconLists: ["/nextjs.svg", "/re.svg", "/Typescript.png", "/socketio.png", "/docker.png"],
     link: "https://github.com/karanagg166/Quick-Clinic",
     color: "text-green-200"
   },
   {
     id: 3,
+    title: "Search Sphere — Hybrid RAG & Semantic Document Search",
+    des: "Enterprise semantic document intelligence engine combining dense sentence embeddings and sparse BM25 retrieval via Reciprocal Rank Fusion (RRF) with Cohere reranking.",
+    images: [
+      "/images/projects/search-sphere/01-overview.png",
+      "/images/projects/search-sphere/02-main-feature.png",
+      "/images/projects/search-sphere/03-secondary-feature.png",
+    ],
+    iconLists: ["/nextjs.svg", "/Typescript.png", "/flask.svg", "/docker.png", "/github.png"],
+    link: "https://github.com/karanagg166/search-sphere",
+    color: "text-sky-200"
+  },
+  {
+    id: 4,
+    title: "Shop Sizzle — E-Commerce Browsing & Order Tracking System",
+    des: "Product browsing and filtering system with category-based search. Secured 100% user sessions with JWT authentication and bcrypt hashing, featuring real-time order tracking.",
+    images: [
+      "/images/projects/shopsizzle/01-overview.png",
+      "/images/projects/shopsizzle/02-main-feature.png",
+      "/images/projects/shopsizzle/03-secondary-feature.png",
+    ],
+    iconLists: ["/re.svg", "/nojde.png", "/Express1.png", "/Mongod.png", "/Tailwindcs.png"],
+    link: "https://github.com/karanagg166/Shop-Sizzle",
+    color: "text-purple-200"
+  },
+  {
+    id: 5,
+    title: "Stellar Stocks — Real-Time Stock Market Analytics & Portfolio",
+    des: "Financial analytics platform providing live candlestick charting, technical indicators, portfolio tracking, and market sector performance heatmaps.",
+    images: [
+      "/images/projects/stellar-stocks/01-overview.png",
+      "/images/projects/stellar-stocks/02-main-feature.png",
+      "/images/projects/stellar-stocks/03-secondary-feature.png",
+    ],
+    iconLists: ["/nextjs.svg", "/re.svg", "/Typescript.png", "/Tailwindcs.png", "/github.png"],
+    link: "https://github.com/karanagg166/stellar-stocks",
+    color: "text-amber-200"
+  },
+  {
+    id: 6,
+    title: "Wallet Track — Personal Financial Ledger & Spending Analytics",
+    des: "Full-featured financial tracking suite with categorized income/expense transaction ledgers, cash flow summaries, and monthly spending analytics.",
+    images: [
+      "/images/projects/wallet-track/01-overview.png",
+      "/images/projects/wallet-track/02-main-feature.png",
+      "/images/projects/wallet-track/03-secondary-feature.png",
+    ],
+    iconLists: ["/re.svg", "/Typescript.png", "/Tailwindcs.png", "/Mongod.png", "/github.png"],
+    link: "https://github.com/karanagg166/wallet-track",
+    color: "text-emerald-200"
+  },
+  {
+    id: 7,
+    title: "URL Shortener — Dynamic Link Management & Click Analytics",
+    des: "High-performance link redirection engine with customizable slugs, expiration dates, real-time click volume tracking, and geographic analytics.",
+    images: [
+      "/images/projects/url-shortener/01-overview.png",
+      "/images/projects/url-shortener/02-main-feature.png",
+      "/images/projects/url-shortener/03-secondary-feature.png",
+    ],
+    iconLists: ["/nextjs.svg", "/Typescript.png", "/docker.png", "/github.png"],
+    link: "https://github.com/karanagg166/url-shortner",
+    color: "text-indigo-200"
+  },
+  {
+    id: 8,
+    title: "PennySaver — Smart Budgeting & Savings Goal Tracker",
+    des: "Personal budgeting assistant helping users establish savings targets, monitor spending velocities, and track category-by-category financial health.",
+    images: [
+      "/images/projects/pennysaver/01-overview.png",
+      "/images/projects/pennysaver/02-main-feature.png",
+      "/images/projects/pennysaver/03-secondary-feature.png",
+    ],
+    iconLists: ["/re.svg", "/Typescript.png", "/Tailwindcs.png", "/github.png"],
+    link: "https://github.com/karanagg166/pennysaver",
+    color: "text-teal-200"
+  },
+  {
+    id: 9,
+    title: "Tenkisense — Atmospheric Weather Intelligence & AI Advisor",
+    des: "Multilingual weather platform delivering hyper-local atmospheric forecasts paired with an AI advisor for weather-driven activity recommendations.",
+    images: [
+      "/images/projects/tenkisense/01-overview.png",
+      "/images/projects/tenkisense/02-main-feature.png",
+      "/images/projects/tenkisense/03-secondary-feature.png",
+    ],
+    iconLists: ["/nextjs.svg", "/re.svg", "/Typescript.png", "/Tailwindcs.png", "/github.png"],
+    link: "https://github.com/karanagg166/tenkisense",
+    color: "text-cyan-200"
+  },
+  {
+    id: 10,
     title: "LogiSync — Full-Stack Inventory & Logistics Platform",
     des: "Full-stack inventory and logistics platform using React, Next.js, and FastAPI powering 5+ real-time analytics dashboards. Socket.IO live sync, Razorpay payments, and Google Maps API fee calculation.",
     images: [],
     iconLists: ["/re.svg", "/nextjs.svg", "/flask.svg", "/socketio.png", "/docker.png"],
     link: "https://github.com/karanagg166/LogiSync",
     color: "text-red-200"
-  },
-  {
-    id: 4,
-    title: "Shop Sizzle — E-Commerce Browsing & Order Tracking System",
-    des: "Product browsing and filtering system with category-based search. Secured 100% user sessions with JWT authentication and bcrypt hashing, featuring real-time order tracking.",
-    images: [],
-    iconLists: ["/re.svg", "/nojde.png", "/Express1.png", "/Mongod.png", "/Tailwindcs.png"],
-    link: "https://github.com/karanagg166/Shop-Sizzle",
-    color: "text-purple-200"
   },
 ];
 
