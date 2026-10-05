@@ -91,7 +91,7 @@ export const projects = [
       "/images/projects/examarena/03-secondary-feature.png",
     ],
     iconLists: ["/nextjs.svg", "/re.svg", "/flask.svg", "/docker.png", "/github.png"],
-    link: "https://github.com/karanagg166/Exam-Arena",
+    link: "https://github.com/karanagg166/ExamArena",
     color: "text-blue-200"
   },
   {
@@ -130,7 +130,7 @@ export const projects = [
       "/images/projects/shopsizzle/03-secondary-feature.png",
     ],
     iconLists: ["/re.svg", "/nojde.png", "/Express1.png", "/Mongod.png", "/Tailwindcs.png"],
-    link: "https://github.com/karanagg166/Shop-Sizzle",
+    link: "https://github.com/karanagg166/ShopSizzle",
     color: "text-purple-200"
   },
   {
@@ -156,7 +156,7 @@ export const projects = [
       "/images/projects/wallet-track/03-secondary-feature.png",
     ],
     iconLists: ["/re.svg", "/Typescript.png", "/Tailwindcs.png", "/Mongod.png", "/github.png"],
-    link: "https://github.com/karanagg166/wallet-track",
+    link: "https://github.com/karanagg166/Wallet-Track",
     color: "text-emerald-200"
   },
   {
@@ -182,7 +182,7 @@ export const projects = [
       "/images/projects/pennysaver/03-secondary-feature.png",
     ],
     iconLists: ["/re.svg", "/Typescript.png", "/Tailwindcs.png", "/github.png"],
-    link: "https://github.com/karanagg166/pennysaver",
+    link: "https://github.com/karanagg166/PennySaver",
     color: "text-teal-200"
   },
   {
@@ -197,15 +197,6 @@ export const projects = [
     iconLists: ["/nextjs.svg", "/re.svg", "/Typescript.png", "/Tailwindcs.png", "/github.png"],
     link: "https://github.com/karanagg166/tenkisense",
     color: "text-cyan-200"
-  },
-  {
-    id: 10,
-    title: "LogiSync — Full-Stack Inventory & Logistics Platform",
-    des: "Full-stack inventory and logistics platform using React, Next.js, and FastAPI powering 5+ real-time analytics dashboards. Socket.IO live sync, Razorpay payments, and Google Maps API fee calculation.",
-    images: [],
-    iconLists: ["/re.svg", "/nextjs.svg", "/flask.svg", "/socketio.png", "/docker.png"],
-    link: "https://github.com/karanagg166/LogiSync",
-    color: "text-red-200"
   },
 ];
 
