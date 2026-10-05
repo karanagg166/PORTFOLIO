@@ -212,6 +212,16 @@ export const projects = [
 export const workExperience = [
   {
     id: 1,
+    title: "Software Engineer",
+    org: "Humming Bird Web Solutions",
+    desc: "• <b>B2B E-Commerce Platforms:</b> Developed and maintained enterprise B2B e-commerce platforms powered by <b>Magento 2</b>.<br/>• <b>Custom Backend Modules:</b> Engineered and maintained custom <b>Magento 2</b> backend modules, plugins, and core business functionality.<br/>• <b>APIs & Integrations:</b> Built robust integrations and endpoints using <b>GraphQL</b> and REST to connect internal and external systems.<br/>• <b>Hyvä Storefront Compatibility:</b> Developed compatibility solutions and optimizations for modern <b>Hyvä</b>-based Magento storefronts.<br/>• <b>Backend Architecture & Performance:</b> Contributed to backend architecture, debugging, performance improvements, and production-ready e-commerce features.",
+    className: "md:col-span-2",
+    thumbnail: "/exp3.svg",
+    date: "June 2026 – Present",
+    techImages: ["/docker.png", "/git.svg", "/Tailwindcs.png"]
+  },
+  {
+    id: 2,
     title: "Desktop Application Developer (Freelance) — Zyro",
     org: "Hyper Devs (Freelance)",
     desc: "• <b>Cross-Platform Desktop Suite:</b> Built <b>Zyro</b> using Electron.js and React supporting macOS, Windows, and Linux for buyer stock, customer, and import management.<br/>• <b>Local-First Database Architecture:</b> Engineered complete offline local database storage directly on the client computer, guaranteeing 100% data security, fast querying, and zero network dependency.<br/>• <b>Excel Data & Stock Management:</b> Enabled buyers to seamlessly import, export, and batch-update product stocks and inventory directly via Excel / CSV spreadsheets.<br/>• <b>Billing & Payments:</b> Integrated automated invoice generation, customer accounts, and automated payment/billing calculation workflows.",
@@ -221,7 +231,7 @@ export const workExperience = [
     techImages: ["/React.png", "/Typescript.png", "/Javascript.png", "/nojde.png"]
   },
   {
-    id: 2,
+    id: 3,
     title: "Software Engineer Intern – Full Stack",
     org: "Akatsuki AI Technologies (Remote)",
     desc: "• <b>LogiSync Logistics Platform:</b> Built a full-stack inventory & logistics platform using React, Next.js, and FastAPI with 5+ real-time analytics dashboards.<br/>• <b>CI/CD Automation:</b> Configured GitHub Actions CI/CD pipeline to automate linting, testing, and Docker builds, cutting manual deployment by ~40%.<br/>• <b>Real-time Sync & Payments:</b> Enabled live WebSocket data sync via Socket.IO across 5+ dashboards and integrated Razorpay for payments across 4 core workflows.<br/>• <b>Database & Caching:</b> Engineered PostgreSQL architecture with Redis caching cutting query response time by ~30%.",
@@ -229,36 +239,6 @@ export const workExperience = [
     thumbnail: "/exp4.svg",
     date: "Feb 2026 – Mar 2026",
     techImages: ["/React.png", "/nextjs.png", "/flask.svg", "/docker.png", "/github.png"]
-  },
-  {
-    id: 3,
-    title: "Full Stack & DevOps Lead — Exam-Arena",
-    org: "PDPM IIITDM Jabalpur",
-    desc: "• Established proctored exam flow auto-flagging 100% of fullscreen-exit and tab-switch violations with auto-submit.<br/>• Automated CI/CD GitHub Actions workflow to build/push Docker images and run test suite on every commit.<br/>• Architected teacher dashboard with 5+ configurable parameters and evaluation analytics across 3 result views.",
-    className: "md:col-span-2",
-    thumbnail: "/exp3.svg",
-    date: "Mar 2026",
-    techImages: ["/nextjs.png", "/Typescript.png", "/docker.png", "/github.png"]
-  },
-  {
-    id: 4,
-    title: "Full Stack Developer — Quick Clinic",
-    org: "PDPM IIITDM Jabalpur",
-    desc: "• Developed patient module for doctor search (book, cancel, reschedule) with real-time updates.<br/>• Implemented secure real-time chat using Socket.io bringing consultation response time under 2 seconds.<br/>• Designed analytics dashboard tracking earnings, appointment history, and leave records.",
-    className: "md:col-span-2",
-    thumbnail: "/exp2.svg",
-    date: "Aug 2025",
-    techImages: ["/React.png", "/Typescript.png", "/socketio.png", "/docker.png"]
-  },
-  {
-    id: 5,
-    title: "Full Stack Developer — Shop Sizzle",
-    org: "Independent Project",
-    desc: "• Crafted product browsing and filtering system with category-based search.<br/>• Secured 100% of user sessions with JWT authentication and bcrypt hashing.<br/>• Streamlined checkout workflow with real-time order tracking.",
-    className: "md:col-span-2",
-    thumbnail: "/exp1.svg",
-    date: "Feb 2023",
-    techImages: ["/React.png", "/Express1.png", "/Mongod.png"]
   },
 ];
 
