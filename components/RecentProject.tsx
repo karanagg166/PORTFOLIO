@@ -143,6 +143,15 @@ const ProjectCarousel = ({ images, title }: CarouselProps) => {
   )
 }
 
+// Helper to determine accurate link label (avoid claiming live site for repo links)
+const getProjectLinkLabel = (link?: string) => {
+  if (!link) return 'View Project'
+  if (link.toLowerCase().includes('github.com')) {
+    return 'View Repository'
+  }
+  return 'View Project'
+}
+
 // ─── Main section ───────────────────────────────────────────────────────────────
 const RecentProject = () => {
   const [isMounted, setIsMounted] = useState(false)
@@ -170,40 +179,42 @@ const RecentProject = () => {
           <div className="w-24 h-2 mt-5 rounded-lg bg-gradient-to-r from-slate-300 to-slate-500 opacity-50" />
         </LampContainer>
 
-        <div className="flex flex-wrap items-center justify-center p-4 gap-y-28 gap-x-24 -mt-32 md:-mt-64">
+        <div className="flex flex-wrap items-center justify-center p-4 gap-y-20 gap-x-16 -mt-32 md:-mt-64">
           {projects.length > 0 ? projects.map(({ id, title, des, images, iconLists, link, color }) => (
             <div
               key={id}
-              className="lg:min-h-[32.5rem] h-[25rem] flex items-center justify-center sm:w-96 w-[80vw]"
+              className="min-h-[28rem] lg:min-h-[32.5rem] flex items-center justify-center sm:w-96 w-[80vw]"
             >
               <PinContainer title={link} href={link}>
                 {/* Carousel image area */}
-                <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10">
+                <div className="relative flex items-center justify-center w-full overflow-hidden h-[20vh] lg:h-[28vh] mb-5">
                   <ProjectCarousel images={images} title={title} />
                 </div>
 
-                <h1 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1 text-white">
+                <h1 className="font-bold lg:text-xl md:text-lg text-base line-clamp-1 text-white">
                   {title}
                 </h1>
-                <p className="lg:text-base lg:font-normal font-light text-sm line-clamp-2 text-slate-400 mt-2">
+                <p className="lg:text-sm lg:font-normal font-light text-xs line-clamp-2 text-slate-400 mt-2">
                   {des}
                 </p>
 
-                <div className="flex items-center justify-between mt-7 mb-3">
+                <div className="flex items-center justify-between mt-7 mb-2">
                   <div className="flex items-center">
                     {iconLists.map((icon, index) => (
                       <div
                         key={icon}
-                        className="border border-white/[0.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center"
+                        className="border border-white/[0.2] rounded-full bg-black lg:w-9 lg:h-9 w-8 h-8 flex justify-center items-center"
                         style={{ transform: `translateX(-${5 * index * 2}px)` }}
                       >
-                        <Image src={icon} alt={icon} width={30} height={30} className="p-2" />
+                        <Image src={icon} alt={icon} width={26} height={26} className="p-1.5" />
                       </div>
                     ))}
                   </div>
-                  <div className="flex justify-center items-center">
-                    <p className="flex lg:text-xl md:text-xs text-sm text-purple">Check Live Site</p>
-                    <FaLocationArrow className="ms-3 text-purple" />
+                  <div className="flex items-center shrink-0">
+                    <p className="text-xs sm:text-sm font-medium text-purple whitespace-nowrap group-hover/pin:text-purple-300 transition-colors duration-200">
+                      {getProjectLinkLabel(link)}
+                    </p>
+                    <FaLocationArrow className="ms-2 text-purple text-xs shrink-0 group-hover/pin:translate-x-0.5 group-hover/pin:-translate-y-0.5 transition-transform duration-200" />
                   </div>
                 </div>
               </PinContainer>

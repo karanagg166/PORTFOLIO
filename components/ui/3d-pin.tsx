@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
 
@@ -17,44 +16,47 @@ export const PinContainer = ({
   className?: string;
   containerClassName?: string;
 }) => {
-  const [transform, setTransform] = useState(
-    "translate(-50%,-50%) rotateX(0deg)"
-  );
-
-  const onMouseEnter = () => {
-    setTransform("translate(-50%,-50%) rotateX(40deg) scale(0.8)");
-  };
-  const onMouseLeave = () => {
-    setTransform("translate(-50%,-50%) rotateX(0deg) scale(1)");
-  };
-
   return (
     <Link
+      href={href || "/"}
+      target={href?.startsWith("http") ? "_blank" : undefined}
+      rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
       className={cn(
-        "relative group/pin z-50  cursor-pointer",
+        "relative group/pin block cursor-pointer select-none w-full",
         containerClassName
       )}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      href={href || "/"}
     >
       <div
-        style={{
-          perspective: "1000px",
-          transform: "rotateX(70deg) translateZ(0deg)",
-        }}
-        className="absolute left-1/2 top-1/2 ml-[0.09375rem] mt-4 -translate-x-1/2 -translate-y-1/2"
+        className={cn(
+          "relative rounded-2xl p-4 sm:p-5",
+          "bg-[#0e1026]/90 backdrop-blur-md",
+          "border border-white/[0.08]",
+          "shadow-[0_8px_24px_rgba(0,0,0,0.4)]",
+          "transition-all duration-300 ease-out",
+          "hover:-translate-y-2 hover:scale-[1.015]",
+          "hover:border-purple-500/40",
+          "hover:shadow-[0_20px_40px_rgba(0,0,0,0.6),0_0_30px_rgba(168,85,247,0.15)]",
+          "motion-reduce:transform-none motion-reduce:transition-none",
+          "overflow-hidden",
+          className
+        )}
       >
+        {/* Subtle top border highlight that glows slightly on hover */}
         <div
-          style={{
-            transform: transform,
-          }}
-          className="absolute left-1/2 p-4 top-1/2  flex justify-start items-start  rounded-2xl  shadow-[0_8px_16px_rgb(0_0_0/0.4)]  border border-white/[0.1] group-hover/pin:border-white/[0.2] transition duration-700 overflow-hidden"
-        >
-          <div className={cn(" relative z-50 ", className)}>{children}</div>
-        </div>
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent opacity-0 group-hover/pin:opacity-100 transition-opacity duration-300"
+          aria-hidden="true"
+        />
+
+        {/* Subtle radial glow background on hover */}
+        <div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover/pin:opacity-100 transition-opacity duration-300 bg-gradient-to-b from-white/[0.04] via-purple-500/[0.02] to-transparent"
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 w-full">{children}</div>
       </div>
-      <PinPerspective title={title} href={href} />
+
+      {title && <PinPerspective title={title} href={href} />}
     </Link>
   );
 };
@@ -66,99 +68,42 @@ export const PinPerspective = ({
   title?: string;
   href?: string;
 }) => {
+  if (!title) return null;
+
+  let displayTitle = title;
+  try {
+    if (title.startsWith("http://") || title.startsWith("https://")) {
+      const url = new URL(title);
+      if (url.hostname.includes("github.com")) {
+        displayTitle = url.pathname.replace(/^\//, "");
+      } else {
+        displayTitle = url.hostname.replace("www.", "") + url.pathname;
+      }
+      if (displayTitle.length > 30) {
+        displayTitle = displayTitle.slice(0, 30) + "...";
+      }
+    }
+  } catch {
+    // keep as is
+  }
+
   return (
-    <motion.div className="pointer-events-none  w-full h-80 flex items-center justify-center opacity-0 group-hover/pin:opacity-100 z-[60] transition duration-500">
-      <div className=" w-full h-full -mt-7 flex-none  inset-0">
-        <div className="absolute top-0 inset-x-0  flex justify-center">
-          <div
-            className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10 "
-          >
-            <span className="relative z-20 text-white text-xs font-bold inline-block py-0.5">
-              {title}
-            </span>
-
-            <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover/btn:opacity-40"></span>
-          </div>
-        </div>
-
-        <div
-          style={{
-            perspective: "1000px",
-            transform: "rotateX(70deg) translateZ(0)",
-          }}
-          className="absolute left-1/2 top-1/2 ml-[0.09375rem] mt-4 -translate-x-1/2 -translate-y-1/2"
-        >
-          <>
-            <motion.div
-              initial={{
-                opacity: 0,
-                scale: 0,
-                x: "-50%",
-                y: "-50%",
-              }}
-              animate={{
-                opacity: [0, 1, 0.5, 0],
-                scale: 1,
-
-                z: 0,
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                delay: 0,
-              }}
-              className="absolute left-1/2 top-1/2  h-[11.25rem] w-[11.25rem] rounded-[50%] bg-sky-500/[0.08] shadow-[0_8px_16px_rgb(0_0_0/0.4)]"
-            ></motion.div>
-            <motion.div
-              initial={{
-                opacity: 0,
-                scale: 0,
-                x: "-50%",
-                y: "-50%",
-              }}
-              animate={{
-                opacity: [0, 1, 0.5, 0],
-                scale: 1,
-
-                z: 0,
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                delay: 2,
-              }}
-              className="absolute left-1/2 top-1/2  h-[11.25rem] w-[11.25rem] rounded-[50%] bg-sky-500/[0.08] shadow-[0_8px_16px_rgb(0_0_0/0.4)]"
-            ></motion.div>
-            <motion.div
-              initial={{
-                opacity: 0,
-                scale: 0,
-                x: "-50%",
-                y: "-50%",
-              }}
-              animate={{
-                opacity: [0, 1, 0.5, 0],
-                scale: 1,
-
-                z: 0,
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                delay: 4,
-              }}
-              className="absolute left-1/2 top-1/2  h-[11.25rem] w-[11.25rem] rounded-[50%] bg-sky-500/[0.08] shadow-[0_8px_16px_rgb(0_0_0/0.4)]"
-            ></motion.div>
-          </>
-        </div>
-
-        <>
-          <motion.div className="absolute right-1/2 bottom-1/2 bg-gradient-to-b from-transparent to-cyan-500 translate-y-[14px] w-px h-20 group-hover/pin:h-40 blur-[2px]" />
-          <motion.div className="absolute right-1/2 bottom-1/2 bg-gradient-to-b from-transparent to-cyan-500 translate-y-[14px] w-px h-20 group-hover/pin:h-40  " />
-          <motion.div className="absolute right-1/2 translate-x-[1.5px] bottom-1/2 bg-cyan-600 translate-y-[14px] w-[4px] h-[4px] rounded-full z-40 blur-[3px]" />
-          <motion.div className="absolute right-1/2 translate-x-[0.5px] bottom-1/2 bg-cyan-300 translate-y-[14px] w-[2px] h-[2px] rounded-full z-40 " />
-        </>
+    <div
+      className={cn(
+        "pointer-events-none absolute -top-3.5 left-1/2 -translate-x-1/2 z-30",
+        "opacity-0 group-hover/pin:opacity-100",
+        "transition-all duration-300 ease-out",
+        "group-hover/pin:-translate-y-1",
+        "motion-reduce:transform-none motion-reduce:transition-none"
+      )}
+      aria-hidden="true"
+    >
+      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0b0d1b]/95 border border-white/[0.15] shadow-lg backdrop-blur-md whitespace-nowrap">
+        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+        <span className="text-[11px] font-mono text-slate-300 font-medium tracking-tight">
+          {displayTitle}
+        </span>
       </div>
-    </motion.div>
+    </div>
   );
 };
